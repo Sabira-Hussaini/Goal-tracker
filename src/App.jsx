@@ -5,19 +5,24 @@ import NewGoal from "./pages/NewGoal";
 import GoalDetails from "./pages/GoalDetails";
 import Categories from "./pages/Categories";
 import Settings from "./pages/Settings";
-import NotFound from "./pages/NotFound";
+import Layout from "./layout/Layout";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/goals" element={<Goals />} />
-        <Route path="/goals/new" element={<NewGoal />} />
-        <Route path="/goals/:id" element={<GoalDetails />} />
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<Layout />}>
+          {/* صفحه اصلی */}
+          <Route index element={<Dashboard />} />
+
+          {/* صفحات */}
+          <Route path="goals" element={<Goals />} />
+          <Route path="categories" element={<Categories />} />
+          <Route path="setting" element={<Settings />} />
+
+          {/* داینامیک */}
+          <Route path="goals/:id" element={<GoalDetails />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

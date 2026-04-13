@@ -1,11 +1,11 @@
-import {Button} from "@mui/material"
-
+import { Box } from "@mui/material";
+import DashboardHero from "../components/dashboard/DashboardHero";
 const Dashboard = () => {
   return (
-    <div>
-      <Button variant="contained">Button</Button>
-    </div>
-  )
-}
+    <Box>
+      <DashboardHero />
+    </Box>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
