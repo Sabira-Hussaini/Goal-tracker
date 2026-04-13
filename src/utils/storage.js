@@ -1,5 +1,6 @@
 export const getGoals = () => {
-  return JSON.parse(localStorage.getItem("goals")) || [];
+  const data = localStorage.getItem("goals");
+  return data ? JSON.parse(data) : [];
 };
 
 export const saveGoals = (goals) => {
