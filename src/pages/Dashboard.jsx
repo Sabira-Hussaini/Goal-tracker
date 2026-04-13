@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useContext } from "react";
 import { GoalContext } from "../context/GoalContext";
 
@@ -8,26 +8,26 @@ import RecentActivity from "../components/dashboard/RecentActivity";
 import CompletedPreview from "../components/dashboard/CompletedPreview";
 import ActiveGoalsList from "../components/ActiveGoalsList";
 
-
 const Dashboard = () => {
   const { goals } = useContext(GoalContext);
 
   const completed = goals.filter(g => g.completed);
-  
+
   return (
     <Box p={3}>
-
+      
       <DashboardCards />
 
-      <Box display="flex" gap={2} mt={3}>
+      <Grid container spacing={2} mt={3}>
         
-        {/* سمت چپ */}
-        <Box flex={2}>
+        {/* LEFT SIDE */}
+        <Grid size={{ xs: 12, md: 8 }}>
           <ActiveGoalsList goals={goals} />
-        </Box>
+        </Grid>
 
-        {/* سمت راست */}
-        <Box flex={1}>
+        {/* RIGHT SIDE */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          
           <CompletionInsight 
             total={goals.length} 
             completed={completed.length} 
@@ -36,9 +36,10 @@ const Dashboard = () => {
           <RecentActivity activities={[]} />
 
           <CompletedPreview completedGoals={completed} />
-        </Box>
 
-      </Box>
+        </Grid>
+
+      </Grid>
 
     </Box>
   );

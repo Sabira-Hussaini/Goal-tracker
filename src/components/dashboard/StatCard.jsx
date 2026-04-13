@@ -2,13 +2,17 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 
 const StatCard = ({ title, value, subtitle, icon, color }) => {
   return (
-    <Card sx={{ flex: 1 }}>
+    <Card sx={{ height: "100%" }}>
       <CardContent>
-        <Box display="flex" justifyContent="space-between">
+        
+        <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle2" color="text.secondary">
             {title}
           </Typography>
-          <Box color={color}>{icon}</Box>
+
+          <Box sx={{ color }}>
+            {icon}
+          </Box>
         </Box>
 
         <Typography variant="h4" fontWeight="bold" mt={1}>
@@ -18,6 +22,7 @@ const StatCard = ({ title, value, subtitle, icon, color }) => {
         <Typography variant="body2" color="text.secondary">
           {subtitle}
         </Typography>
+
       </CardContent>
     </Card>
   );
