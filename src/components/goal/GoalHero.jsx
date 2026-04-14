@@ -5,10 +5,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-
+import { useNavigate } from "react-router-dom";
 
 export default function GoalHero() {
   const [userName] = useState("Maryam Mirzada");
+  const navigate = useNavigate();
 
   return (
     <Card
@@ -69,6 +70,7 @@ export default function GoalHero() {
               px: "5rem",
               borderRadius: "20px",
             }}
+            onClick={() => navigate("/form")}
           >
             NEW GOAL
           </Button>

@@ -6,9 +6,8 @@ import Form from "../components/goal/form/Form";
 const Goals = () => {
   return (
     <Box>
-      {/* <GoalHero />
-      <ShowProgress /> */}
-      <Form />
+      <GoalHero />
+      <ShowProgress />
     </Box>
   );
 };

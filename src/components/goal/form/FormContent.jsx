@@ -11,7 +11,7 @@ export default function FormContent() {
   return (
     <Card
       sx={{
-        maxWidth: "62%",
+        maxWidth: "100%",
         marginTop: "25px",
         backgroundColor: "#e6eff7",
         borderRadius: 1,
@@ -37,7 +37,6 @@ export default function FormContent() {
           <RequiredInput />
         </CardContent>
       </Card>
-   
     </Card>
   );
 }
