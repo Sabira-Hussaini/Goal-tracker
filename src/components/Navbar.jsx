@@ -2,66 +2,68 @@ import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import MoreIcon from "@mui/icons-material/MoreVert";
-import logo from "../assets/logo.jpeg";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import TranslateIcon from "@mui/icons-material/Translate";
+
+import logo from "../assets/logo.jpeg";
+
+/* ================= SEARCH ================= */
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
+  border: "1px solid #ccc",
   marginLeft: 0,
   width: "100%",
   [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(2),
     width: "auto",
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+const SearchIconWrapper = styled("div")(() => ({
+  padding: "0 10px",
   height: "100%",
   position: "absolute",
-  pointerEvents: "none",
   display: "flex",
   alignItems: "center",
-  justifyContent: "center",
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(InputBase)(() => ({
   color: "inherit",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
+  paddingLeft: "35px",
+  width: "100%",
 }));
 
+/* ================= COMPONENT ================= */
 export default function PrimarySearchAppBar() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
   const pages = [
     { id: 1, name: "Dashboard", to: "/" },
     { id: 2, name: "Goals", to: "/goals" },
@@ -69,165 +71,120 @@ export default function PrimarySearchAppBar() {
     { id: 4, name: "Setting", to: "/setting" },
   ];
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <DarkModeIcon />
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
+  const handleMenuClose = () => setAnchorEl(null);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ m: 0, p: 0 }}>
-        <Toolbar sx={{ m: 0 }}>
-          {/* 🔹 LEFT: Logo */}
-          <Box
-            component="img"
-            src={logo}
-            alt="Logo"
-            sx={{
-              width: 40,
-              height: 40,
-              borderRadius: 2,
-              mr: 1,
-            }}
-          />
+    <Box>
+      <AppBar
+        position="static"
+        sx={{
+          backgroundColor: "#fff",
+          color: "#000",
+          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
+        }}
+      >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          {/* ================= LEFT (LOGO + MENU ICON) ================= */}
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            {isMobile && (
+              <IconButton onClick={handleDrawerToggle}>
+                <MenuIcon />
+              </IconButton>
+            )}
 
-          <Typography variant="h6" sx={{ mr: 2 }}>
-            Goal-Tracker
-          </Typography>
+            <Box
+              component="img"
+              src={logo}
+              alt="logo"
+              sx={{ width: 40, height: 40, borderRadius: 2, ml: 1 }}
+            />
 
-          {/* 🔹 CENTER: Pages */}
-          <Box
-            sx={{
-              display: "flex",
-              gap: 19,
-              flexGrow: 1,
-              gap: 2,
-            }}
-          >
-            {pages.map((page) => (
-              <Button
-                key={page.id}
-                component={Link}
-                to={page.to}
-                sx={{ color: "#fff", fontSize: "17px", fontWidth: "semibold" }}
-              >
-                {page.name}
-              </Button>
-            ))}
+            <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
+              Goal-Tracker
+            </Typography>
           </Box>
 
-          {/* 🔹 RIGHT: Search + Icons */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" />
-            </Search>
+          {/* ================= CENTER (DESKTOP MENU) ================= */}
+          {!isMobile && (
+            <Box sx={{ display: "flex", gap: 2 }}>
+              {pages.map((page) => (
+                <Button
+                  key={page.id}
+                  component={Link}
+                  to={page.to}
+                  sx={{
+                    color: "#000",
+                    fontSize: "16px",
+                    textTransform: "none",
+                  }}
+                >
+                  {page.name}
+                </Button>
+              ))}
+            </Box>
+          )}
 
-            <IconButton color="inherit">
+          {/* ================= RIGHT SIDE ================= */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {/* SEARCH (hidden on mobile) */}
+            {!isMobile && (
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder="Search..." />
+              </Search>
+            )}
+
+            <IconButton>
               <TranslateIcon />
             </IconButton>
 
-            <IconButton color="inherit">
+            <IconButton>
               <DarkModeIcon />
             </IconButton>
 
-            <IconButton color="inherit" onClick={handleProfileMenuOpen}>
+            <IconButton onClick={handleProfileMenuOpen}>
               <AccountCircle />
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
+
+      {/* ================= DRAWER (MOBILE MENU) ================= */}
+      <Drawer anchor="left" open={mobileOpen} onClose={handleDrawerToggle}>
+        <Box sx={{ width: 250 }}>
+          <List>
+            {pages.map((page) => (
+              <ListItem key={page.id} disablePadding>
+                <ListItemButton
+                  component={Link}
+                  to={page.to}
+                  onClick={handleDrawerToggle}
+                >
+                  <ListItemText primary={page.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
+
+      {/* ================= PROFILE MENU ================= */}
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      </Menu>
     </Box>
   );
 }
