@@ -1,9 +1,16 @@
-import React from 'react'
+import { Box } from "@mui/material";
+import GoalHero from "../components/goal/GoalHero";
+import ShowProgress from "../components/goal/ShowProgress";
+import Form from "../components/goal/form/Form";
 
 const Goals = () => {
   return (
-    <div>Goals</div>
-  )
-}
+    <Box>
+      {/* <GoalHero />
+      <ShowProgress /> */}
+      <Form />
+    </Box>
+  );
+};
 
-export default Goals
+export default Goals;

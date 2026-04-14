@@ -4,7 +4,7 @@ const theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1B5E20", 
+      main: "#1A3263",
       light: "#4C8C4A",
       dark: "#003300",
       contrastText: "#ffffff",
@@ -30,6 +30,7 @@ const theme = createTheme({
     h1: { fontWeight: 700 },
     h2: { fontWeight: 600 },
     h3: { fontWeight: 600 },
+
     button: {
       textTransform: "none", 
       fontWeight: 500,
