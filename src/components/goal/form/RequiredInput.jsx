@@ -19,6 +19,24 @@ export default function RequiredInput() {
   const [Session, setSession] = useState("");
   const [priority, setPriority] = useState("");
   const Sessions = ["Pages", "Minutes", "Hours"];
+
+  const handleCreateGoal = () => {
+    const newGoal = {
+      title,
+      category,
+      target,
+      goalType,
+      deadline,
+      startDate,
+      endDate,
+      description,
+      session,
+      priority,
+    };
+    if (newGoal === null) {
+      alert("some field empty");
+    }
+  };
   const categories = [
     "Study",
     "Work",
@@ -32,6 +50,13 @@ export default function RequiredInput() {
   const goalTypes = ["Daily", "Count Base", "Time Based"];
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
+  const [title, setTitle] = useState("");
+  const [target, setTarget] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [description, setDescription] = useState("");
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -60,9 +85,14 @@ export default function RequiredInput() {
       <Box sx={{ flexGrow: 1, paddingTop: "12px" }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <TextField fullWidth required label="Title" />
+            <TextField
+              fullWidth
+              required
+              label="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
           </Grid>
-
           <Grid item xs={12} md={6} sx={{ width: "230px" }}>
             <TextField
               select
@@ -98,7 +128,14 @@ export default function RequiredInput() {
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} md={6}>
-                <TextField fullWidth required label="Target" type="number" />
+                <TextField
+                  fullWidth
+                  required
+                  label="Target"
+                  type="number"
+                  value={target}
+                  onChange={(e) => setTarget(e.target.value)}
+                />
               </Grid>
 
               <Grid item xs={12} md={6} sx={{ width: "230px" }}>
@@ -110,7 +147,7 @@ export default function RequiredInput() {
                   required
                   fullWidth
                 >
-                  {categories.map((option) => (
+                  {Sessions.map((option) => (
                     <MenuItem key={option} value={option}>
                       {option}
                     </MenuItem>
@@ -141,6 +178,8 @@ export default function RequiredInput() {
               label="Start Date"
               type="date"
               fullWidth
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -149,6 +188,8 @@ export default function RequiredInput() {
               label="End Date"
               type="date"
               fullWidth
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -158,6 +199,8 @@ export default function RequiredInput() {
               type="date"
               fullWidth
               InputLabelProps={{ shrink: true }}
+              value={deadline}
+              onChange={(e) => setDeadline(e.target.value)}
             />
           </Grid>
         </Grid>
@@ -167,6 +210,8 @@ export default function RequiredInput() {
         <TextField
           label="Description"
           multiline
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           rows={3}
           sx={{ width: "100%", marginTop: "12px" }}
         />
@@ -182,7 +227,11 @@ export default function RequiredInput() {
         <Button variant="outlined" sx={{ width: "140px" }}>
           Cancel
         </Button>
-        <Button variant="contained" sx={{ width: "140px" }}>
+        <Button
+          variant="contained"
+          sx={{ width: "140px" }}
+          onClick={handleCreateGoal}
+        >
           Create Goal
         </Button>
       </Box>

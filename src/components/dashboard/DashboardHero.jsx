@@ -5,9 +5,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import Box from "@mui/material/Box";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardHero() {
   const [userName] = useState("Maryam Mirzada");
+  const navigate = useNavigate();
 
   return (
     <Card
@@ -67,6 +69,7 @@ export default function DashboardHero() {
         }}
       >
         <Button
+          onClick={() => navigate("/form")}
           fullWidth
           sx={{
             backgroundColor: "#1A3263",
