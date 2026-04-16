@@ -1,11 +1,13 @@
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import quotes from "../../data/quotes";
+import FormClock from "../goal/form/FormClock";
 
 export default function DashboardSuccess() {
   const [quote, setQuote] = useState(null);
@@ -82,11 +84,14 @@ export default function DashboardSuccess() {
           p: 2,
         }}
       >
-        <Button
+        <Stack
           fullWidth
           sx={{
             backgroundColor: "#1A3263",
             color: "white",
+            width: "100%",
+            textAlign: "center",
+            borderRadius: "10px",
             fontSize: "14px",
             py: 1,
             "&:hover": {
@@ -94,8 +99,8 @@ export default function DashboardSuccess() {
             },
           }}
         >
-          Start
-        </Button>
+          <FormClock />
+        </Stack>
       </CardActions>
     </Card>
   );

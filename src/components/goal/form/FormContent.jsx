@@ -17,7 +17,7 @@ export default function FormContent() {
         borderRadius: 1,
       }}
     >
-      {/* <CardMedia sx={{ height: 200 }} image={goal} title="green iguana" /> */}
+      {/* <CardMedia sx={{ height: 200 }} image={goal} title="green iguana" />s */}
       <CardContent>
         <Typography
           gutterBottom
@@ -32,7 +32,7 @@ export default function FormContent() {
           Create your Goal and Build your future
         </Typography>
       </CardContent>
-      <Card sx={{ maxWidth: "100%", backgroundColor: "white",  }}>
+      <Card sx={{ maxWidth: "100%", backgroundColor: "white" }}>
         <CardContent>
           <RequiredInput />
         </CardContent>
