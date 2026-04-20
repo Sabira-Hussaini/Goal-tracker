@@ -32,7 +32,7 @@ export default function FormContent() {
           Create your Goal and Build your future
         </Typography>
       </CardContent>
-      <Card sx={{ maxWidth: "96%", backgroundColor: "white", mx: "10px" }}>
+      <Card sx={{ maxWidth: "100%", backgroundColor: "white",  }}>
         <CardContent>
           <RequiredInput />
         </CardContent>
