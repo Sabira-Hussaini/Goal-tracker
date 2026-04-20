@@ -1,6 +1,8 @@
 import { Box, Typography, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const EmptyState = ({ onCreate }) => {
+const EmptyState = () => {
+     const navigate = useNavigate();
   return (
     <Box
       textAlign="center"
@@ -19,7 +21,7 @@ const EmptyState = ({ onCreate }) => {
       <Button
         variant="contained"
         sx={{ mt: 2 }}
-        onClick={onCreate}
+        onClick={() => navigate("/form")}
       >
         NEW GOAL
       </Button>

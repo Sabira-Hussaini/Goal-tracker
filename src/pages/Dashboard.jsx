@@ -1,7 +1,6 @@
-
 import DashboardHero from "../components/dashboard/DashboardHero";
 import DashboardSuccess from "../components/dashboard/DashboardSuccess";
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { useContext } from "react";
 import { GoalContext } from "../context/GoalContext";
 
@@ -20,34 +19,31 @@ const Dashboard = () => {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "2fr 1fr",
-        gap: 2,
+        gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
+        gap: 3,
+        width: "100%",
+        alignItems: "start",
       }}
     >
-      <DashboardHero />
-      <DashboardSuccess />
-
-      <Box p={3}>
+      {/* LEFT COLUMN */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <DashboardHero />
         <DashboardCards />
+        <ActiveGoalsList goals={goals} />
+      </Box>
 
-        <Grid container spacing={2} mt={3}>
-          {/* LEFT SIDE */}
-          <Grid size={{ xs: 12, md: 8 }}>
-            <ActiveGoalsList goals={goals} />
-          </Grid>
+      {/* RIGHT COLUMN */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+        <DashboardSuccess />
 
-          {/* RIGHT SIDE */}
-          <Grid size={{ xs: 12, md: 4 }}>
-            <CompletionInsight
-              total={goals.length}
-              completed={completed.length}
-            />
+        <CompletionInsight
+          total={goals.length}
+          completed={completed.length}
+        />
 
-            <RecentActivity activities={[]} />
+        <RecentActivity activities={[]} />
 
-            <CompletedPreview completedGoals={completed} />
-          </Grid>
-        </Grid>
+        <CompletedPreview completedGoals={completed} />
       </Box>
     </Box>
   );

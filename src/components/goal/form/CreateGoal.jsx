@@ -20,7 +20,7 @@ export default function CreateGoal({ open, onClose, onConfirm }) {
         <Button
           variant="contained"
           onClick={() => {
-            onConfirm(); // 👈 از parent اجرا می‌شود
+            onConfirm();// 👈 از parent اجرا می‌شود
             onClose(); // 👈 بستن dialog
           }}
         >

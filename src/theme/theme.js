@@ -52,14 +52,40 @@ const theme = createTheme({
         },
       },
     },
+MuiPaper: {
+  styleOverrides: {
+    root: {
+      backgroundColor: "#ffffff",
+      backgroundImage: "none",
+    },
+  },
+},
 
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+  MuiCard: {
+  styleOverrides: {
+    root: {
+      backgroundColor: "#FFFFFF", 
+      backgroundImage: "none", 
+      boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
+    },
+  },
+},
+
+MuiToggleButton: {
+  styleOverrides: {
+    root: {
+      textTransform: "none",
+      borderRadius: 8,
+      "&.Mui-selected": {
+        backgroundColor: "#1A3263",
+        color: "#fff",
+        "&:hover": {
+          backgroundColor: "#16264a",
         },
       },
     },
+  },
+},
 
     MuiAppBar: {
       styleOverrides: {

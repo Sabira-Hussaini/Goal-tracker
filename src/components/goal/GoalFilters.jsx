@@ -23,11 +23,13 @@ const GoalFilters = ({
       sx={{
         borderRadius: 3,
         boxShadow: 2,
+        marginTop:4,
+       backgroundColor: "#ffffff !important",
       }}
     >
       <CardContent>
 
-        {/* Tabs */}
+    
         <Tabs
           value={filter}
           onChange={(e, val) => setFilter(val)}
@@ -39,7 +41,7 @@ const GoalFilters = ({
           <Tab label="Completed" value="completed" />
         </Tabs>
 
-        {/* Search + Sort */}
+       
         <Box
           mt={2}
           display="flex"

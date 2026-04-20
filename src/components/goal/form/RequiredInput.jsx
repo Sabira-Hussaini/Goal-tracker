@@ -26,7 +26,6 @@ export default function RequiredInput() {
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
   const [openConfirm, setOpenConfirm] = useState(false);
-
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
   const [title, setTitle] = useState("");
@@ -48,8 +47,6 @@ export default function RequiredInput() {
     if (!startDate) newError.startDate = "Start date is required";
     if (!endDate) newError.endDate = "End date is required";
     if (!deadline) newError.deadline = "Deadline is required";
-
-    // validation تاریخ
     if (startDate && endDate && startDate > endDate) {
       newError.endDate = "End date must be after Start date";
     }
@@ -105,6 +102,13 @@ export default function RequiredInput() {
     setTarget("");
     setStartDate("");
   };
+  const onClicked = () => {
+    setOpenConfirm(false);
+  };
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -276,7 +280,6 @@ export default function RequiredInput() {
           </Grid>
         </Grid>
       </Box>
-      {/* Description */}
       <Box>
         <TextField
           label="Description"
@@ -288,7 +291,6 @@ export default function RequiredInput() {
           sx={{ marginTop: "12px" }}
         />
       </Box>
-      {/* Buttons */}
       <Box
         sx={{
           display: "flex",
@@ -302,10 +304,7 @@ export default function RequiredInput() {
         </Button>
         <Button variant="contained" onClick={handleClick}>
           Create
-          <CreateGoal
-            open={openConfirm}
-            onClose={() => setOpenConfirm(false)}
-          />
+          <CreateGoal onClick={onClicked} open={openConfirm} />
         </Button>
       </Box>
     </Box>
