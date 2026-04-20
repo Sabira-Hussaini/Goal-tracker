@@ -4,8 +4,8 @@ import { GoalContext } from "../context/GoalContext";
 
 import GoalHero from "../components/goal/GoalHero";
 import ShowProgress from "../components/goal/ShowProgress";
-import GoalFilters from "../components/goals/GoalFilters";
-import GoalList from "../components/goals/GoalList";
+import GoalFilters from "../components/goal/GoalFilters";
+import GoalList from "../components/goal/GoalList";
 
 const Goals = () => {
   const { goals } = useContext(GoalContext);
