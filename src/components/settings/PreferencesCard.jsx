@@ -10,9 +10,13 @@ import {
   Button,
   Divider,
 } from "@mui/material";
+
 import { useState, useEffect } from "react";
+import { useLanguage } from "../../i18n/useLanguage";
 
 const PreferencesCard = () => {
+  const { t } = useLanguage();
+
   const [reminder, setReminder] = useState(false);
   const [animations, setAnimations] = useState(true);
   const [weekStart, setWeekStart] = useState("monday");
@@ -44,18 +48,18 @@ const PreferencesCard = () => {
   return (
     <>
       {/* Preferences Card */}
-   <Card
-  sx={{
-    bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
-  }}
->
+      <Card
+        sx={{
+          bgcolor: "background.paper",
+          color: "text.primary",
+          backgroundImage: "none",
+          boxShadow: 3,
+          borderRadius: 3,
+        }}
+      >
         <CardContent>
           <Typography variant="h6" mb={2}>
-            Preferences
+            {t("preferences")}
           </Typography>
 
           {/* Reminder */}
@@ -67,11 +71,11 @@ const PreferencesCard = () => {
                   onChange={(e) => setReminder(e.target.checked)}
                 />
               }
-              label="Enable Daily Reminder"
+              label={t("enableReminder")}
             />
 
             <Typography variant="body2" color="text.secondary" ml={1}>
-              Receive daily notifications to log your progress
+              {t("reminderDesc")}
             </Typography>
           </Box>
 
@@ -84,11 +88,11 @@ const PreferencesCard = () => {
                   onChange={(e) => setAnimations(e.target.checked)}
                 />
               }
-              label="Enable Animations"
+              label={t("enableAnimations")}
             />
 
             <Typography variant="body2" color="text.secondary" ml={1}>
-              Smooth animations enhance UI experience
+              {t("animationsDesc")}
             </Typography>
           </Box>
 
@@ -96,7 +100,7 @@ const PreferencesCard = () => {
 
           {/* Week Start */}
           <Typography variant="subtitle1" mb={1}>
-            Week Starts On
+            {t("weekStartsOn")}
           </Typography>
 
           <RadioGroup
@@ -107,12 +111,12 @@ const PreferencesCard = () => {
             <FormControlLabel
               value="monday"
               control={<Radio />}
-              label="Monday"
+              label={t("monday")}
             />
             <FormControlLabel
               value="sunday"
               control={<Radio />}
-              label="Sunday"
+              label={t("sunday")}
             />
           </RadioGroup>
         </CardContent>
@@ -120,27 +124,22 @@ const PreferencesCard = () => {
 
       {/* Danger Zone */}
       <Card
-   
-  sx={{
-    bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
-  }}
->
-      
+        sx={{
+          mt: 2,
+          bgcolor: "background.paper",
+          color: "text.primary",
+          backgroundImage: "none",
+          boxShadow: 3,
+          borderRadius: 3,
+        }}
+      >
         <CardContent>
           <Typography variant="h6" color="error" mb={2}>
-            Danger Zone
+            {t("dangerZone")}
           </Typography>
 
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleReset}
-          >
-            RESET ALL DATA
+          <Button variant="contained" color="error" onClick={handleReset}>
+            {t("resetAllData")}
           </Button>
         </CardContent>
       </Card>

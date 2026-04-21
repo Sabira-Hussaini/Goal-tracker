@@ -1,19 +1,24 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import { useLanguage } from "../i18n/useLanguage";
 
 const ActiveGoalsList = ({ goals }) => {
-  const activeGoals = goals.filter(g => !g.completed);
+  const { t } = useLanguage();
+
+  const activeGoals = goals.filter((g) => !g.completed);
 
   return (
     <Card sx={{ mt: 2 }}>
       <CardContent>
-        <Typography variant="h6">Active Goals</Typography>
+        <Typography variant="h6">
+          {t("activeGoals")}
+        </Typography>
 
         {activeGoals.length === 0 ? (
           <Typography color="text.secondary">
-            No active goals yet. Create one!
+            {t("noActiveGoals")}
           </Typography>
         ) : (
-          activeGoals.map(goal => (
+          activeGoals.map((goal) => (
             <Typography key={goal.id}>
               • {goal.title}
             </Typography>

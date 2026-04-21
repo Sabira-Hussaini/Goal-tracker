@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import { useLanguage } from "../../i18n/useLanguage";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -10,7 +11,7 @@ function LinearProgressWithLabel(props) {
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress
           variant="determinate"
-          aria-label="Upload photos"
+          aria-label="progress"
           {...props}
         />
       </Box>
@@ -24,32 +25,29 @@ function LinearProgressWithLabel(props) {
 }
 
 LinearProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate and buffer variants.
-   * Value between 0 and 100.
-   */
   value: PropTypes.number.isRequired,
 };
 
 export default function ProgressInsight() {
   const [progress, setProgress] = React.useState(0);
+  const { t } = useLanguage();
 
   React.useEffect(() => {
     const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 0 : prevProgress + 10
+      setProgress((prev) =>
+        prev >= 100 ? 0 : prev + 10
       );
     }, 800);
-    return () => {
-      clearInterval(timer);
-    };
+
+    return () => clearInterval(timer);
   }, []);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Typography variant="body1" color="#111" fontWeight="bold">
-        {progress}
+        {t("progress")} {progress}%
       </Typography>
+
       <LinearProgressWithLabel value={progress} />
     </Box>
   );

@@ -1,8 +1,11 @@
 import { Box, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../i18n/useLanguage";
 
 const EmptyState = () => {
-     const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { t } = useLanguage();
+
   return (
     <Box
       textAlign="center"
@@ -12,10 +15,12 @@ const EmptyState = () => {
         borderRadius: 3,
       }}
     >
-      <Typography variant="h6">No goals found</Typography>
+      <Typography variant="h6">
+        {t("noGoalsFound")}
+      </Typography>
 
       <Typography color="text.secondary" mt={1}>
-        Try changing filters or create a new goal.
+        {t("changeFiltersOrCreateGoal")}
       </Typography>
 
       <Button
@@ -23,7 +28,7 @@ const EmptyState = () => {
         sx={{ mt: 2 }}
         onClick={() => navigate("/form")}
       >
-        NEW GOAL
+        {t("newGoal")}
       </Button>
     </Box>
   );

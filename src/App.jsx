@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 
@@ -16,6 +16,12 @@ import Layout from "./layout/Layout";
 
 function App() {
   const { settings } = useContext(SettingsContext);
+
+  // ✅ ADD THIS (RTL/LTR CONTROL)
+  useEffect(() => {
+    document.documentElement.dir =
+      settings.language === "fa" ? "rtl" : "ltr";
+  }, [settings.language]);
 
   return (
     <ThemeProvider theme={getTheme(settings.themeMode)}>

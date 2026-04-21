@@ -1,20 +1,27 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import { useLanguage } from "../../i18n/useLanguage";
 
 const RecentActivity = ({ activities }) => {
+  const { t } = useLanguage();
+
   return (
-    <Card sx={{ mb: 2,
-      bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-   
-     }}>
+    <Card
+      sx={{
+        mb: 2,
+        bgcolor: "background.paper",
+        color: "text.primary",
+        backgroundImage: "none",
+        boxShadow: 3,
+      }}
+    >
       <CardContent>
-        <Typography variant="h6">Recent Activity</Typography>
+        <Typography variant="h6">
+          {t("recentActivity")}
+        </Typography>
 
         {activities.length === 0 ? (
           <Typography color="text.secondary">
-            No activity yet.
+            {t("noActivity")}
           </Typography>
         ) : (
           activities.map((a, i) => (

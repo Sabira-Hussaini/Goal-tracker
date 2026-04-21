@@ -6,16 +6,17 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../i18n/useLanguage";
 
 export default function GoalHero() {
   const [userName] = useState("Maryam Mirzada");
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <Card
       sx={{
-        width: "100&",
-
+        width: "100%",
         backgroundColor: "#e6eff7",
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
@@ -23,8 +24,6 @@ export default function GoalHero() {
     >
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <CardContent>
-          {/* Welcome Text */}
-
           {/* Title */}
           <Typography
             sx={{
@@ -34,7 +33,7 @@ export default function GoalHero() {
               mt: 1,
             }}
           >
-            All Goals
+            {t("allGoals")}
           </Typography>
 
           {/* Description */}
@@ -46,11 +45,10 @@ export default function GoalHero() {
               color: "#333",
             }}
           >
-            Here you can view and manage all your goals in one place. Track your
-            progress, stay organized, and create new goals to keep moving
-            forward.
+            {t("goalsDescription")}
           </Typography>
         </CardContent>
+
         <CardActions
           sx={{
             display: "flex",
@@ -72,7 +70,7 @@ export default function GoalHero() {
             }}
             onClick={() => navigate("/form")}
           >
-            NEW GOAL
+            {t("newGoal")}
           </Button>
 
           <Button
@@ -86,7 +84,7 @@ export default function GoalHero() {
               borderRadius: "20px",
             }}
           >
-            MANAGEGOAL
+            {t("manageGoal")}
           </Button>
         </CardActions>
       </Box>

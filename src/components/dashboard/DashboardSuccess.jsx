@@ -1,18 +1,14 @@
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Stack from "@mui/material/Stack";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Card, CardContent, Typography, Box, CardActions, Stack } from "@mui/material";
 import { useState, useEffect } from "react";
-import quotes from "../../data/quotes";
+import { useLanguage } from "../../i18n/useLanguage";
 import FormClock from "../goal/form/FormClock";
 
 export default function DashboardSuccess() {
   const [quote, setQuote] = useState(null);
+  const { t } = useLanguage();
 
   const getRandomQuote = () => {
+    const quotes = t("quotes", { returnObjects: true }) || [];
     const randomIndex = Math.floor(Math.random() * quotes.length);
     return quotes[randomIndex];
   };
@@ -31,11 +27,11 @@ export default function DashboardSuccess() {
     <Card
       sx={{
         width: "90%",
-       bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
+        bgcolor: "background.paper",
+        color: "text.primary",
+        backgroundImage: "none",
+        boxShadow: 3,
+        borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
       }}
     >
@@ -49,46 +45,38 @@ export default function DashboardSuccess() {
             mb: 2,
           }}
         >
-          Daily Motivation
+          {t("dailyMotivation")}
         </Typography>
 
         {/* Quote */}
-        <Box>
-          {quote && (
-            <>
-              <Typography
-                sx={{
-                  fontSize: { xs: "18px", md: "28px" },
-                  fontWeight: "500",
-                  lineHeight: 1.4,
-                  color: "#111",
-                }}
-              >
-                {quote.text}
-              </Typography>
+        {quote && (
+          <Box>
+            <Typography
+              sx={{
+                fontSize: { xs: "18px", md: "28px" },
+                fontWeight: "500",
+                lineHeight: 1.4,
+                color: "#111",
+              }}
+            >
+              {quote.text}
+            </Typography>
 
-              <Typography
-                sx={{
-                  mt: 2,
-                  fontSize: { xs: "13px", md: "16px" },
-                  color: "gray",
-                }}
-              >
-                — {quote.author}
-              </Typography>
-            </>
-          )}
-        </Box>
+            <Typography
+              sx={{
+                mt: 2,
+                fontSize: { xs: "13px", md: "16px" },
+                color: "gray",
+              }}
+            >
+              — {quote.author}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
 
-      {/* Button */}
-      <CardActions
-        sx={{
-          p: 2,
-        }}
-      >
+      <CardActions sx={{ p: 2 }}>
         <Stack
-          fullWidth
           sx={{
             backgroundColor: "#1A3263",
             color: "white",

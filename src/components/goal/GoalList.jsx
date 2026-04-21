@@ -1,7 +1,10 @@
 import { Card, CardContent, Box, Typography } from "@mui/material";
 import EmptyState from "./EmptyState";
+import { useLanguage } from "../../i18n/useLanguage";
 
 const GoalList = ({ goals, filter, search, sort }) => {
+  const { t } = useLanguage();
+
   let filtered = [...goals];
 
   if (filter !== "all") {
@@ -32,11 +35,10 @@ const GoalList = ({ goals, filter, search, sort }) => {
               p: 2,
               mb: 2,
               borderRadius: 2,
-             bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-  
+              bgcolor: "background.paper",
+              color: "text.primary",
+              backgroundImage: "none",
+              boxShadow: 3,
             }}
           >
             <Typography fontWeight="bold">

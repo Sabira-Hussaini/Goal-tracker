@@ -9,6 +9,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useLanguage } from "../../i18n/useLanguage";
 
 const GoalFilters = ({
   filter,
@@ -18,33 +19,31 @@ const GoalFilters = ({
   sort,
   setSort,
 }) => {
+  const { t } = useLanguage();
+
   return (
     <Card
       sx={{
         borderRadius: 3,
-     bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
-    mt:4,
+        bgcolor: "background.paper",
+        color: "text.primary",
+        backgroundImage: "none",
+        boxShadow: 3,
+        mt: 4,
       }}
     >
       <CardContent>
-
-    
         <Tabs
           value={filter}
           onChange={(e, val) => setFilter(val)}
           variant="scrollable"
         >
-          <Tab label="All" value="all" />
-          <Tab label="Active" value="active" />
-          <Tab label="Paused" value="paused" />
-          <Tab label="Completed" value="completed" />
+          <Tab label={t("all")} value="all" />
+          <Tab label={t("active")} value="active" />
+          <Tab label={t("paused")} value="paused" />
+          <Tab label={t("completed")} value="completed" />
         </Tabs>
 
-       
         <Box
           mt={2}
           display="flex"
@@ -53,7 +52,7 @@ const GoalFilters = ({
         >
           <TextField
             fullWidth
-            placeholder="Search goals..."
+            placeholder={t("searchGoals")}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             InputProps={{
@@ -71,12 +70,11 @@ const GoalFilters = ({
             onChange={(e) => setSort(e.target.value)}
             sx={{ minWidth: { xs: "100%", md: 200 } }}
           >
-            <MenuItem value="newest">Newest</MenuItem>
-            <MenuItem value="progress">Progress %</MenuItem>
-            <MenuItem value="category">Category</MenuItem>
+            <MenuItem value="newest">{t("newest")}</MenuItem>
+            <MenuItem value="progress">{t("progress")}</MenuItem>
+            <MenuItem value="category">{t("category")}</MenuItem>
           </TextField>
         </Box>
-
       </CardContent>
     </Card>
   );

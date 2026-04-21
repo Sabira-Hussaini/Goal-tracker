@@ -4,12 +4,13 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
+import { useLanguage } from "../../i18n/useLanguage";
 
 export default function DashboardHero() {
   const [userName] = useState("Maryam Mirzada");
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   return (
     <Card
@@ -29,7 +30,7 @@ export default function DashboardHero() {
             fontSize: { xs: "14px", md: "16px" },
           }}
         >
-          Welcome dear, {userName}
+          {t("welcomeUser")}, {userName}
         </Typography>
 
         {/* Title */}
@@ -41,7 +42,7 @@ export default function DashboardHero() {
             mt: 1,
           }}
         >
-          Goal Tracker Dashboard
+          {t("dashboardTitle")}
         </Typography>
 
         {/* Description */}
@@ -53,9 +54,7 @@ export default function DashboardHero() {
             color: "#333",
           }}
         >
-          Welcome to Goal Tracker, your personal space to set, manage, and
-          achieve your goals. Stay focused, track your progress, and turn your
-          plans into real achievements step by step.
+          {t("dashboardDesc")}
         </Typography>
       </CardContent>
 
@@ -82,7 +81,7 @@ export default function DashboardHero() {
             },
           }}
         >
-          NEW GOAL
+          {t("newGoal")}
         </Button>
 
         <Button
@@ -94,7 +93,7 @@ export default function DashboardHero() {
             fontSize: "14px",
           }}
         >
-          MANAGE GOAL
+          {t("manageGoal")}
         </Button>
       </CardActions>
     </Card>

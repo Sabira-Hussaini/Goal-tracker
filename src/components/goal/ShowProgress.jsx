@@ -11,6 +11,8 @@ import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
 import FunctionsIcon from "@mui/icons-material/Functions";
 
 import ProgressInsight from "../goal/ProgressInsight";
+import { useLanguage } from "../../i18n/useLanguage"; // ✅ added
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
   ...theme.typography.body2,
@@ -23,10 +25,15 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ShowProgress() {
+  const { t } = useLanguage(); // ✅ added
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ marginTop: "20px", px: "10px" }}>
-        <Grid container spaing={4} size={{ xs: 6, md: 8 }}>
+        
+        {/* LEFT SIDE */}
+        <Grid container spacing={4} size={{ xs: 6, md: 8 }}>
+          
           <Grid
             size={{ xs: 12, sm: 6, md: 3 }}
             sx={{
@@ -40,12 +47,13 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title="total Goals"
+              title={t("total_goals")} // ✅ fixed
               value="0"
               icon={<DonutSmallIcon />}
               color="#1b5e20"
             />
           </Grid>
+
           <Grid
             size={{ xs: 12, sm: 6, md: 3 }}
             sx={{
@@ -59,12 +67,13 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title="Active Goals"
+              title={t("active_goals")} // ✅ fixed
               value="0"
               icon={<CallMissedOutgoingIcon />}
               color="#0f26ba"
             />
           </Grid>
+
           <Grid
             size={{ xs: 12, sm: 6, md: 3 }}
             sx={{
@@ -78,12 +87,13 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title="Pause Goals"
+              title={t("paused_goals")} // ✅ fixed
               value="0"
               icon={<PauseIcon />}
               color="#c8420d"
             />
           </Grid>
+
           <Grid
             size={{ xs: 12, sm: 6, md: 3 }}
             sx={{
@@ -97,17 +107,20 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title="Completed Goals"
+              title={t("completed_goals")} // ✅ fixed
               value="0"
               icon={<LibraryAddCheckIcon />}
               color="#b4c614"
             />
           </Grid>
+
         </Grid>
+
+        {/* RIGHT SIDE */}
         <Grid size={{ xs: 6, md: 4 }}>
           <Grid size={{ xs: 12, sm: 12, md: 12, height: "100%" }}>
             <StatCard
-              title="average Goal"
+              title={t("average_goal")} // ✅ FIXED HERE
               icon={<FunctionsIcon />}
               color="#b84b4b"
             >
@@ -115,6 +128,7 @@ export default function ShowProgress() {
             </StatCard>
           </Grid>
         </Grid>
+
       </Grid>
     </Box>
   );

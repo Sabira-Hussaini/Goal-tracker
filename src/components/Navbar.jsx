@@ -28,6 +28,7 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import TranslateIcon from "@mui/icons-material/Translate";
 
 import logo from "../assets/logo.jpeg";
+import { useLanguage } from "../i18n/useLanguage";
 
 /* ================= SEARCH ================= */
 const Search = styled("div")(({ theme }) => ({
@@ -60,23 +61,20 @@ const StyledInputBase = styled(InputBase)(() => ({
 export default function PrimarySearchAppBar() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { t } = useLanguage();
 
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const pages = [
-    { id: 1, name: "Dashboard", to: "/" },
-    { id: 2, name: "Goals", to: "/goals" },
-    { id: 3, name: "Categories", to: "/categories" },
-    { id: 4, name: "Setting", to: "/setting" },
+    { id: 1, name: t("dashboard"), to: "/" },
+    { id: 2, name: t("goals"), to: "/goals" },
+    { id: 3, name: t("categories"), to: "/categories" },
+    { id: 4, name: t("settings"), to: "/setting" },
   ];
 
   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
+  const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
 
   return (
@@ -84,16 +82,15 @@ export default function PrimarySearchAppBar() {
       <AppBar
         position="static"
         sx={{
-         bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-
-          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
+          bgcolor: "background.paper",
+          color: "text.primary",
+          backgroundImage: "none",
+          boxShadow: 3,
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* ================= LEFT (LOGO + MENU ICON) ================= */}
+          
+          {/* LEFT */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
             {isMobile && (
               <IconButton onClick={handleDrawerToggle}>
@@ -113,7 +110,7 @@ export default function PrimarySearchAppBar() {
             </Typography>
           </Box>
 
-          {/* ================= CENTER (DESKTOP MENU) ================= */}
+          {/* CENTER */}
           {!isMobile && (
             <Box sx={{ display: "flex", gap: 2 }}>
               {pages.map((page) => (
@@ -122,7 +119,7 @@ export default function PrimarySearchAppBar() {
                   component={Link}
                   to={page.to}
                   sx={{
-                    color: "#000",
+                    color: "text.primary",
                     fontSize: "16px",
                     textTransform: "none",
                   }}
@@ -133,15 +130,14 @@ export default function PrimarySearchAppBar() {
             </Box>
           )}
 
-          {/* ================= RIGHT SIDE ================= */}
+          {/* RIGHT */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            {/* SEARCH (hidden on mobile) */}
             {!isMobile && (
               <Search>
                 <SearchIconWrapper>
                   <SearchIcon />
                 </SearchIconWrapper>
-                <StyledInputBase placeholder="Search..." />
+                <StyledInputBase placeholder={t("search")} />
               </Search>
             )}
 
@@ -160,7 +156,7 @@ export default function PrimarySearchAppBar() {
         </Toolbar>
       </AppBar>
 
-      {/* ================= DRAWER (MOBILE MENU) ================= */}
+      {/* DRAWER */}
       <Drawer anchor="left" open={mobileOpen} onClose={handleDrawerToggle}>
         <Box sx={{ width: 250 }}>
           <List>
@@ -179,14 +175,14 @@ export default function PrimarySearchAppBar() {
         </Box>
       </Drawer>
 
-      {/* ================= PROFILE MENU ================= */}
+      {/* PROFILE MENU */}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={handleMenuClose}>{t("profile")}</MenuItem>
+        <MenuItem onClick={handleMenuClose}>{t("myAccount")}</MenuItem>
       </Menu>
     </Box>
   );

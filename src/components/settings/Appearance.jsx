@@ -13,13 +13,17 @@ import {
   MenuItem,
   IconButton,
 } from "@mui/material";
+
 import { useContext } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
+import { useLanguage } from "../../i18n/useLanguage";
+
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 const Appearance = () => {
   const { settings, setSettings } = useContext(SettingsContext);
+  const { t } = useLanguage();
 
   // Theme toggle
   const toggleTheme = () => {
@@ -40,28 +44,26 @@ const Appearance = () => {
     >
       {/* Title */}
       <Typography variant="h4" mb={1}>
-        Settings
+        {t("settings")}
       </Typography>
 
       <Typography color="text.secondary" mb={3}>
-        Personalize language, theme, and experience preferences.
+        {t("settingsDesc")}
       </Typography>
 
       {/* APPEARANCE CARD */}
       <Card
-       
-  sx={{
-    bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
-  }}
->
-       
+        sx={{
+          bgcolor: "background.paper",
+          color: "text.primary",
+          backgroundImage: "none",
+          boxShadow: 3,
+          borderRadius: 3,
+        }}
+      >
         <CardContent sx={{ p: 3 }}>
           <Typography variant="h6" fontWeight={600} mb={3}>
-            Appearance
+            {t("appearance")}
           </Typography>
 
           {/* Language */}
@@ -73,23 +75,31 @@ const Appearance = () => {
               mb: 3,
             }}
           >
-            <Typography>Language</Typography>
+            <Typography>{t("language")}</Typography>
 
-            <ToggleButtonGroup
-              exclusive
-              size="small"
-              value={settings.language}
-              onChange={(e, val) =>
-                val &&
-                setSettings({
-                  ...settings,
-                  language: val,
-                })
-              }
-            >
-              <ToggleButton value="fa">FA</ToggleButton>
-              <ToggleButton value="en">EN</ToggleButton>
-            </ToggleButtonGroup>
+          <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    direction: settings.language === "fa" ? "rtl" : "ltr",
+  }}
+>
+  <ToggleButtonGroup
+    exclusive
+    size="small"
+    value={settings.language}
+    onChange={(e, val) =>
+      val &&
+      setSettings({
+        ...settings,
+        language: val,
+      })
+    }
+  >
+    <ToggleButton value="fa">FA</ToggleButton>
+    <ToggleButton value="en">EN</ToggleButton>
+  </ToggleButtonGroup>
+</Box>
           </Box>
 
           {/* Theme */}
@@ -100,13 +110,12 @@ const Appearance = () => {
               alignItems: "center",
             }}
           >
-            <Typography>Theme</Typography>
+            <Typography>{t("theme")}</Typography>
 
             <IconButton
               onClick={toggleTheme}
               sx={{
-                
-                "&:hover": { bgcolor: "#e0e0e0" },
+                "&:hover": { bgcolor: "action.hover" },
               }}
             >
               {settings.themeMode === "light" ? (
@@ -121,25 +130,23 @@ const Appearance = () => {
 
       {/* PROFILE CARD */}
       <Card
-   
-  sx={{
-    bgcolor: "background.paper",
-    color: "text.primary",
-    backgroundImage: "none",
-    boxShadow: 3,
-    borderRadius: 3,
-    mt:4,
-  }}
->
-      
+        sx={{
+          bgcolor: "background.paper",
+          color: "text.primary",
+          backgroundImage: "none",
+          boxShadow: 3,
+          borderRadius: 3,
+          mt: 4,
+        }}
+      >
         <CardContent sx={{ p: 3 }}>
           <Typography variant="h6" fontWeight={600}>
-            Profile
+            {t("profile")}
           </Typography>
 
           <Box mt={2} display="flex" flexDirection="column" gap={2}>
             <TextField
-              label="Full Name"
+              label={t("fullName")}
               value={settings.profile.name}
               onChange={(e) =>
                 setSettings({
@@ -154,7 +161,7 @@ const Appearance = () => {
             />
 
             <TextField
-              label="Email"
+              label={t("email")}
               value={settings.profile.email}
               onChange={(e) =>
                 setSettings({
@@ -170,10 +177,10 @@ const Appearance = () => {
 
             {/* Goal Select */}
             <FormControl fullWidth>
-              <InputLabel>Main Focus</InputLabel>
+              <InputLabel>{t("mainFocus")}</InputLabel>
 
               <Select
-                label="Main Focus"
+                label={t("mainFocus")}
                 value={settings.goal}
                 onChange={(e) =>
                   setSettings({
@@ -182,17 +189,17 @@ const Appearance = () => {
                   })
                 }
               >
-                <MenuItem value="study">📚 Study</MenuItem>
-                <MenuItem value="work">💼 Work</MenuItem>
-                <MenuItem value="fitness">🏃 Fitness</MenuItem>
-                <MenuItem value="personal">🧠 Personal Growth</MenuItem>
+                <MenuItem value="study">📚 {t("study")}</MenuItem>
+                <MenuItem value="work">💼 {t("work")}</MenuItem>
+                <MenuItem value="fitness">🏃 {t("fitness")}</MenuItem>
+                <MenuItem value="personal">🧠 {t("personal")}</MenuItem>
               </Select>
             </FormControl>
 
             {/* Save Button */}
             <Box display="flex" justifyContent="flex-end">
               <Button variant="contained">
-                Save Profile
+                {t("saveProfile")}
               </Button>
             </Box>
           </Box>

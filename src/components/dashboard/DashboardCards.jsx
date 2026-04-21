@@ -6,15 +6,19 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
+import { useLanguage } from "../../i18n/useLanguage";
+
 const DashboardCards = () => {
+  const { t } = useLanguage();
+
   return (
     <Grid container spacing={2}>
       
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <StatCard
-          title="Active Goals"
+          title={t("activeGoals")}
           value="0"
-          subtitle="Currently in progress"
+          subtitle={t("currentlyInProgress")}
           icon={<TrackChangesIcon />}
           color="#1b5e20"
         />
@@ -22,9 +26,9 @@ const DashboardCards = () => {
 
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <StatCard
-          title="Completed"
+          title={t("completed")}
           value="0"
-          subtitle="Finished targets"
+          subtitle={t("finishedTargets")}
           icon={<CheckCircleIcon />}
           color="#2e7d32"
         />
@@ -32,9 +36,9 @@ const DashboardCards = () => {
 
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <StatCard
-          title="Current Streak"
+          title={t("currentStreak")}
           value="0d"
-          subtitle="Consecutive days"
+          subtitle={t("consecutiveDays")}
           icon={<WhatshotIcon />}
           color="#ef6c00"
         />
@@ -42,9 +46,9 @@ const DashboardCards = () => {
 
       <Grid size={{ xs: 12, sm: 6, md: 3 }}>
         <StatCard
-          title="Total XP"
+          title={t("totalXp")}
           value="0"
-          subtitle="Progress points"
+          subtitle={t("progressPoints")}
           icon={<EmojiEventsIcon />}
           color="#6a1b9a"
         />
