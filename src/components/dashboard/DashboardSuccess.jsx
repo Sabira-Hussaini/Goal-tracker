@@ -31,8 +31,11 @@ export default function DashboardSuccess() {
     <Card
       sx={{
         width: "90%",
-        borderRadius: 3,
-        backgroundColor: "#fff",
+       bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
       }}
     >

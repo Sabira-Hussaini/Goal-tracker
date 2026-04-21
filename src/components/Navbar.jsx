@@ -84,8 +84,11 @@ export default function PrimarySearchAppBar() {
       <AppBar
         position="static"
         sx={{
-          backgroundColor: "#fff",
-          color: "#000",
+         bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+
           boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
         }}
       >

@@ -49,16 +49,16 @@ const Appearance = () => {
 
       {/* APPEARANCE CARD */}
       <Card
-        elevation={0}
-        sx={{
-          width: "100%",
-          bgcolor: "#fff",
-          color: "#000",
-          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
-          backgroundImage: "none",
-          borderRadius: 3,
-        }}
-      >
+       
+  sx={{
+    bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
+  }}
+>
+       
         <CardContent sx={{ p: 3 }}>
           <Typography variant="h6" fontWeight={600} mb={3}>
             Appearance
@@ -105,7 +105,7 @@ const Appearance = () => {
             <IconButton
               onClick={toggleTheme}
               sx={{
-                bgcolor: "#f5f5f5",
+                
                 "&:hover": { bgcolor: "#e0e0e0" },
               }}
             >
@@ -121,17 +121,17 @@ const Appearance = () => {
 
       {/* PROFILE CARD */}
       <Card
-        elevation={0}
-        sx={{
-          width: "100%",
-          bgcolor: "#fff",
-          color: "#000",
-          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
-          backgroundImage: "none",
-          mt: 4,
-          borderRadius: 3,
-        }}
-      >
+   
+  sx={{
+    bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
+    mt:4,
+  }}
+>
+      
         <CardContent sx={{ p: 3 }}>
           <Typography variant="h6" fontWeight={600}>
             Profile

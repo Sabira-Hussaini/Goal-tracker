@@ -32,7 +32,11 @@ const GoalList = ({ goals, filter, search, sort }) => {
               p: 2,
               mb: 2,
               borderRadius: 2,
-              bgcolor: "#f9f9f9",
+             bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+  
             }}
           >
             <Typography fontWeight="bold">

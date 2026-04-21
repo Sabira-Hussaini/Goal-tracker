@@ -44,16 +44,15 @@ const PreferencesCard = () => {
   return (
     <>
       {/* Preferences Card */}
-      <Card
-         sx={{
-          width: "100%",
-          bgcolor: "#fff",
-          color: "#000",
-          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
-          backgroundImage: "none",
-          borderRadius: 3,
-        }}
-      >
+   <Card
+  sx={{
+    bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
+  }}
+>
         <CardContent>
           <Typography variant="h6" mb={2}>
             Preferences
@@ -121,15 +120,16 @@ const PreferencesCard = () => {
 
       {/* Danger Zone */}
       <Card
-     sx={{
-          width: "100%",
-          bgcolor: "#fff",
-          color: "#000",
-          boxShadow: "0px 2px 10px rgba(0,0,0,0.1)",
-          backgroundImage: "none",
-          borderRadius: 3,
-        }}
-      >
+   
+  sx={{
+    bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
+  }}
+>
+      
         <CardContent>
           <Typography variant="h6" color="error" mb={2}>
             Danger Zone

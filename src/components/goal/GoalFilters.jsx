@@ -22,9 +22,12 @@ const GoalFilters = ({
     <Card
       sx={{
         borderRadius: 3,
-        boxShadow: 2,
-        marginTop:4,
-       backgroundColor: "#ffffff !important",
+     bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    borderRadius: 3,
+    mt:4,
       }}
     >
       <CardContent>

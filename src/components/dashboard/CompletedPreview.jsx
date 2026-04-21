@@ -2,7 +2,11 @@ import { Card, CardContent, Typography } from "@mui/material";
 
 const CompletedPreview = ({ completedGoals }) => {
   return (
-    <Card>
+    <Card sx={{bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+    }}>
       <CardContent>
         <Typography variant="h6">Completed Preview</Typography>
 

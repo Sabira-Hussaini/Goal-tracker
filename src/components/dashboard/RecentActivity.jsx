@@ -2,7 +2,13 @@ import { Card, CardContent, Typography } from "@mui/material";
 
 const RecentActivity = ({ activities }) => {
   return (
-    <Card sx={{ mb: 2 }}>
+    <Card sx={{ mb: 2,
+      bgcolor: "background.paper",
+    color: "text.primary",
+    backgroundImage: "none",
+    boxShadow: 3,
+   
+     }}>
       <CardContent>
         <Typography variant="h6">Recent Activity</Typography>
 
