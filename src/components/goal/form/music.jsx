@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
+import { useLanguage } from "../../../i18n/useLanguage";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
@@ -16,7 +16,7 @@ import goal from "../../../assets/goal.jpg";
 
 export default function MediaControlCard() {
   const theme = useTheme();
-
+const { t } = useLanguage();
   // 🎧 موزیک آنلاین (لینک خودت را اینجا بگذار)
   const musicUrl =
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
@@ -44,7 +44,7 @@ export default function MediaControlCard() {
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
           <Typography component="div" variant="h5">
-            Motivation Goal Music
+            {t("MotivationGoalMusic")}
           </Typography>
 
           <Typography
@@ -52,7 +52,7 @@ export default function MediaControlCard() {
             component="div"
             sx={{ color: "text.secondary" }}
           >
-            Stay Focused 🔥
+             {t("stayFocused")}
           </Typography>
         </CardContent>
 

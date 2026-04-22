@@ -1,15 +1,20 @@
 import { Box, Typography } from "@mui/material";
+import { useLanguage } from "../../../i18n/useLanguage";
+
 const GoalHero = () => {
+  const { t } = useLanguage();
+
   return (
     <Box>
       <Typography variant="h3" color="primary" sx={{ marginTop: "18px" }}>
-        Create New Goal
+        {t("createNewGoal")}
       </Typography>
+
       <Typography variant="body1">
-        Create a new goal and start tracking your progress. Stay focused and
-        achieve your objectives step by step.
+        {t("createNewGoalDesc")}
       </Typography>
     </Box>
   );
 };
+
 export default GoalHero;

@@ -3,6 +3,9 @@ import { createContext, useEffect, useState } from "react";
 export const SettingsContext = createContext();
 
 const defaultSettings = {
+  timeZone: "Asia/Kabul",
+timeFormat: "24h",
+dateFormat: "YYYY-MM-DD",
   themeMode: "light",
   language: "fa",
   profile: {
