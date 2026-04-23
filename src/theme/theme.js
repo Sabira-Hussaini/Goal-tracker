@@ -1,8 +1,8 @@
 import { createTheme } from "@mui/material/styles";
 
-const getTheme = (mode) =>
+const getTheme = (mode, language) =>
   createTheme({
-    
+    direction: language === "fa" ? "rtl" : "ltr",
     palette: {
       mode: mode, // ✅ dynamic now
 

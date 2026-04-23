@@ -42,24 +42,29 @@ const Appearance = () => {
   }, []);
 
   // ⏰ FORMAT TIME (FIXED - single source of truth)
-  const formatTime = () => {
-    return now.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: !is24Hour,
-    });
-  };
-
-  // 📅 FORMAT DATE
-  const formatDate = () => {
-    return now.toLocaleDateString(undefined, {
+ const formatDate = () => {
+  return new Date().toLocaleDateString(
+    settings.language === "fa" ? "fa-IR" : "en-US",
+    {
       weekday: "long",
       year: "numeric",
       month: "long",
       day: "numeric",
-    });
-  };
+    }
+  );
+};
+
+// ✅ FIXED time formatter
+const formatTime = () => {
+  return new Date().toLocaleTimeString(
+    settings.language === "fa" ? "fa-Af" : "en-US",
+    {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: !is24Hour,
+    }
+  );
+}
 
   // 🌙 Theme toggle
   const toggleTheme = () => {
@@ -96,13 +101,16 @@ const Appearance = () => {
                 exclusive
                 size="small"
                 value={settings.language}
-                onChange={(e, val) =>
-                  val &&
-                  setSettings({
-                    ...settings,
-                    language: val,
-                  })
-                }
+                onChange={(e, val) => {
+  if (!val) return;
+
+  setSettings({
+    ...settings,
+    language: val,
+  });
+
+  localStorage.setItem("language", val); // ✅ save
+}}
               >
                 <ToggleButton value="fa">FA</ToggleButton>
                 <ToggleButton value="en">EN</ToggleButton>
@@ -126,56 +134,57 @@ const Appearance = () => {
 
         {/* ================= RIGHT ================= */}
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 3 }}>
-          <CardContent sx={{ p: 3 }}>
+  <CardContent sx={{ p: 3 }}>
 
-            <Typography variant="h6" fontWeight={600} mb={2}>
-              Live Date & Time
-            </Typography>
+    {/* ✅ translated */}
+    <Typography variant="h6" fontWeight={600} mb={2}>
+      {t("live_date_time")}
+    </Typography>
 
-            {/* Toggle */}
-            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
-              <Box
-                onClick={() => setIs24Hour((prev) => !prev)}
-                sx={{
-                  px: 1.5,
-                  py: 0.5,
-                  borderRadius: 2,
-                  border: "1px solid #ccc",
-                  fontSize: 12,
-                  cursor: "pointer",
-                  "&:hover": { bgcolor: "action.hover" },
-                }}
-              >
-                {is24Hour ? "24H" : "12H"}
-              </Box>
-            </Box>
+    {/* Toggle */}
+    <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+      <Box
+        onClick={() => setIs24Hour((prev) => !prev)}
+        sx={{
+          px: 1.5,
+          py: 0.5,
+          borderRadius: 2,
+          border: "1px solid #ccc",
+          fontSize: 12,
+          cursor: "pointer",
+          "&:hover": { bgcolor: "action.hover" },
+        }}
+      >
+        {is24Hour ? "24H" : "12H"}
+      </Box>
+    </Box>
 
-            {/* TIME */}
-            <Box sx={{ display: "flex", alignItems: "center",  }}>
-              <AccessTimeIcon fontSize="small" />
-              <Typography variant="h4" fontWeight={700}>
-                {formatTime()}
-              </Typography>
-            </Box>
+    {/* TIME */}
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <AccessTimeIcon fontSize="small" />
+      <Typography variant="h4" fontWeight={700}>
+        {formatTime()}
+      </Typography>
+    </Box>
 
-            {/* DATE */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
-              <CalendarMonthIcon fontSize="small" />
-              <Typography color="text.secondary">
-                {formatDate()}
-              </Typography>
-            </Box>
+    {/* DATE */}
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+      <CalendarMonthIcon fontSize="small" />
+      <Typography color="text.secondary">
+        {formatDate()}
+      </Typography>
+    </Box>
 
-            {/* TIMEZONE */}
-           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-  <PublicIcon fontSize="small" />
-  <Typography color="text.secondary">
-    Asia / Kabul
-  </Typography>
-</Box>
+    {/* TIMEZONE */}
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <PublicIcon fontSize="small" />
+      <Typography color="text.secondary">
+       {t("timezone_kabul")}
+      </Typography>
+    </Box>
 
-          </CardContent>
-        </Card>
+  </CardContent>
+</Card>
       </Box>
 
       {/* ================= PROFILE ================= */}

@@ -4,8 +4,8 @@ export const SettingsContext = createContext();
 
 const defaultSettings = {
   timeZone: "Asia/Kabul",
-timeFormat: "24h",
-dateFormat: "YYYY-MM-DD",
+  timeFormat: "24h",
+  dateFormat: "YYYY-MM-DD",
   themeMode: "light",
   language: "fa",
   profile: {
@@ -21,14 +21,11 @@ dateFormat: "YYYY-MM-DD",
 };
 
 export const SettingsProvider = ({ children }) => {
-  const [settings, setSettings] = useState(defaultSettings);
-
-  // LOAD from localStorage
-  useEffect(() => {
+  const [settings, setSettings] = useState(() => {
     const saved = JSON.parse(localStorage.getItem("settings"));
 
     if (saved) {
-      setSettings({
+      return {
         ...defaultSettings,
         ...saved,
         profile: {
@@ -39,16 +36,16 @@ export const SettingsProvider = ({ children }) => {
           ...defaultSettings.preferences,
           ...saved.preferences,
         },
-      });
+      };
     }
-  }, []);
 
-  // SAVE to localStorage
+    return defaultSettings;
+  });
+
   useEffect(() => {
     localStorage.setItem("settings", JSON.stringify(settings));
   }, [settings]);
 
-  // RESET all settings
   const resetSettings = () => {
     setSettings({ ...defaultSettings });
     localStorage.removeItem("settings");
