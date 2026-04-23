@@ -7,8 +7,21 @@ export const useLanguage = () => {
 
   const lang = settings.language || "en";
 
-  const t = (key) => {
-    return translations[lang][key] || key;
+  const t = (key, variables = {}) => {
+    const raw = translations?.[lang]?.[key];
+
+    // ✅ safety check (prevents crash)
+    if (typeof raw !== "string") {
+      return key;
+    }
+
+   
+    return Object.keys(variables).reduce((text, k) => {
+      return text.replace(
+        new RegExp(`{{\\s*${k}\\s*}}`, "g"),
+        variables[k]
+      );
+    }, raw);
   };
 
   return { t, lang };

@@ -7,7 +7,7 @@ const ActiveGoalsList = ({ goals }) => {
   const activeGoals = goals.filter((g) => !g.completed);
 
   return (
-    <Card sx={{ mt: 2 }}>
+    <Card >
       <CardContent>
         <Typography variant="h6">
           {t("activeGoals")}

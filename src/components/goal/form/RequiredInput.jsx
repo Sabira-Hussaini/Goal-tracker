@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import CreateGoal from "./CreateGoal";
+import { useLanguage } from "../../../i18n/useLanguage";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -17,6 +18,8 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function RequiredInput({ onAddGoal }) {
+  const { t } = useLanguage();
+
   const [Session, setSession] = useState("");
   const [priority, setPriority] = useState("");
   const [errors, setErrors] = useState({});
@@ -40,12 +43,23 @@ export default function RequiredInput({ onAddGoal }) {
   const handleCreateGoal = () => {
     let newError = {};
 
-    if (!title) newError.title = "Title is required";
-    if (!category) newError.category = "Category is required";
-    if (!goalType) newError.goalType = "Goal Type is required";
-    if (!target) newError.target = "Target is required";
-    if (!Session) newError.session = "Session is required";
-    if (!priority) newError.priority = "Priority is required";
+    if (!title) newError.title = t("titleRequired") || "Title is required";
+    if (!category) newError.category = t("categoryRequired") || "Category is required";
+    if (!goalType) newError.goalType = t("goalTypeRequired") || "Goal Type is required";
+    if (!target) newError.target = t("targetRequired") || "Target is required";
+    if (!Session) newError.session = t("sessionRequired") || "Session is required";
+    if (!priority) newError.priority = t("priorityRequired") || "Priority is required";
+    if (!startDate) newError.startDate = t("startDateRequired") || "Start date is required";
+    if (!endDate) newError.endDate = t("endDateRequired") || "End date is required";
+    if (!deadline) newError.deadline = t("deadlineRequired") || "Deadline is required";
+
+    if (startDate && endDate && startDate > endDate) {
+      newError.endDate = t("endDateAfter") || "End date must be after Start date";
+    }
+
+    if (endDate && deadline && endDate !== deadline) {
+      newError.deadline = t("deadlineMatch") || "Deadline must be same as End Date";
+    }
 
     setErrors(newError);
 
@@ -65,7 +79,12 @@ export default function RequiredInput({ onAddGoal }) {
 
       setTempGoal(newGoal);
       setOpenConfirm(true);
+      console.log(newGoal);
     }
+  };
+
+  const handleClick = () => {
+    handleCreateGoal();
   };
 
   const handleCancel = () => {
@@ -80,40 +99,44 @@ export default function RequiredInput({ onAddGoal }) {
     setTarget("");
     setStartDate("");
   };
-const onConfirm = () => {
-  if (tempGoal) {
-    onAddGoal(tempGoal);
-  }
 
-  setTitle("");
-  setGoalType("");
-  setCategory("");
-  setTarget("");
-  setSession("");
-  setPriority("");
-  setStartDate("");
-  setEndDate("");
-  setDeadline("");
-  setDescription("");
-  setTempGoal(null);
+  const onConfirm = () => {
+    if (tempGoal) {
+      onAddGoal?.(tempGoal);
+    }
 
-  setOpenConfirm(false);
-};
+    setTitle("");
+    setGoalType("");
+    setCategory("");
+    setTarget("");
+    setSession("");
+    setPriority("");
+    setStartDate("");
+    setEndDate("");
+    setDeadline("");
+    setDescription("");
+    setTempGoal(null);
+
+    setOpenConfirm(false);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item xs={8}>
           <Item elevation={0} sx={{ color: "#799EFF" }}>
-            Required Field
+            {t("requiredField") || "Required Field"}
           </Item>
         </Grid>
 
         <Grid item xs={4}>
-          <Item
-            elevation={0}
-            sx={{ backgroundColor: "#799EFF", color: "white" }}
-          >
-            Required
+          <Item elevation={0} sx={{ backgroundColor: "#799EFF", color: "white" }}>
+            {t("required") || "Required"}
           </Item>
         </Grid>
       </Grid>
@@ -123,7 +146,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Title"
+              label={t("title") || "Title"}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               error={!!errors.title}
@@ -135,7 +158,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               select
-              label="Category"
+              label={t("category") || "Category"}
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               fullWidth
@@ -145,7 +168,7 @@ const onConfirm = () => {
             >
               {categories.map((option) => (
                 <MenuItem key={option} value={option}>
-                  {option}
+                  {t(option.toLowerCase()) || option}
                 </MenuItem>
               ))}
             </TextField>
@@ -154,7 +177,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               select
-              label="Goal Type"
+              label={t("goalType") || "Goal Type"}
               value={goalType}
               onChange={(e) => setGoalType(e.target.value)}
               fullWidth
@@ -164,7 +187,7 @@ const onConfirm = () => {
             >
               {goalTypes.map((option) => (
                 <MenuItem key={option} value={option}>
-                  {option}
+                  {t(option.replace(" ", "").toLowerCase()) || option}
                 </MenuItem>
               ))}
             </TextField>
@@ -173,7 +196,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
-              label="Target"
+              label={t("target") || "Target"}
               type="number"
               value={target}
               onChange={(e) => setTarget(e.target.value)}
@@ -186,7 +209,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               select
-              label="Session"
+              label={t("session") || "Session"}
               value={Session}
               onChange={(e) => setSession(e.target.value)}
               fullWidth
@@ -196,7 +219,7 @@ const onConfirm = () => {
             >
               {Sessions.map((option) => (
                 <MenuItem key={option} value={option}>
-                  {option}
+                  {t(option.toLowerCase()) || option}
                 </MenuItem>
               ))}
             </TextField>
@@ -205,7 +228,7 @@ const onConfirm = () => {
           <Grid item xs={12} md={6}>
             <TextField
               select
-              label="Priority"
+              label={t("priority") || "Priority"}
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
               fullWidth
@@ -215,7 +238,7 @@ const onConfirm = () => {
             >
               {priorities.map((option) => (
                 <MenuItem key={option} value={option}>
-                  {option}
+                  {t(option.toLowerCase()) || option}
                 </MenuItem>
               ))}
             </TextField>
@@ -223,7 +246,7 @@ const onConfirm = () => {
 
           <Grid item xs={12} md={6}>
             <TextField
-              label="Start Date"
+              label={t("startDate") || "Start Date"}
               type="date"
               fullWidth
               InputLabelProps={{ shrink: true }}
@@ -237,7 +260,7 @@ const onConfirm = () => {
 
           <Grid item xs={12} md={6}>
             <TextField
-              label="End Date"
+              label={t("endDate") || "End Date"}
               type="date"
               fullWidth
               InputLabelProps={{ shrink: true }}
@@ -251,7 +274,7 @@ const onConfirm = () => {
 
           <Grid item xs={12} md={6}>
             <TextField
-              label="Deadline"
+              label={t("deadline") || "Deadline"}
               type="date"
               fullWidth
               InputLabelProps={{ shrink: true }}
@@ -267,7 +290,7 @@ const onConfirm = () => {
 
       <Box>
         <TextField
-          label="Description"
+          label={t("description") || "Description"}
           multiline
           rows={3}
           fullWidth
@@ -286,24 +309,19 @@ const onConfirm = () => {
         }}
       >
         <Button variant="outlined" onClick={handleCancel}>
-          Cancel
+          {t("cancel") || "Cancel"}
         </Button>
 
-        <Button variant="contained" onClick={handleCreateGoal}>
-          Create
+        <Button variant="contained" onClick={handleClick}>
+          {t("create") || "Create"}
         </Button>
-        <CreateGoal
-          open={openConfirm}
-          onClose={() => setOpenConfirm(false)}
-          onConfirm={() => {
-            if (tempGoal) {
-              onAddGoal(tempGoal); // 👈 ارسال به GoalPage
-            }
-
-            setOpenConfirm(false); // بستن dialog
-          }}
-        />
       </Box>
+
+      <CreateGoal
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        onConfirm={onConfirm}
+      />
     </Box>
   );
 }

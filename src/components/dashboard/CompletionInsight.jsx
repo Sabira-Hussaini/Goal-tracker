@@ -7,7 +7,7 @@ const CompletionInsight = ({ total, completed }) => {
   const percent = total === 0 ? 0 : (completed / total) * 100;
 
   return (
-    <Card sx={{ mb: 2 }}>
+    <Card >
       <CardContent>
         <Typography variant="h6">
           {t("completionInsight")}
