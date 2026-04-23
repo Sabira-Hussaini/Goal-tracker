@@ -7,11 +7,7 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import CreateGoal from "./CreateGoal";
-<<<<<<< HEAD
-import { useLanguage } from "../../../i18n/useLanguage"; // ✅ added
-=======
 import { useLanguage } from "../../../i18n/useLanguage";
->>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -21,13 +17,8 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-<<<<<<< HEAD
-export default function RequiredInput() {
-  const { t } = useLanguage(); // ✅ added
-=======
 export default function RequiredInput({ onAddGoal }) {
   const { t } = useLanguage();
->>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
 
   const [Session, setSession] = useState("");
   const [priority, setPriority] = useState("");
@@ -39,6 +30,7 @@ export default function RequiredInput({ onAddGoal }) {
   const goalTypes = ["Daily", "Count Base", "Time Based"];
 
   const [openConfirm, setOpenConfirm] = useState(false);
+
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
   const [title, setTitle] = useState("");
@@ -52,22 +44,18 @@ export default function RequiredInput({ onAddGoal }) {
   const handleCreateGoal = () => {
     let newError = {};
 
-    if (!title) newError.title = t("titleRequired") || "Title is required";
-    if (!category) newError.category = t("categoryRequired") || "Category is required";
-    if (!goalType) newError.goalType = t("goalTypeRequired") || "Goal Type is required";
-    if (!target) newError.target = t("targetRequired") || "Target is required";
-    if (!Session) newError.session = t("sessionRequired") || "Session is required";
-    if (!priority) newError.priority = t("priorityRequired") || "Priority is required";
-    if (!startDate) newError.startDate = t("startDateRequired") || "Start date is required";
-    if (!endDate) newError.endDate = t("endDateRequired") || "End date is required";
-    if (!deadline) newError.deadline = t("deadlineRequired") || "Deadline is required";
+    if (!title) newError.title = t("titleRequired");
+    if (!category) newError.category = t("categoryRequired");
+    if (!goalType) newError.goalType = t("goalTypeRequired");
+    if (!target) newError.target = t("targetRequired");
+    if (!Session) newError.session = t("sessionRequired");
+    if (!priority) newError.priority = t("priorityRequired");
+    if (!startDate) newError.startDate = t("startDateRequired");
+    if (!endDate) newError.endDate = t("endDateRequired");
+    if (!deadline) newError.deadline = t("deadlineRequired");
 
     if (startDate && endDate && startDate > endDate) {
-      newError.endDate = t("endDateAfter") || "End date must be after Start date";
-    }
-
-    if (endDate && deadline && endDate !== deadline) {
-      newError.deadline = t("deadlineMatch") || "Deadline must be same as End Date";
+      newError.endDate = t("endDateAfter");
     }
 
     setErrors(newError);
@@ -88,12 +76,7 @@ export default function RequiredInput({ onAddGoal }) {
 
       setTempGoal(newGoal);
       setOpenConfirm(true);
-      console.log(newGoal);
     }
-  };
-
-  const handleClick = () => {
-    handleCreateGoal();
   };
 
   const handleCancel = () => {
@@ -109,233 +92,64 @@ export default function RequiredInput({ onAddGoal }) {
     setStartDate("");
   };
 
-<<<<<<< HEAD
-  const onClicked = () => {
-=======
-  const onConfirm = () => {
+  const handleConfirm = () => {
     if (tempGoal) {
       onAddGoal?.(tempGoal);
     }
 
-    setTitle("");
-    setGoalType("");
-    setCategory("");
-    setTarget("");
-    setSession("");
-    setPriority("");
-    setStartDate("");
-    setEndDate("");
-    setDeadline("");
-    setDescription("");
-    setTempGoal(null);
-
->>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
     setOpenConfirm(false);
+    setTempGoal(null);
   };
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item xs={8}>
-          <Item elevation={0} sx={{ color: "#799EFF" }}>
-            {t("requiredField") || "Required Field"}
-          </Item>
+
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Item>{t("requiredField")}</Item>
         </Grid>
 
-        <Grid item xs={4}>
-          <Item elevation={0} sx={{ backgroundColor: "#799EFF", color: "white" }}>
-            {t("required") || "Required"}
-          </Item>
+        <Grid item xs={12} md={6}>
+          <TextField
+            label={t("title")}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            error={!!errors.title}
+            helperText={errors.title}
+            fullWidth
+          />
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <TextField
+            select
+            label={t("category")}
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            fullWidth
+            error={!!errors.category}
+            helperText={errors.category}
+          >
+            {categories.map((option) => (
+              <MenuItem key={option} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </TextField>
         </Grid>
       </Grid>
 
-      <Box sx={{ flexGrow: 1, paddingTop: "12px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label={t("title") || "Title"}
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              error={!!errors.title}
-              helperText={errors.title}
-              sx={{ width: "230px" }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              select
-              label={t("category") || "Category"}
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              fullWidth
-              error={!!errors.category}
-              helperText={errors.category}
-              sx={{ width: "230px" }}
-            >
-              {categories.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {t(option.toLowerCase()) || option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              select
-              label={t("goalType") || "Goal Type"}
-              value={goalType}
-              onChange={(e) => setGoalType(e.target.value)}
-              fullWidth
-              error={!!errors.goalType}
-              helperText={errors.goalType}
-              sx={{ width: "130px" }}
-            >
-              {goalTypes.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {t(option.replace(" ", "").toLowerCase()) || option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label={t("target") || "Target"}
-              type="number"
-              value={target}
-              onChange={(e) => setTarget(e.target.value)}
-              error={!!errors.target}
-              helperText={errors.target}
-              sx={{ width: "230px" }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              select
-              label={t("session") || "Session"}
-              value={Session}
-              onChange={(e) => setSession(e.target.value)}
-              fullWidth
-              error={!!errors.session}
-              helperText={errors.session}
-              sx={{ width: "140px" }}
-            >
-              {Sessions.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {t(option.toLowerCase()) || option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              select
-              label={t("priority") || "Priority"}
-              value={priority}
-              onChange={(e) => setPriority(e.target.value)}
-              fullWidth
-              error={!!errors.priority}
-              helperText={errors.priority}
-              sx={{ width: "140px" }}
-            >
-              {priorities.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {t(option.toLowerCase()) || option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              label={t("startDate") || "Start Date"}
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              error={!!errors.startDate}
-              helperText={errors.startDate}
-              sx={{ width: "210px" }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              label={t("endDate") || "End Date"}
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              error={!!errors.endDate}
-              helperText={errors.endDate}
-              sx={{ width: "210px" }}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <TextField
-              label={t("deadline") || "Deadline"}
-              type="date"
-              fullWidth
-              InputLabelProps={{ shrink: true }}
-              value={deadline}
-              onChange={(e) => setDeadline(e.target.value)}
-              error={!!errors.deadline}
-              helperText={errors.deadline}
-              sx={{ width: "210px" }}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-
-      <Box>
-        <TextField
-          label={t("description") || "Description"}
-          multiline
-          rows={3}
-          fullWidth
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          sx={{ marginTop: "12px" }}
-        />
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "end",
-          gap: "10px",
-          marginTop: "14px",
-        }}
-      >
-        <Button variant="outlined" onClick={handleCancel}>
-          {t("cancel") || "Cancel"}
-        </Button>
-
-        <Button variant="contained" onClick={handleClick}>
-          {t("create") || "Create"}
-          <CreateGoal onClick={onClicked} open={openConfirm} />
-
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 1 }}>
+        <Button onClick={handleCancel}>{t("cancel")}</Button>
+        <Button variant="contained" onClick={handleCreateGoal}>
+          {t("create")}
         </Button>
       </Box>
 
       <CreateGoal
         open={openConfirm}
         onClose={() => setOpenConfirm(false)}
-        onConfirm={onConfirm}
+        onConfirm={handleConfirm}
       />
     </Box>
   );
