@@ -6,8 +6,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import goal from "../../../assets/goal.jpg";
 import RequiredInput from "./RequiredInput";
+import { useState } from "react";
 
 export default function FormContent() {
+  const [goals, setGoals] = useState([]);
+
+  const handleAddGoal = (newGoal) => {
+    setGoals((prev) => [...prev, newGoal]);
+  };
   return (
     <Card
       sx={{
@@ -34,7 +40,7 @@ export default function FormContent() {
       </CardContent>
       <Card sx={{ maxWidth: "100%", backgroundColor: "white" }}>
         <CardContent>
-          <RequiredInput />
+          <RequiredInput onAddGoal={handleAddGoal} />
         </CardContent>
       </Card>
     </Card>

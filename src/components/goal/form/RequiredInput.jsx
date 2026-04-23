@@ -16,7 +16,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-export default function RequiredInput() {
+export default function RequiredInput({ onAddGoal }) {
   const [Session, setSession] = useState("");
   const [priority, setPriority] = useState("");
   const [errors, setErrors] = useState({});
@@ -25,6 +25,7 @@ export default function RequiredInput() {
   const categories = ["Study", "Work", "Sport", "Health", "Hobby", "Finance"];
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
+
   const [openConfirm, setOpenConfirm] = useState(false);
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
@@ -34,6 +35,7 @@ export default function RequiredInput() {
   const [endDate, setEndDate] = useState("");
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
+  const [tempGoal, setTempGoal] = useState(null);
 
   const handleCreateGoal = () => {
     let newError = {};
@@ -44,16 +46,6 @@ export default function RequiredInput() {
     if (!target) newError.target = "Target is required";
     if (!Session) newError.session = "Session is required";
     if (!priority) newError.priority = "Priority is required";
-    if (!startDate) newError.startDate = "Start date is required";
-    if (!endDate) newError.endDate = "End date is required";
-    if (!deadline) newError.deadline = "Deadline is required";
-    if (startDate && endDate && startDate > endDate) {
-      newError.endDate = "End date must be after Start date";
-    }
-
-    if (endDate && deadline && endDate !== deadline) {
-      newError.deadline = "Deadline must be same as End Date";
-    }
 
     setErrors(newError);
 
@@ -70,26 +62,12 @@ export default function RequiredInput() {
         priority,
         session: Session,
       };
-      setOpenConfirm(true);
-      console.log(newGoal);
-      // setTitle("");
-      // setGoalType("");
-      // setCategory("");
-      // setDeadline("");
-      // setSession("");
-      // setPriority("");
-      // setDescription("");
-      // setEndDate("");
-      // setTarget("");
-      // setStartDate("");
-    }
-  };
-  const handleClick = () => {
-    handleCreateGoal();
-    if (!handleCreateGoal) {
+
+      setTempGoal(newGoal);
       setOpenConfirm(true);
     }
   };
+
   const handleCancel = () => {
     setTitle("");
     setGoalType("");
@@ -102,13 +80,25 @@ export default function RequiredInput() {
     setTarget("");
     setStartDate("");
   };
-  const onClicked = () => {
-    setOpenConfirm(false);
-  };
-  const [open, setOpen] = useState(false);
+const onConfirm = () => {
+  if (tempGoal) {
+    onAddGoal(tempGoal);
+  }
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  setTitle("");
+  setGoalType("");
+  setCategory("");
+  setTarget("");
+  setSession("");
+  setPriority("");
+  setStartDate("");
+  setEndDate("");
+  setDeadline("");
+  setDescription("");
+  setTempGoal(null);
+
+  setOpenConfirm(false);
+};
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container justifyContent="space-between" alignItems="center">
@@ -127,9 +117,9 @@ export default function RequiredInput() {
           </Item>
         </Grid>
       </Grid>
+
       <Box sx={{ flexGrow: 1, paddingTop: "12px" }}>
         <Grid container spacing={2}>
-          {/* Title */}
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
@@ -142,7 +132,6 @@ export default function RequiredInput() {
             />
           </Grid>
 
-          {/* Category */}
           <Grid item xs={12} md={6}>
             <TextField
               select
@@ -162,7 +151,6 @@ export default function RequiredInput() {
             </TextField>
           </Grid>
 
-          {/* Goal Type */}
           <Grid item xs={12} md={6}>
             <TextField
               select
@@ -182,7 +170,6 @@ export default function RequiredInput() {
             </TextField>
           </Grid>
 
-          {/* Target */}
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
@@ -196,7 +183,6 @@ export default function RequiredInput() {
             />
           </Grid>
 
-          {/* Session */}
           <Grid item xs={12} md={6}>
             <TextField
               select
@@ -216,7 +202,6 @@ export default function RequiredInput() {
             </TextField>
           </Grid>
 
-          {/* Priority */}
           <Grid item xs={12} md={6}>
             <TextField
               select
@@ -236,7 +221,6 @@ export default function RequiredInput() {
             </TextField>
           </Grid>
 
-          {/* Dates */}
           <Grid item xs={12} md={6}>
             <TextField
               label="Start Date"
@@ -280,6 +264,7 @@ export default function RequiredInput() {
           </Grid>
         </Grid>
       </Box>
+
       <Box>
         <TextField
           label="Description"
@@ -291,6 +276,7 @@ export default function RequiredInput() {
           sx={{ marginTop: "12px" }}
         />
       </Box>
+
       <Box
         sx={{
           display: "flex",
@@ -302,10 +288,21 @@ export default function RequiredInput() {
         <Button variant="outlined" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button variant="contained" onClick={handleClick}>
+
+        <Button variant="contained" onClick={handleCreateGoal}>
           Create
-          <CreateGoal onClick={onClicked} open={openConfirm} />
         </Button>
+        <CreateGoal
+          open={openConfirm}
+          onClose={() => setOpenConfirm(false)}
+          onConfirm={() => {
+            if (tempGoal) {
+              onAddGoal(tempGoal); // 👈 ارسال به GoalPage
+            }
+
+            setOpenConfirm(false); // بستن dialog
+          }}
+        />
       </Box>
     </Box>
   );
