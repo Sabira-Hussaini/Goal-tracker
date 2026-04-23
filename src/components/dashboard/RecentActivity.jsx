@@ -1,13 +1,21 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { useLanguage } from "../../i18n/useLanguage";
 
-const RecentActivity = ({ activities }) => {
+const MAX_ITEMS = 5;
+
+const RecentActivity = ({ activities = [] }) => {
   const { t } = useLanguage();
+
+  const hasActivities = activities.length > 0;
+
+  const recentActivities = hasActivities
+    ? activities.slice(0, MAX_ITEMS)
+    : [];
 
   return (
     <Card
       sx={{
-        mb: 2,
+        
         bgcolor: "background.paper",
         color: "text.primary",
         backgroundImage: "none",
@@ -19,13 +27,15 @@ const RecentActivity = ({ activities }) => {
           {t("recentActivity")}
         </Typography>
 
-        {activities.length === 0 ? (
+        {!hasActivities ? (
           <Typography color="text.secondary">
             {t("noActivity")}
           </Typography>
         ) : (
-          activities.map((a, i) => (
-            <Typography key={i}>{a}</Typography>
+          recentActivities.map((activity) => (
+            <Typography key={activity.id}>
+              {activity.text}
+            </Typography>
           ))
         )}
       </CardContent>

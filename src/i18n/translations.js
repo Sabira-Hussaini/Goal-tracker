@@ -66,7 +66,7 @@ dashboardDesc:
 
 newGoal: "NEW GOAL",
 manageGoal: "MANAGE GOAL",
-
+titles: "Level",
 recentActivity: "Recent Activity",
 noActivity: "No activity yet.",
  dailyMotivation: "Daily Motivation",
@@ -106,6 +106,10 @@ progress: "Progress",
   "completed_goals": "Completed Goals",
   "average_goal": "Average Goal",
   "progress": "Progress",
+
+
+   "timezone_kabul": "Asia / Kabul",
+
   confirmGoalCreation: "Confirm Goal Creation",
 confirmGoalMessage: "Are you sure you want to create this goal?",
 cancel: "Cancel",
@@ -115,10 +119,21 @@ createNewGoal: "Create New Goal",
 createNewGoalDesc:
   "Create a new goal and start tracking your progress. Stay focused and achieve your objectives step by step.",
 MotivationGoalMusic: "Motivation Goal Music",
+
 stayFocused: "Stay Focused 🔥",
 title: "Title",
 category: "Category",
 goalType: "Goal Type",
+
+ "live_date_time": "Live Date & Time",
+stayFocused: "Stay Focused 🔥",
+basedOnXp: "Based on xp",
+
+title: "Title",
+category: "Category",
+goalType: "Goal Type",
+ streak_days: "{{value}} days",
+
 target: "Target",
 session: "Session",
 priority: "Priority",
@@ -130,7 +145,11 @@ cancel: "Cancel",
 create: "Create",
 requiredField: "Required Field",
 required: "Required",
+
+streak_days: "{{value}} days"
+
   },
+
 
   fa: {
     // general
@@ -166,13 +185,14 @@ yesCreate: "بله، ایجاد کن",
   "completed_goals": "اهداف تکمیل‌شده",
   "average_goal": "میانگین هدف",
   "progress": "پیشرفت",
-
+ streak_days: "{{value}} روز",
     averageGoal: "میانگین هدف",
     progress: "پیشرفت",
     allGoals: "همه اهداف",
 goalsDescription:
   "در این بخش می‌توانید همه اهداف خود را در یکجا مدیریت کنید. پیشرفت خود را دنبال کنید، منظم بمانید و اهداف جدید بسازید.",
     all: "همه",
+    titles: " سطح ",
 active: "فعال",
 paused: "متوقف",
 completed: "تکمیل شده",
@@ -184,19 +204,21 @@ category: "دسته‌بندی",
 changeFiltersOrCreateGoal: "فیلترها را تغییر دهید یا یک هدف جدید بسازید",
     recentActivity: "فعالیت‌های اخیر",
 noActivity: "هنوز فعالیتی ثبت نشده است.",
-   
+   basedOnXp: "به اساس امتیاز",
     welcomeUser: "خوش آمدید",
 dashboardTitle: "داشبورد مدیریت اهداف",
 dashboardDesc:
   "به Goal Tracker خوش آمدید؛ فضای شخصی شما برای تعیین، مدیریت و رسیدن به اهداف. تمرکز کنید، پیشرفت خود را دنبال کنید و برنامه‌هایتان را قدم به قدم به موفقیت تبدیل کنید.",
-
+ "timezone_kabul": "آسیا / کابل",
 newGoal: "هدف جدید",
 manageGoal: "مدیریت اهداف",
     activeGoals: "اهداف فعال",
 completed: "تکمیل شده",
 currentStreak: "رکورد روزانه",
+level: "سطح",
 totalXp: "امتیاز کل",
-
+level: "سطح {{value}}",
+  "live_date_time": "تاریخ و زمان زنده",
 currentlyInProgress: "در حال انجام",
 finishedTargets: "اهداف تکمیل شده",
 consecutiveDays: "روزهای متوالی",

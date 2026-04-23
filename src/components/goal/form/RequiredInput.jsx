@@ -7,7 +7,11 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import CreateGoal from "./CreateGoal";
+<<<<<<< HEAD
 import { useLanguage } from "../../../i18n/useLanguage"; // ✅ added
+=======
+import { useLanguage } from "../../../i18n/useLanguage";
+>>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -17,8 +21,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+<<<<<<< HEAD
 export default function RequiredInput() {
   const { t } = useLanguage(); // ✅ added
+=======
+export default function RequiredInput({ onAddGoal }) {
+  const { t } = useLanguage();
+>>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
 
   const [Session, setSession] = useState("");
   const [priority, setPriority] = useState("");
@@ -28,6 +37,7 @@ export default function RequiredInput() {
   const categories = ["Study", "Work", "Sport", "Health", "Hobby", "Finance"];
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
+
   const [openConfirm, setOpenConfirm] = useState(false);
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
@@ -37,6 +47,7 @@ export default function RequiredInput() {
   const [endDate, setEndDate] = useState("");
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
+  const [tempGoal, setTempGoal] = useState(null);
 
   const handleCreateGoal = () => {
     let newError = {};
@@ -74,6 +85,8 @@ export default function RequiredInput() {
         priority,
         session: Session,
       };
+
+      setTempGoal(newGoal);
       setOpenConfirm(true);
       console.log(newGoal);
     }
@@ -81,9 +94,6 @@ export default function RequiredInput() {
 
   const handleClick = () => {
     handleCreateGoal();
-    if (!handleCreateGoal) {
-      setOpenConfirm(true);
-    }
   };
 
   const handleCancel = () => {
@@ -99,7 +109,27 @@ export default function RequiredInput() {
     setStartDate("");
   };
 
+<<<<<<< HEAD
   const onClicked = () => {
+=======
+  const onConfirm = () => {
+    if (tempGoal) {
+      onAddGoal?.(tempGoal);
+    }
+
+    setTitle("");
+    setGoalType("");
+    setCategory("");
+    setTarget("");
+    setSession("");
+    setPriority("");
+    setStartDate("");
+    setEndDate("");
+    setDeadline("");
+    setDescription("");
+    setTempGoal(null);
+
+>>>>>>> 54f121944d72703810f74eabebaa2bd1dd956385
     setOpenConfirm(false);
   };
 
@@ -298,8 +328,15 @@ export default function RequiredInput() {
         <Button variant="contained" onClick={handleClick}>
           {t("create") || "Create"}
           <CreateGoal onClick={onClicked} open={openConfirm} />
+
         </Button>
       </Box>
+
+      <CreateGoal
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        onConfirm={onConfirm}
+      />
     </Box>
   );
 }

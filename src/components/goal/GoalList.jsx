@@ -1,51 +1,39 @@
 import { Card, CardContent, Box, Typography } from "@mui/material";
 import EmptyState from "./EmptyState";
-import { useLanguage } from "../../i18n/useLanguage";
+import GoalCard from "./form/GoalCard";
 
-const GoalList = ({ goals, filter, search, sort }) => {
-  const { t } = useLanguage();
-
+const GoalList = ({ goals = [], filter = "all", search = "" }) => {
   let filtered = [...goals];
 
+  // filter
   if (filter !== "all") {
     filtered = filtered.filter((g) => g.status === filter);
   }
 
+  // search
   filtered = filtered.filter((g) =>
-    g.title.toLowerCase().includes(search.toLowerCase())
+    g?.title?.toLowerCase().includes(search.toLowerCase())
   );
-
-  if (filtered.length === 0) {
-    return (
-      <Card sx={{ mt: 2, borderRadius: 3 }}>
-        <CardContent>
-          <EmptyState />
-        </CardContent>
-      </Card>
-    );
-  }
 
   return (
     <Card sx={{ mt: 2, borderRadius: 3 }}>
       <CardContent>
-        {filtered.map((goal) => (
-          <Box
-            key={goal.id}
-            sx={{
-              p: 2,
-              mb: 2,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              color: "text.primary",
-              backgroundImage: "none",
-              boxShadow: 3,
-            }}
+        {/* EMPTY STATE */}
+        {filtered.length === 0 ? (
+          <Typography
+            textAlign="center"
+            sx={{ py: 5, color: "gray", fontSize: "18px" }}
           >
-            <Typography fontWeight="bold">
-              {goal.title}
-            </Typography>
+            گولی وجود ندارد
+          </Typography>
+        ) : (
+          /* GOALS LIST */
+          <Box className="grid grid-cols-3 gap-4 mt-5">
+            {filtered.map((goal) => (
+              <GoalCard key={goal.id || goal.title} goal={goal} />
+            ))}
           </Box>
-        ))}
+        )}
       </CardContent>
     </Card>
   );
