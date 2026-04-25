@@ -1,8 +1,16 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { useLanguage } from "../../i18n/useLanguage";
 
-const CompletedPreview = ({ completedGoals }) => {
+const MAX_PREVIEW_ITEMS = 3;
+
+const CompletedPreview = ({ completedGoals = [] }) => {
   const { t } = useLanguage();
+
+  const hasCompletedGoals = completedGoals.length > 0;
+
+  const previewGoals = hasCompletedGoals
+    ? completedGoals.slice(0, MAX_PREVIEW_ITEMS)
+    : [];
 
   return (
     <Card
@@ -11,6 +19,7 @@ const CompletedPreview = ({ completedGoals }) => {
         color: "text.primary",
         backgroundImage: "none",
         boxShadow: 3,
+     
       }}
     >
       <CardContent>
@@ -18,12 +27,12 @@ const CompletedPreview = ({ completedGoals }) => {
           {t("completedPreview")}
         </Typography>
 
-        {completedGoals.length === 0 ? (
+        {!hasCompletedGoals ? (
           <Typography color="text.secondary">
             {t("noCompletedGoals")}
           </Typography>
         ) : (
-          completedGoals.slice(0, 3).map((goal) => (
+          previewGoals.map((goal) => (
             <Typography key={goal.id}>
               ✔ {goal.title}
             </Typography>
@@ -33,5 +42,6 @@ const CompletedPreview = ({ completedGoals }) => {
     </Card>
   );
 };
+
 
 export default CompletedPreview;

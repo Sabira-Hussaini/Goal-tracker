@@ -1,60 +1,70 @@
-import { Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import StatCard from "./StatCard";
-
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
 
 import { useLanguage } from "../../i18n/useLanguage";
 
-const DashboardCards = () => {
+const DashboardCards = ({ stats }) => {
   const { t } = useLanguage();
 
   return (
-    <Grid container spacing={2}>
-      
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <StatCard
-          title={t("activeGoals")}
-          value="0"
-          subtitle={t("currentlyInProgress")}
-          icon={<TrackChangesIcon />}
-          color="#1b5e20"
-        />
-      </Grid>
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gap: 2,
+        width: "100%",
+      }}
+    >
+      {/* ACTIVE GOALS */}
+      <StatCard
+        title={t("activeGoals")}
+        value={stats.active}
+        subtitle={t("currentlyInProgress")}
+        icon={<TrackChangesIcon />}
+        color="#1b5e20"
+      />
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <StatCard
-          title={t("completed")}
-          value="0"
-          subtitle={t("finishedTargets")}
-          icon={<CheckCircleIcon />}
-          color="#2e7d32"
-        />
-      </Grid>
+      {/* COMPLETED */}
+      <StatCard
+        title={t("completed")}
+        value={stats.completed}
+        subtitle={t("finishedTargets")}
+        icon={<CheckCircleIcon />}
+        color="#2e7d32"
+      />
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <StatCard
-          title={t("currentStreak")}
-          value="0d"
-          subtitle={t("consecutiveDays")}
-          icon={<WhatshotIcon />}
-          color="#ef6c00"
-        />
-      </Grid>
+      {/* STREAK */}
+      <StatCard
+        title={t("currentStreak")}
+        value={t("streak_days", { value: stats.streak })}
+        subtitle={t("consecutiveDays")}
+        icon={<WhatshotIcon />}
+        color="#ef6c00"
+      />
 
-      <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-        <StatCard
-          title={t("totalXp")}
-          value="0"
-          subtitle={t("progressPoints")}
-          icon={<EmojiEventsIcon />}
-          color="#6a1b9a"
-        />
-      </Grid>
+      {/* XP */}
+      <StatCard
+        title={t("totalXp")}
+        value={stats.xp}
+        subtitle={t("progressPoints")}
+        icon={<EmojiEventsIcon />}
+        color="#6a1b9a"
+      />
 
-    </Grid>
+      {/* LEVEL */}
+      <StatCard
+        title={t("titles")}
+        value={t("level", { value: stats.level })}
+        subtitle={t("basedOnXp")}
+        icon={<MilitaryTechIcon />}
+        color="#1565c0"
+      />
+    </Box>
   );
 };
 

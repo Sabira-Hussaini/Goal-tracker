@@ -1,17 +1,26 @@
-import { Card, CardContent, Typography, Box, CardActions, Stack } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Box,
+  CardActions,
+  Stack,
+} from "@mui/material";
 import { useState, useEffect } from "react";
-import { useLanguage } from "../../i18n/useLanguage";
 import FormClock from "../goal/form/FormClock";
+import quotes from "../../data/quotes";
 
 export default function DashboardSuccess() {
   const [quote, setQuote] = useState(null);
-  const { t } = useLanguage();
 
-  const getRandomQuote = () => {
-    const quotes = t("quotes", { returnObjects: true }) || [];
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    return quotes[randomIndex];
-  };
+const getRandomQuote = (lang = "en") => {
+  const list = quotes[lang] || [];
+
+  if (list.length === 0) return null;
+
+  const randomIndex = Math.floor(Math.random() * list.length);
+  return list[randomIndex];
+};
 
   useEffect(() => {
     setQuote(getRandomQuote());
@@ -26,7 +35,7 @@ export default function DashboardSuccess() {
   return (
     <Card
       sx={{
-        width: "90%",
+        width: "100%",
         bgcolor: "background.paper",
         color: "text.primary",
         backgroundImage: "none",
@@ -45,11 +54,11 @@ export default function DashboardSuccess() {
             mb: 2,
           }}
         >
-          {t("dailyMotivation")}
+          Daily Motivation
         </Typography>
 
         {/* Quote */}
-        {quote && (
+        {quote ? (
           <Box>
             <Typography
               sx={{
@@ -72,6 +81,8 @@ export default function DashboardSuccess() {
               — {quote.author}
             </Typography>
           </Box>
+        ) : (
+          <Typography>No quotes found</Typography>
         )}
       </CardContent>
 

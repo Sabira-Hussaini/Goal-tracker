@@ -31,10 +31,21 @@ export default function Form() {
           </Item>
         </Grid>
         <Grid size={{ xs: 6, md: 4 }}>
-          <Item elevation={0} sx={{ marginTop: "20px" }}>
+          <Item
+            elevation={0}
+            sx={{ background: "transparent", boxShadow: "none" }}
+          >
             <DashboardSuccess />
           </Item>
-          <Item elevation={0} sx={{ marginTop: "20px" }}>
+
+          <Item
+            elevation={0}
+            sx={{
+              
+              background: "transparent",
+              boxShadow: "none",
+            }}
+          >
             <MediaControlCard />
           </Item>
         </Grid>

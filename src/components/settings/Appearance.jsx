@@ -14,18 +14,54 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { SettingsContext } from "../../context/SettingsContext";
 import { useLanguage } from "../../i18n/useLanguage";
 
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import PublicIcon from "@mui/icons-material/Public";
 
 const Appearance = () => {
   const { settings, setSettings } = useContext(SettingsContext);
   const { t } = useLanguage();
 
-  // Theme toggle
+  const [now, setNow] = useState(new Date());
+  const [is24Hour, setIs24Hour] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ DATE
+  const formatDate = () => {
+    return now.toLocaleDateString(
+      settings.language === "fa" ? "fa-IR" : "en-US",
+      {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }
+    );
+  };
+
+  // ✅ TIME
+  const formatTime = () => {
+    return now.toLocaleTimeString(
+      settings.language === "fa" ? "fa-IR" : "en-US",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: !is24Hour,
+      }
+    );
+  };
+
   const toggleTheme = () => {
     setSettings({
       ...settings,
@@ -33,131 +69,130 @@ const Appearance = () => {
     });
   };
 
-  return (
-    <Box
-      sx={{
-        minHeight: "100vh",
-        width: "100%",
-        overflowX: "hidden",
-        p: { xs: 1, sm: 2, md: 3 },
-      }}
-    >
-      {/* Title */}
-      <Typography variant="h4" mb={1}>
-        {t("settings")}
-      </Typography>
+  const changeLanguage = (val) => {
+    if (!val) return;
 
+    setSettings({
+      ...settings,
+      language: val,
+    });
+
+    localStorage.setItem("language", val);
+  };
+
+  return (
+    <Box sx={{ minHeight: "100vh", width: "100%", p: 3 }}>
+      <Typography variant="h4">{t("settings")}</Typography>
       <Typography color="text.secondary" mb={3}>
         {t("settingsDesc")}
       </Typography>
 
-      {/* APPEARANCE CARD */}
-      <Card
-        sx={{
-          bgcolor: "background.paper",
-          color: "text.primary",
-          backgroundImage: "none",
-          boxShadow: 3,
-          borderRadius: 3,
-        }}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Typography variant="h6" fontWeight={600} mb={3}>
-            {t("appearance")}
-          </Typography>
+      <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}>
 
-          {/* Language */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              mb: 3,
-            }}
-          >
-            <Typography>{t("language")}</Typography>
+        {/* LEFT CARD */}
+        <Card sx={{ flex: 1.4, boxShadow: 3, borderRadius: 3 }}>
+          <CardContent>
 
-          <Box
-  sx={{
-    display: "flex",
-    justifyContent: "center",
-    direction: settings.language === "fa" ? "rtl" : "ltr",
-  }}
->
-  <ToggleButtonGroup
-    exclusive
-    size="small"
-    value={settings.language}
-    onChange={(e, val) =>
-      val &&
-      setSettings({
-        ...settings,
-        language: val,
-      })
-    }
-  >
-    <ToggleButton value="fa">FA</ToggleButton>
-    <ToggleButton value="en">EN</ToggleButton>
-  </ToggleButtonGroup>
-</Box>
-          </Box>
+            <Typography variant="h6" mb={3}>
+              {t("appearance")}
+            </Typography>
 
-          {/* Theme */}
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography>{t("theme")}</Typography>
+            {/* LANGUAGE */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+              <Typography>{t("language")}</Typography>
 
-            <IconButton
-              onClick={toggleTheme}
-              sx={{
-                "&:hover": { bgcolor: "action.hover" },
-              }}
-            >
-              {settings.themeMode === "light" ? (
-                <DarkModeIcon />
-              ) : (
-                <LightModeIcon />
-              )}
-            </IconButton>
-          </Box>
-        </CardContent>
-      </Card>
+              <ToggleButtonGroup
+                exclusive
+                size="small"
+                value={settings.language}
+                onChange={(e, val) => changeLanguage(val)}
+              >
+                <ToggleButton value="fa">FA</ToggleButton>
+                <ToggleButton value="en">EN</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
 
-      {/* PROFILE CARD */}
-      <Card
-        sx={{
-          bgcolor: "background.paper",
-          color: "text.primary",
-          backgroundImage: "none",
-          boxShadow: 3,
-          borderRadius: 3,
-          mt: 4,
-        }}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Typography variant="h6" fontWeight={600}>
-            {t("profile")}
-          </Typography>
+            {/* THEME */}
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography>{t("theme")}</Typography>
+
+              <IconButton onClick={toggleTheme}>
+                {settings.themeMode === "light" ? (
+                  <DarkModeIcon />
+                ) : (
+                  <LightModeIcon />
+                )}
+              </IconButton>
+            </Box>
+
+          </CardContent>
+        </Card>
+
+        {/* RIGHT CARD */}
+        <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 3 }}>
+          <CardContent>
+
+            <Typography variant="h6" mb={2}>
+              {t("live_date_time")}
+            </Typography>
+
+            {/* toggle */}
+            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
+              <Box
+                onClick={() => setIs24Hour((p) => !p)}
+                sx={{
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: 2,
+                  border: "1px solid #ccc",
+                  fontSize: 12,
+                  cursor: "pointer",
+                }}
+              >
+                {is24Hour ? "24H" : "12H"}
+              </Box>
+            </Box>
+
+            {/* TIME */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <AccessTimeIcon fontSize="small" />
+              <Typography variant="h4">{formatTime()}</Typography>
+            </Box>
+
+            {/* DATE */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+              <CalendarMonthIcon fontSize="small" />
+              <Typography>{formatDate()}</Typography>
+            </Box>
+
+            {/* TIMEZONE */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 1 }}>
+              <PublicIcon fontSize="small" />
+              <Typography>{t("timezone_kabul")}</Typography>
+            </Box>
+
+          </CardContent>
+        </Card>
+
+      </Box>
+
+      {/* PROFILE */}
+      <Card sx={{ mt: 4, boxShadow: 3, borderRadius: 3 }}>
+        <CardContent>
+
+          <Typography variant="h6">{t("profile")}</Typography>
 
           <Box mt={2} display="flex" flexDirection="column" gap={2}>
+
             <TextField
               label={t("fullName")}
               value={settings.profile.name}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  profile: {
-                    ...settings.profile,
-                    name: e.target.value,
-                  },
+                  profile: { ...settings.profile, name: e.target.value },
                 })
               }
-              fullWidth
             />
 
             <TextField
@@ -166,27 +201,18 @@ const Appearance = () => {
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  profile: {
-                    ...settings.profile,
-                    email: e.target.value,
-                  },
+                  profile: { ...settings.profile, email: e.target.value },
                 })
               }
-              fullWidth
             />
 
-            {/* Goal Select */}
-            <FormControl fullWidth>
+            <FormControl>
               <InputLabel>{t("mainFocus")}</InputLabel>
-
               <Select
-                label={t("mainFocus")}
                 value={settings.goal}
+                label={t("mainFocus")}
                 onChange={(e) =>
-                  setSettings({
-                    ...settings,
-                    goal: e.target.value,
-                  })
+                  setSettings({ ...settings, goal: e.target.value })
                 }
               >
                 <MenuItem value="study">📚 {t("study")}</MenuItem>
@@ -196,15 +222,16 @@ const Appearance = () => {
               </Select>
             </FormControl>
 
-            {/* Save Button */}
             <Box display="flex" justifyContent="flex-end">
               <Button variant="contained">
                 {t("saveProfile")}
               </Button>
             </Box>
+
           </Box>
         </CardContent>
       </Card>
+
     </Box>
   );
 };

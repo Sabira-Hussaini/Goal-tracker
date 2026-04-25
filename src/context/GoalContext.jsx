@@ -4,30 +4,80 @@ import { getGoals, saveGoals } from "../utils/storage";
 export const GoalContext = createContext();
 
 export const GoalProvider = ({ children }) => {
+  
   const [goals, setGoals] = useState([]);
+  const [events, setEvents] = useState([]);
 
+ 
   useEffect(() => {
     setGoals(getGoals());
+
+    const storedEvents = localStorage.getItem("events");
+    if (storedEvents) {
+      setEvents(JSON.parse(storedEvents));
+    }
   }, []);
 
+ 
   useEffect(() => {
     saveGoals(goals);
   }, [goals]);
 
-  const addGoal = (goal) => {
-    setGoals([...goals, goal]);
+
+  useEffect(() => {
+    localStorage.setItem("events", JSON.stringify(events));
+  }, [events]);
+
+ 
+  const addEvent = (type, goalId = null) => {
+    const newEvent = {
+      id: Date.now(),
+      type,
+      goalId,
+      date: new Date().toISOString().split("T")[0],
+    };
+
+    setEvents((prev) => [...prev, newEvent]);
   };
 
-  const updateGoal = (id, updated) => {
-    setGoals(goals.map(g => g.id === id ? updated : g));
+
+  const addGoal = (goal) => {
+    setGoals((prev) => [...prev, goal]);
+
+    addEvent("CREATE_GOAL", goal.id);
+  };
+
+  const updateGoal = (id, updatedGoal) => {
+    setGoals((prev) =>
+      prev.map((g) => (g.id === id ? updatedGoal : g))
+    );
+
+  
+    if (updatedGoal.completed) {
+      addEvent("COMPLETE_GOAL", id);
+    }
   };
 
   const deleteGoal = (id) => {
-    setGoals(goals.filter(g => g.id !== id));
+    setGoals((prev) => prev.filter((g) => g.id !== id));
+
+    addEvent("DELETE_GOAL", id);
   };
 
+
   return (
-    <GoalContext.Provider value={{ goals, addGoal, updateGoal, deleteGoal }}>
+    <GoalContext.Provider
+      value={{
+        goals,
+        events,
+
+        addGoal,
+        updateGoal,
+        deleteGoal,
+
+        addEvent,
+      }}
+    >
       {children}
     </GoalContext.Provider>
   );
