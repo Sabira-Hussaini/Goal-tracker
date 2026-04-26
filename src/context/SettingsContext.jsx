@@ -3,21 +3,21 @@ import { createContext, useEffect, useState } from "react";
 export const SettingsContext = createContext();
 
 const defaultSettings = {
-  timeZone: "Asia/Kabul",
-
-timeFormat: "24h",
-dateFormat: "YYYY-MM-DD",
+  timezone: "Asia/Kabul",
 
   timeFormat: "24h",
   dateFormat: "YYYY-MM-DD",
 
   themeMode: "light",
   language: "fa",
+
   profile: {
     name: "",
     email: "",
   },
+
   goal: "study",
+
   preferences: {
     reminder: false,
     animations: true,
@@ -33,10 +33,12 @@ export const SettingsProvider = ({ children }) => {
       return {
         ...defaultSettings,
         ...saved,
+
         profile: {
           ...defaultSettings.profile,
           ...saved.profile,
         },
+
         preferences: {
           ...defaultSettings.preferences,
           ...saved.preferences,
@@ -52,7 +54,7 @@ export const SettingsProvider = ({ children }) => {
   }, [settings]);
 
   const resetSettings = () => {
-    setSettings({ ...defaultSettings });
+    setSettings(defaultSettings);
     localStorage.removeItem("settings");
   };
 
