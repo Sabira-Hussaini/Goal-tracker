@@ -1,5 +1,4 @@
 import { Card, CardContent, Box, Typography } from "@mui/material";
-import EmptyState from "./EmptyState";
 import GoalCard from "./form/GoalCard";
 
 const GoalList = ({ goals = [], filter = "all", search = "" }) => {

@@ -15,7 +15,7 @@ export default function DashboardHero() {
   return (
     <Card
       sx={{
-        width: "93%",
+        width: "100%",
         maxWidth: 900,
         backgroundColor: "#e6eff7",
         borderRadius: 3,

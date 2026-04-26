@@ -2,7 +2,6 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-
 import RequiredInput from "./RequiredInput";
 import { useLanguage } from "../../../i18n/useLanguage";
 
@@ -13,7 +12,6 @@ export default function FormContent() {
   const handleAddGoal = (newGoal) => {
     setGoals((prev) => [...prev, newGoal]);
   };
-
   return (
     <Card
       sx={{

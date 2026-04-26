@@ -1,4 +1,5 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Typography, Box } from "@mui/material";
+import GoalCard from "../goal/form/GoalCard";
 import { useLanguage } from "../../i18n/useLanguage";
 
 const MAX_ITEMS = 5;
@@ -15,7 +16,7 @@ const RecentActivity = ({ activities = [] }) => {
   return (
     <Card
       sx={{
-        
+        mb: 2,
         bgcolor: "background.paper",
         color: "text.primary",
         backgroundImage: "none",
@@ -23,20 +24,18 @@ const RecentActivity = ({ activities = [] }) => {
       }}
     >
       <CardContent>
-        <Typography variant="h6">
-          {t("recentActivity")}
-        </Typography>
+        <Typography variant="h6">Recent Activity</Typography>
 
         {!hasActivities ? (
           <Typography color="text.secondary">
             {t("noActivity")}
           </Typography>
         ) : (
-          recentActivities.map((activity) => (
-            <Typography key={activity.id}>
-              {activity.text}
-            </Typography>
-          ))
+          <Box className="grid grid-cols-2 gap-4 mt-3">
+            {recentActivities.map((goal, index) => (
+              <GoalCard key={index} goal={goal} />
+            ))}
+          </Box>
         )}
       </CardContent>
     </Card>

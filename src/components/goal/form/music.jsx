@@ -55,8 +55,6 @@ const { t } = useLanguage();
              {t("stayFocused")}
           </Typography>
         </CardContent>
-
-        {/* کنترل موزیک */}
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
           <IconButton aria-label="previous">
             {theme.direction === "rtl" ? (
