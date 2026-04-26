@@ -25,9 +25,9 @@ export default function RequiredInput({ onAddGoal }) {
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
 
-  // states
   const [session, setSession] = useState("");
   const [priority, setPriority] = useState("");
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [category, setCategory] = useState("");
   const [goalType, setGoalType] = useState("");
   const [title, setTitle] = useState("");
@@ -36,26 +36,24 @@ export default function RequiredInput({ onAddGoal }) {
   const [endDate, setEndDate] = useState("");
   const [deadline, setDeadline] = useState("");
   const [description, setDescription] = useState("");
-
   const [errors, setErrors] = useState({});
-  const [openConfirm, setOpenConfirm] = useState(false);
   const [tempGoal, setTempGoal] = useState(null);
 
   const handleCreateGoal = () => {
     let newError = {};
 
-    if (!title) newError.title = "Required";
-    if (!category) newError.category = "Required";
-    if (!goalType) newError.goalType = "Required";
-    if (!target) newError.target = "Required";
-    if (!session) newError.session = "Required";
-    if (!priority) newError.priority = "Required";
-    if (!startDate) newError.startDate = "Required";
-    if (!endDate) newError.endDate = "Required";
-    if (!deadline) newError.deadline = "Required";
+    if (!title) newError.title = t("titleRequired");
+    if (!category) newError.category = t("categoryRequired");
+    if (!goalType) newError.goalType = t("goalTypeRequired");
+    if (!target) newError.target = t("targetRequired");
+    if (!session) newError.session = t("sessionRequired");
+    if (!priority) newError.priority = t("priorityRequired");
+    if (!startDate) newError.startDate = t("startDateRequired");
+    if (!endDate) newError.endDate = t("endDateRequired");
+    if (!deadline) newError.deadline = t("deadlineRequired");
 
     if (startDate && endDate && startDate > endDate) {
-      newError.endDate = "End date must be after start date";
+      newError.endDate = t("endDateAfter");
     }
 
     setErrors(newError);
@@ -73,7 +71,6 @@ export default function RequiredInput({ onAddGoal }) {
         deadline,
         description,
       };
-
       setTempGoal(newGoal);
       setOpenConfirm(true);
     }
@@ -93,11 +90,10 @@ export default function RequiredInput({ onAddGoal }) {
     setErrors({});
   };
 
-  const onConfirm = () => {
+  const handleConfirm = () => {
     if (tempGoal) {
       onAddGoal?.(tempGoal);
     }
-
     handleCancel();
     setTempGoal(null);
     setOpenConfirm(false);
@@ -109,24 +105,23 @@ export default function RequiredInput({ onAddGoal }) {
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
-            label="Title"
+            label={t("title")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             error={!!errors.title}
             helperText={errors.title}
           />
         </Grid>
+
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
-            label="Category"
+            label={t("category")}
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             error={!!errors.category}
-            placeholder="Select Category"
             helperText={errors.category}
-            sx={{ width: "200px" }}
           >
             {categories.map((item) => (
               <MenuItem key={item} value={item}>
@@ -135,16 +130,16 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
-            label="Goal Type"
+            label={t("goalType")}
             value={goalType}
             onChange={(e) => setGoalType(e.target.value)}
             error={!!errors.goalType}
             helperText={errors.goalType}
-            sx={{ width: "200px" }}
           >
             {goalTypes.map((item) => (
               <MenuItem key={item} value={item}>
@@ -153,27 +148,28 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             type="number"
-            label="Target"
+            label={t("target")}
             value={target}
             onChange={(e) => setTarget(e.target.value)}
             error={!!errors.target}
             helperText={errors.target}
           />
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             select
             fullWidth
-            label="Session"
+            label={t("session")}
             value={session}
             onChange={(e) => setSession(e.target.value)}
             error={!!errors.session}
             helperText={errors.session}
-            sx={{ width: "170px" }}
           >
             {sessions.map((item) => (
               <MenuItem key={item} value={item}>
@@ -187,12 +183,11 @@ export default function RequiredInput({ onAddGoal }) {
           <TextField
             select
             fullWidth
-            label="Priority"
+            label={t("priority")}
             value={priority}
             onChange={(e) => setPriority(e.target.value)}
             error={!!errors.priority}
             helperText={errors.priority}
-            sx={{ width: "170px" }}
           >
             {priorities.map((item) => (
               <MenuItem key={item} value={item}>
@@ -206,13 +201,12 @@ export default function RequiredInput({ onAddGoal }) {
           <TextField
             fullWidth
             type="date"
-            label="Start Date"
+            label={t("startDate")}
             InputLabelProps={{ shrink: true }}
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             error={!!errors.startDate}
             helperText={errors.startDate}
-            sx={{ width: "200px" }}
           />
         </Grid>
 
@@ -220,13 +214,12 @@ export default function RequiredInput({ onAddGoal }) {
           <TextField
             fullWidth
             type="date"
-            label="End Date"
+            label={t("endDate")}
             InputLabelProps={{ shrink: true }}
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
             error={!!errors.endDate}
             helperText={errors.endDate}
-            sx={{ width: "200px" }}
           />
         </Grid>
 
@@ -234,41 +227,43 @@ export default function RequiredInput({ onAddGoal }) {
           <TextField
             fullWidth
             type="date"
-            label="Deadline"
+            label={t("deadline")}
             InputLabelProps={{ shrink: true }}
             value={deadline}
             onChange={(e) => setDeadline(e.target.value)}
             error={!!errors.deadline}
             helperText={errors.deadline}
-            sx={{ width: "200px" }}
           />
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Box sx={{ display: "flex", justifyContent: "center" }}>
-            <TextField
-              multiline
-              rows={3}
-              label="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              sx={{
-                width: "100%",
-                maxWidth: 640,
-              }}
-            />
-          </Box>
+        <Grid item xs={12} md={12}>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            label={t("description")}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Item>{t("requiredField")}</Item>
         </Grid>
       </Grid>
-      <Box sx={{ display: "flex", gap: 2, justifyContent: "flex-end", mt: 2 }}>
-        <Button variant="outlined" onClick={handleCancel}>
-          Cancel
-        </Button>
 
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 1 }}>
+        <Button onClick={handleCancel}>{t("cancel")}</Button>
         <Button variant="contained" onClick={handleCreateGoal}>
-          Submit
+          {t("create")}
         </Button>
       </Box>
+
+      <CreateGoal
+        open={openConfirm}
+        onClose={() => setOpenConfirm(false)}
+        onConfirm={handleConfirm}
+      />
     </Box>
   );
 }
