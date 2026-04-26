@@ -1,192 +1,147 @@
 import * as React from "react";
-import { styled, alpha } from "@mui/material/styles";
-import { Button } from "@mui/material";
- import { useLanguage } from "../i18n/useLanguage";
- import { Link } from "react-router-dom";
+import { styled } from "@mui/material/styles";
+import { useLanguage } from "../i18n/useLanguage";
+import { useContext } from "react";
+import { SettingsContext } from "../context/SettingsContext";
+import { Link } from "react-router-dom";
 
- import AppBar from "@mui/material/AppBar";
- import Box from "@mui/material/Box";
- import Toolbar from "@mui/material/Toolbar";
- import IconButton from "@mui/material/IconButton";
- import Typography from "@mui/material/Typography";
- import InputBase from "@mui/material/InputBase";
- import MenuItem from "@mui/material/MenuItem";
- import Menu from "@mui/material/Menu";
- import Badge from "@mui/material/Badge";
- import Drawer from "@mui/material/Drawer";
- import List from "@mui/material/List";
- import ListItem from "@mui/material/ListItem";
- import ListItemButton from "@mui/material/ListItemButton";
- import ListItemText from "@mui/material/ListItemText";
- import useMediaQuery from "@mui/material/useMediaQuery";
- import { useTheme } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import InputBase from "@mui/material/InputBase";
+import Button from "@mui/material/Button";
 
- import MenuIcon from "@mui/icons-material/Menu";
- import SearchIcon from "@mui/icons-material/Search";
- import AccountCircle from "@mui/icons-material/AccountCircle";
- import NotificationsIcon from "@mui/icons-material/Notifications";
- import DarkModeIcon from "@mui/icons-material/DarkMode";
- import TranslateIcon from "@mui/icons-material/Translate";
+import MenuIcon from "@mui/icons-material/Menu";
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import TranslateIcon from "@mui/icons-material/Translate";
 
- import logo from "../assets/logo.jpeg";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
+import logo from "../assets/logo1.png";
 
- /* ================= SEARCH ================= */
- const Search = styled("div")(({ theme }) => ({
-   position: "relative",
-   borderRadius: theme.shape.borderRadius,
-   border: "1px solid #ccc",
-   marginLeft: 0,
-   width: "100%",
-   [theme.breakpoints.up("sm")]: {
-     marginLeft: theme.spacing(2),
-     width: "auto",
-   },
- }));
+/* SEARCH */
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  border: "1px solid #ccc",
+  borderRadius: 8,
+  padding: "2px 8px",
+  display: "flex",
+  alignItems: "center",
+}));
 
- const SearchIconWrapper = styled("div")(() => ({
-   padding: "0 10px",
-   height: "100%",
-   position: "absolute",
-   display: "flex",
-   alignItems: "center",
- }));
+const SearchIconWrapper = styled("div")(() => ({
+  marginRight: 6,
+  display: "flex",
+  alignItems: "center",
+}));
 
- const StyledInputBase = styled(InputBase)(() => ({
-   color: "inherit",
-   paddingLeft: "35px",
-   width: "100%",
- }));
+const StyledInputBase = styled(InputBase)(() => ({
+  fontSize: 14,
+}));
 
- /* ================= COMPONENT ================= */
- export default function PrimarySearchAppBar() {
-   const { t } = useLanguage();
-   const theme = useTheme();
-   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-   
+export default function PrimarySearchAppBar() {
+  const { t, lang } = useLanguage();
+  const { settings, setSettings } = useContext(SettingsContext);
 
-   const [mobileOpen, setMobileOpen] = React.useState(false);
-   const [anchorEl, setAnchorEl] = React.useState(null);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-   const pages = [
-     { id: 1, name: t("dashboard"), to: "/" },
-     { id: 2, name: t("goals"), to: "/goals" },
-     { id: 3, name: t("categories"), to: "/categories" },
-     { id: 4, name: t("settings"), to: "/setting" },
-   ];
+  /* LANGUAGE */
+  const handleLanguageChange = () => {
+    setSettings({
+      ...settings,
+      language: lang === "en" ? "fa" : "en",
+    });
+  };
 
-   const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
-   const handleProfileMenuOpen = (event) => setAnchorEl(event.currentTarget);
-   const handleMenuClose = () => setAnchorEl(null);
+  /* THEME */
+  const toggleTheme = () => {
+    setSettings({
+      ...settings,
+      themeMode: settings.themeMode === "light" ? "dark" : "light",
+    });
+  };
 
-   return (
-     <Box>
-       <AppBar
-         position="static"
-         sx={{
-           bgcolor: "background.paper",
-           color: "text.primary",
-           backgroundImage: "none",
-           boxShadow: 3,
-         }}
-       >
-         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-           {/* LEFT */}
-           <Box sx={{ display: "flex", alignItems: "center" }}>
-             {isMobile && (
-               <IconButton onClick={handleDrawerToggle}>
-                 <MenuIcon />
-               </IconButton>
-             )}
+  const pages = [
+    { id: 1, key: "dashboard", to: "/" },
+    { id: 2, key: "goals", to: "/goals" },
+    { id: 3, key: "categories", to: "/categories" },
+    { id: 4, key: "settings", to: "/setting" },
+  ];
 
-             <Box
-               component="img"
-               src={logo}
-               alt="logo"
-               sx={{ width: 40, height: 40, borderRadius: 2, ml: 1 }}
-             />
+  return (
+    <AppBar
+      position="static"
+      sx={{
+        bgcolor: "background.paper",
+        color: "text.primary",
+        boxShadow: 1,
+      }}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        {/* LEFT */}
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <img src={logo} width={50} alt="logo" />
+          <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+            Goal Tracker
+          </Typography>
+        </Box>
 
-             <Typography variant="h6" sx={{ ml: 1, fontWeight: "bold" }}>
-               Goal-Tracker
-             </Typography>
-           </Box>
+        {/* CENTER */}
+        {!isMobile && (
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            {/* NAV LINKS */}
+            {pages.map((p) => (
+              <Button
+                key={p.id}
+                component={Link}
+                to={p.to}
+                sx={{ fontSize: "17px" }}
+              >
+                {t(p.key)}
+              </Button>
+            ))}
 
-           {/* CENTER */}
-           {!isMobile && (
-             <Box sx={{ display: "flex", gap: 2 }}>
-               {pages.map((page) => (
-                 <Button
-                   key={page.id}
-                   component={Link}
-                   to={page.to}
-                   sx={{
-                     color: "text.primary",
-                     fontSize: "16px",
-                     textTransform: "none",
-                   }}
-                 >
-                   {page.name}
-                 </Button>
-               ))}
-             </Box>
-           )}
+            {/* SEARCH */}
+            {/* SEARCH */}
+            {!isMobile && (
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon fontSize="small" />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder={t("search")} />
+              </Search>
+            )}
+          </Box>
+        )}
 
-           {/* RIGHT */}
-           <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-             {!isMobile && (
-               <Search>
-                 <SearchIconWrapper>
-                   <SearchIcon />
-                 </SearchIconWrapper>
-                 <StyledInputBase placeholder={t("search")} />
-               </Search>
-             )}
+        {/* RIGHT */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          {/* LANGUAGE */}
+          <IconButton onClick={handleLanguageChange}>
+            <TranslateIcon />
+          </IconButton>
 
-             <IconButton>
-               <TranslateIcon>
-                 {/* <Typography>{t("language")}</Typography> */}
-               </TranslateIcon>
-             </IconButton>
+          {/* THEME */}
+          <IconButton onClick={toggleTheme}>
+            {settings.themeMode === "light" ? (
+              <DarkModeIcon />
+            ) : (
+              <LightModeIcon />
+            )}
+          </IconButton>
 
-             <IconButton>
-               <DarkModeIcon />
-             </IconButton>
-
-             <IconButton onClick={handleProfileMenuOpen}>
-               <AccountCircle />
-             </IconButton>
-           </Box>
-         </Toolbar>
-       </AppBar>
-
-       {/* DRAWER */}
-       <Drawer anchor="left" open={mobileOpen} onClose={handleDrawerToggle}>
-         <Box sx={{ width: 250 }}>
-           <List>
-             {pages.map((page) => (
-               <ListItem key={page.id} disablePadding>
-                 <ListItemButton
-                   component={Link}
-                   to={page.to}
-                   onClick={handleDrawerToggle}
-                 >
-                   <ListItemText primary={page.name} />
-                 </ListItemButton>
-               </ListItem>
-             ))}
-           </List>
-         </Box>
-       </Drawer>
-
-       {/* PROFILE MENU */}
-       <Menu
-         anchorEl={anchorEl}
-         open={Boolean(anchorEl)}
-         onClose={handleMenuClose}
-       >
-         <MenuItem onClick={handleMenuClose}>{t("profile")}</MenuItem>
-         <MenuItem onClick={handleMenuClose}>{t("myAccount")}</MenuItem>
-       </Menu>
-     </Box>
-   );
- }
+          <IconButton>
+            <AccountCircle />
+          </IconButton>
+        </Box>
+      </Toolbar>
+    </AppBar>
+  );
+}

@@ -27,46 +27,33 @@ export default function GoalCard({ goal }) {
             mb: 1,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-            }}
-          >
-            {" "}
-            {goal.title}{" "}
-          </Typography>{" "}
+          <Typography variant="h6" fontWeight="bold">
+            {goal.title}
+          </Typography>
+
           <Chip
             label={goal.priority}
             size="small"
             color={getPriorityColor(goal.priority)}
-          />{" "}
-        </Box>{" "}
+          />
+        </Box>
+
         <Typography variant="body2" color="text.secondary">
-          {" "}
-          📂{goal.category}{" "}
-        </Typography>{" "}
-        <Typography
-          variant="body2"
-          sx={{
-            mt: 1,
-          }}
-        >
-          {" "}
-          🎯{goal.target} {goal.session}{" "}
-        </Typography>{" "}
+          📂 {goal.category}
+        </Typography>
+
+        <Typography variant="body2" sx={{ mt: 1 }}>
+          🎯 {goal.target} {goal.session}
+        </Typography>
+
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{
-            mt: 1,
-            display: "block",
-          }}
+          sx={{ mt: 1, display: "block" }}
         >
-          {" "}
-          📅{goal.startDate}→ {goal.endDate}{" "}
-        </Typography>{" "}
-      </CardContent>{" "}
+          📅 {goal.startDate} → {goal.endDate}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }
