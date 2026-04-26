@@ -1,269 +1,246 @@
-import { styled } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
-import CreateGoal from "./CreateGoal";
-import { useLanguage } from "../../../i18n/useLanguage";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
+import { Box, Grid, TextField, MenuItem, Button, Paper } from "@mui/material";
+import { useNavigate } from "react-router-dom"; // <-- برای هدایت به صفحه Goals
 
 export default function RequiredInput({ onAddGoal }) {
-  const { t } = useLanguage();
+  const navigate = useNavigate(); // <-- برای هدایت
 
   const sessions = ["Pages", "Minutes", "Hours"];
   const categories = ["Study", "Work", "Sport", "Health", "Hobby", "Finance"];
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
 
-  const [session, setSession] = useState("");
-  const [priority, setPriority] = useState("");
-  const [openConfirm, setOpenConfirm] = useState(false);
-  const [category, setCategory] = useState("");
-  const [goalType, setGoalType] = useState("");
-  const [title, setTitle] = useState("");
-  const [target, setTarget] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [deadline, setDeadline] = useState("");
-  const [description, setDescription] = useState("");
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    goalType: "",
+    target: "",
+    session: "",
+    priority: "",
+    startDate: "",
+    endDate: "",
+    deadline: "",
+    description: "",
+  });
   const [errors, setErrors] = useState({});
-  const [tempGoal, setTempGoal] = useState(null);
 
-  const handleCreateGoal = () => {
-    let newError = {};
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: "" });
+  };
 
-    if (!title) newError.title = t("titleRequired");
-    if (!category) newError.category = t("categoryRequired");
-    if (!goalType) newError.goalType = t("goalTypeRequired");
-    if (!target) newError.target = t("targetRequired");
-    if (!session) newError.session = t("sessionRequired");
-    if (!priority) newError.priority = t("priorityRequired");
-    if (!startDate) newError.startDate = t("startDateRequired");
-    if (!endDate) newError.endDate = t("endDateRequired");
-    if (!deadline) newError.deadline = t("deadlineRequired");
+  const validate = () => {
+    let newErrors = {};
+    if (!formData.title) newErrors.title = "Title required";
+    if (!formData.category) newErrors.category = "Category required";
+    if (!formData.goalType) newErrors.goalType = "Goal type required";
+    if (!formData.target) newErrors.target = "Target required";
+    if (!formData.session) newErrors.session = "Session required";
+    if (!formData.priority) newErrors.priority = "Priority required";
+    if (!formData.startDate) newErrors.startDate = "Start date required";
+    if (!formData.endDate) newErrors.endDate = "End date required";
+    if (!formData.deadline) newErrors.deadline = "Deadline required";
+    return newErrors;
+  };
 
-    if (startDate && endDate && startDate > endDate) {
-      newError.endDate = t("endDateAfter");
+  const handleSubmit = () => {
+    const newErrors = validate();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
     }
 
-    setErrors(newError);
+    // ساختن Goal جدید
+    const newGoal = {
+      ...formData,
+      id: Date.now(),
+      status: "active",
+      createdAt: new Date().toISOString(),
+    };
 
-    if (Object.keys(newError).length === 0) {
-      const newGoal = {
-        title,
-        category,
-        goalType,
-        target,
-        session,
-        priority,
-        startDate,
-        endDate,
-        deadline,
-        description,
-      };
-      setTempGoal(newGoal);
-      setOpenConfirm(true);
+    console.log("✅ Goal ساخته شد:", newGoal);
+
+    // ارسال داده به GoalPage
+    if (onAddGoal) {
+      onAddGoal(newGoal);
     }
+
+    // هدایت به صفحه Goals
+    navigate('/goals'); // مسیر صفحه Goals را وارد کن
   };
 
   const handleCancel = () => {
-    setTitle("");
-    setCategory("");
-    setGoalType("");
-    setTarget("");
-    setSession("");
-    setPriority("");
-    setStartDate("");
-    setEndDate("");
-    setDeadline("");
-    setDescription("");
+    setFormData({
+      title: "",
+      category: "",
+      goalType: "",
+      target: "",
+      session: "",
+      priority: "",
+      startDate: "",
+      endDate: "",
+      deadline: "",
+      description: "",
+    });
     setErrors({});
   };
 
-  const handleConfirm = () => {
-    if (tempGoal) {
-      onAddGoal?.(tempGoal);
-    }
-    handleCancel();
-    setTempGoal(null);
-    setOpenConfirm(false);
-  };
-
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
-            label={t("title")}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            name="title"
+            label="Title"
+            value={formData.title}
+            onChange={handleChange}
             error={!!errors.title}
             helperText={errors.title}
           />
         </Grid>
-
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
-            label={t("category")}
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            name="category"
+            label="Category"
+            value={formData.category}
+            onChange={handleChange}
             error={!!errors.category}
             helperText={errors.category}
           >
-            {categories.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+            {categories.map((c) => (
+              <MenuItem key={c} value={c}>
+                {c}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
-            label={t("goalType")}
-            value={goalType}
-            onChange={(e) => setGoalType(e.target.value)}
+            name="goalType"
+            label="Goal Type"
+            value={formData.goalType}
+            onChange={handleChange}
             error={!!errors.goalType}
             helperText={errors.goalType}
           >
-            {goalTypes.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+            {goalTypes.map((g) => (
+              <MenuItem key={g} value={g}>
+                {g}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             type="number"
-            label={t("target")}
-            value={target}
-            onChange={(e) => setTarget(e.target.value)}
+            name="target"
+            label="Target"
+            value={formData.target}
+            onChange={handleChange}
             error={!!errors.target}
             helperText={errors.target}
           />
         </Grid>
-
         <Grid item xs={12} md={4}>
           <TextField
             select
             fullWidth
-            label={t("session")}
-            value={session}
-            onChange={(e) => setSession(e.target.value)}
+            name="session"
+            label="Session"
+            value={formData.session}
+            onChange={handleChange}
             error={!!errors.session}
             helperText={errors.session}
           >
-            {sessions.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+            {sessions.map((s) => (
+              <MenuItem key={s} value={s}>
+                {s}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-
         <Grid item xs={12} md={4}>
           <TextField
             select
             fullWidth
-            label={t("priority")}
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
+            name="priority"
+            label="Priority"
+            value={formData.priority}
+            onChange={handleChange}
             error={!!errors.priority}
             helperText={errors.priority}
           >
-            {priorities.map((item) => (
-              <MenuItem key={item} value={item}>
-                {item}
+            {priorities.map((p) => (
+              <MenuItem key={p} value={p}>
+                {p}
               </MenuItem>
             ))}
           </TextField>
         </Grid>
-
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
-            label={t("startDate")}
+            name="startDate"
+            label="Start Date"
             InputLabelProps={{ shrink: true }}
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+            value={formData.startDate}
+            onChange={handleChange}
             error={!!errors.startDate}
             helperText={errors.startDate}
           />
         </Grid>
-
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
-            label={t("endDate")}
+            name="endDate"
+            label="End Date"
             InputLabelProps={{ shrink: true }}
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+            value={formData.endDate}
+            onChange={handleChange}
             error={!!errors.endDate}
             helperText={errors.endDate}
           />
         </Grid>
-
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
-            label={t("deadline")}
+            name="deadline"
+            label="Deadline"
             InputLabelProps={{ shrink: true }}
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
+            value={formData.deadline}
+            onChange={handleChange}
             error={!!errors.deadline}
             helperText={errors.deadline}
           />
         </Grid>
-
-        <Grid item xs={12} md={12}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             multiline
             rows={3}
-            label={t("description")}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            name="description"
+            label="Description"
+            value={formData.description}
+            onChange={handleChange}
           />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Item>{t("requiredField")}</Item>
         </Grid>
       </Grid>
 
-      <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 2, gap: 1 }}>
-        <Button onClick={handleCancel}>{t("cancel")}</Button>
-        <Button variant="contained" onClick={handleCreateGoal}>
-          {t("create")}
+      <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
+        <Button onClick={handleCancel}>Cancel</Button>
+        <Button variant="contained" onClick={handleSubmit}>
+          Create Goal
         </Button>
       </Box>
-
-      <CreateGoal
-        open={openConfirm}
-        onClose={() => setOpenConfirm(false)}
-        onConfirm={handleConfirm}
-      />
     </Box>
   );
 }
