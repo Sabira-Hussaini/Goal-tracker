@@ -1,17 +1,27 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
 import RequiredInput from "./RequiredInput";
 import { useLanguage } from "../../../i18n/useLanguage";
+import { useContext } from "react";
+import { GoalContext } from "../../../context/GoalContext";
+import { CategoryContext } from "../../../context/CategoryContext";
 
 export default function FormContent() {
-  const [goals, setGoals] = useState([]);
   const { t } = useLanguage();
+  const { addGoal } = useContext(GoalContext);
+  const { addGoalToCategory } = useContext(CategoryContext);
 
   const handleAddGoal = (newGoal) => {
-    setGoals((prev) => [...prev, newGoal]);
+    // 1. global goals list
+    addGoal(newGoal);
+
+    // 2. connect to category
+    if (newGoal?.category) {
+      addGoalToCategory(newGoal.category, newGoal);
+    }
   };
+
   return (
     <Card
       sx={{

@@ -1,15 +1,21 @@
 import { Card, CardContent, Box, Typography } from "@mui/material";
 import GoalCard from "./form/GoalCard";
+import { useContext } from "react";
+import { GoalContext } from "../../context/GoalContext";
 
-const GoalList = ({ goals = [], filter = "all", search = "" }) => {
+const GoalList = ({ filter = "all", search = "" }) => {
+  const { goals } = useContext(GoalContext);
+
   let filtered = [...goals];
 
-  // filter
+  // ✅ FIX: safe status filtering (case + undefined safe)
   if (filter !== "all") {
-    filtered = filtered.filter((g) => g.status === filter);
+    filtered = filtered.filter(
+      (g) => (g.status || "active").toLowerCase() === filter
+    );
   }
 
-  // search
+  // search filter (safe)
   filtered = filtered.filter((g) =>
     g?.title?.toLowerCase().includes(search.toLowerCase())
   );
@@ -17,7 +23,6 @@ const GoalList = ({ goals = [], filter = "all", search = "" }) => {
   return (
     <Card sx={{ mt: 2, borderRadius: 3 }}>
       <CardContent>
-        {/* EMPTY STATE */}
         {filtered.length === 0 ? (
           <Typography
             textAlign="center"
@@ -26,10 +31,9 @@ const GoalList = ({ goals = [], filter = "all", search = "" }) => {
             گولی وجود ندارد
           </Typography>
         ) : (
-          /* GOALS LIST */
           <Box className="grid grid-cols-3 gap-4 mt-5">
             {filtered.map((goal) => (
-              <GoalCard key={goal.id || goal.title} goal={goal} />
+              <GoalCard key={goal.id} goal={goal} />
             ))}
           </Box>
         )}

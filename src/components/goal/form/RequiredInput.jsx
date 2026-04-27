@@ -1,12 +1,33 @@
-import { useState } from "react";
-import { Box, Grid, TextField, MenuItem, Button, Paper } from "@mui/material";
-import { useNavigate } from "react-router-dom"; // <-- برای هدایت به صفحه Goals
+import { useState, useContext } from "react";
+import { Box, Grid, TextField, MenuItem, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { CategoryContext } from "../../../context/CategoryContext";
 
 export default function RequiredInput({ onAddGoal }) {
-  const navigate = useNavigate(); // <-- برای هدایت
+  const navigate = useNavigate();
+
+  // ✅ dynamic categories from context
+  const { categories: customCategories } = useContext(CategoryContext);
+
+  // ✅ default categories (always exist)
+  const defaultCategories = [
+    "Study",
+    "Work",
+    "Sport",
+    "Health",
+    "Hobby",
+    "Finance",
+  ];
+
+  // ✅ merge + remove duplicates
+  const mergedCategories = [
+    ...defaultCategories,
+    ...customCategories.map((c) => c.name),
+  ];
+
+  const categories = [...new Set(mergedCategories)];
 
   const sessions = ["Pages", "Minutes", "Hours"];
-  const categories = ["Study", "Work", "Sport", "Health", "Hobby", "Finance"];
   const priorities = ["High", "Medium", "Low"];
   const goalTypes = ["Daily", "Count Base", "Time Based"];
 
@@ -22,6 +43,7 @@ export default function RequiredInput({ onAddGoal }) {
     deadline: "",
     description: "",
   });
+
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -45,28 +67,43 @@ export default function RequiredInput({ onAddGoal }) {
 
   const handleSubmit = () => {
     const newErrors = validate();
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    // ساختن Goal جدید
     const newGoal = {
-      ...formData,
       id: Date.now(),
+      ...formData,
+      category: formData.category.trim(),
       status: "active",
+      progress: 0,
       createdAt: new Date().toISOString(),
     };
 
-    console.log("✅ Goal ساخته شد:", newGoal);
-
-    // ارسال داده به GoalPage
-    if (onAddGoal) {
+    if (typeof onAddGoal === "function") {
       onAddGoal(newGoal);
     }
 
-    // هدایت به صفحه Goals
-    navigate('/goals'); // مسیر صفحه Goals را وارد کن
+    setFormData({
+      title: "",
+      category: "",
+      goalType: "",
+      target: "",
+      session: "",
+      priority: "",
+      startDate: "",
+      endDate: "",
+      deadline: "",
+      description: "",
+    });
+
+    setErrors({});
+
+    setTimeout(() => {
+      navigate("/goals");
+    }, 0);
   };
 
   const handleCancel = () => {
@@ -99,6 +136,8 @@ export default function RequiredInput({ onAddGoal }) {
             helperText={errors.title}
           />
         </Grid>
+
+        {/* ✅ CATEGORY (ONLY FIXED LOGIC, NO UI CHANGE) */}
         <Grid item xs={12} md={6}>
           <TextField
             select
@@ -117,6 +156,7 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={6}>
           <TextField
             select
@@ -135,6 +175,7 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
@@ -147,6 +188,7 @@ export default function RequiredInput({ onAddGoal }) {
             helperText={errors.target}
           />
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             select
@@ -165,6 +207,7 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             select
@@ -183,12 +226,12 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="startDate"
-            label="Start Date"
             InputLabelProps={{ shrink: true }}
             value={formData.startDate}
             onChange={handleChange}
@@ -196,12 +239,12 @@ export default function RequiredInput({ onAddGoal }) {
             helperText={errors.startDate}
           />
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="endDate"
-            label="End Date"
             InputLabelProps={{ shrink: true }}
             value={formData.endDate}
             onChange={handleChange}
@@ -209,12 +252,12 @@ export default function RequiredInput({ onAddGoal }) {
             helperText={errors.endDate}
           />
         </Grid>
+
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="deadline"
-            label="Deadline"
             InputLabelProps={{ shrink: true }}
             value={formData.deadline}
             onChange={handleChange}
@@ -222,6 +265,7 @@ export default function RequiredInput({ onAddGoal }) {
             helperText={errors.deadline}
           />
         </Grid>
+
         <Grid item xs={12}>
           <TextField
             fullWidth

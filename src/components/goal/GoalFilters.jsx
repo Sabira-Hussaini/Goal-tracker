@@ -12,14 +12,27 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useLanguage } from "../../i18n/useLanguage";
 
 const GoalFilters = ({
-  filter,
+  filter = "all",
   setFilter,
-  search,
+  search = "",
   setSearch,
-  sort,
+  sort = "newest",
   setSort,
 }) => {
   const { t } = useLanguage();
+
+  // ✅ SAFE HANDLERS (prevents crashes)
+  const handleSearchChange = (e) => {
+    setSearch?.(e.target.value.trimStart());
+  };
+
+  const handleSortChange = (e) => {
+    setSort?.(e.target.value);
+  };
+
+  const handleFilterChange = (e, val) => {
+    setFilter?.(val);
+  };
 
   return (
     <Card
@@ -35,7 +48,7 @@ const GoalFilters = ({
       <CardContent>
         <Tabs
           value={filter}
-          onChange={(e, val) => setFilter(val)}
+          onChange={handleFilterChange}
           variant="scrollable"
         >
           <Tab label={t("all")} value="all" />
@@ -54,7 +67,7 @@ const GoalFilters = ({
             fullWidth
             placeholder={t("searchGoals")}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={handleSearchChange}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -67,7 +80,7 @@ const GoalFilters = ({
           <TextField
             select
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            onChange={handleSortChange}
             sx={{ minWidth: { xs: "100%", md: 200 } }}
           >
             <MenuItem value="newest">{t("newest")}</MenuItem>

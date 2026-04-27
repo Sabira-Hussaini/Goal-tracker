@@ -16,18 +16,13 @@ import {
   DialogActions,
 } from "@mui/material";
 
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { CategoryContext } from "../context/CategoryContext";
 
 const Categories = () => {
-  // SAFE LOAD
-  const [categories, setCategories] = useState(() => {
-    try {
-      const data = localStorage.getItem("categories");
-      return data ? JSON.parse(data) : [];
-    } catch {
-      return [];
-    }
-  });
+  // ✅ GLOBAL STATE (FIXED)
+  const { categories, addCategory, deleteCategory } =
+    useContext(CategoryContext);
 
   const [open, setOpen] = useState(false);
   const [newName, setNewName] = useState("");
@@ -36,77 +31,76 @@ const Categories = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // SAVE
-  useEffect(() => {
-    localStorage.setItem("categories", JSON.stringify(categories));
-  }, [categories]);
-
-  // ADD CATEGORY
+  // ADD CATEGORY (FIXED)
   const handleAddCategory = () => {
     if (!newName.trim()) return;
 
-    const newCategory = {
+    addCategory({
       id: Date.now(),
       name: newName,
       goals: [],
       createdAt: Date.now(),
-    };
+    });
 
-    setCategories((prev) => [...prev, newCategory]);
     setNewName("");
     setOpen(false);
   };
 
   // DELETE CATEGORY (FIXED)
   const handleDeleteCategory = (id) => {
-    setCategories((prev) => prev.filter((c) => c.id !== id));
+    deleteCategory(id);
   };
 
-  // HELPERS
+  // SAFE HELPERS
   const getCategoryProgress = (cat) => {
-    if (!cat.goals || cat.goals.length === 0) return 0;
-    const done = cat.goals.filter((g) => g.completed).length;
-    return Math.round((done / cat.goals.length) * 100);
+    const goals = cat.goals || [];
+
+    if (goals.length === 0) return 0;
+
+    const done = goals.filter((g) => g.completed).length;
+    return Math.round((done / goals.length) * 100);
   };
 
-  // STATS
+  // STATS (SAFE)
   const total = categories.length;
 
   const active = categories.filter((c) =>
-    c.goals.some((g) => !g.completed)
+    (c.goals || []).some((g) => !g.completed)
   ).length;
 
   const completed = categories.filter(
-    (c) => c.goals.length > 0 && c.goals.every((g) => g.completed)
+    (c) =>
+      (c.goals || []).length > 0 &&
+      (c.goals || []).every((g) => g.completed)
   ).length;
 
   const progress =
     categories.length === 0
       ? 0
       : Math.round(
-          categories.reduce((acc, c) => acc + getCategoryProgress(c), 0) /
-            categories.length
+          categories.reduce(
+            (acc, c) => acc + getCategoryProgress(c),
+            0
+          ) / categories.length
         );
 
-  // FILTER
+  // FILTER (SAFE)
   const filtered = categories
     .filter((c) =>
       c.name.toLowerCase().includes(search.toLowerCase())
     )
     .filter((c) => {
+      const goals = c.goals || [];
+
       if (tab === "all") return true;
 
       if (tab === "active")
-        return c.goals.some((g) => !g.completed);
+        return goals.some((g) => !g.completed);
 
       if (tab === "completed")
-        return (
-          c.goals.length > 0 &&
-          c.goals.every((g) => g.completed)
-        );
+        return goals.length > 0 && goals.every((g) => g.completed);
 
-      if (tab === "attention")
-        return c.goals.length === 0;
+      if (tab === "attention") return goals.length === 0;
 
       return true;
     })
@@ -229,14 +223,13 @@ const Categories = () => {
                 </Typography>
 
                 <Typography variant="caption">
-                  {cat.goals.length} goals
+                  {(cat.goals || []).length} goals
                 </Typography>
 
                 <Typography mt={1}>
                   Progress: {getCategoryProgress(cat)}%
                 </Typography>
 
-                {/* DELETE BUTTON */}
                 <Button
                   size="small"
                   color="error"

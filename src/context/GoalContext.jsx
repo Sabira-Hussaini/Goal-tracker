@@ -4,31 +4,20 @@ import { getGoals, saveGoals } from "../utils/storage";
 export const GoalContext = createContext();
 
 export const GoalProvider = ({ children }) => {
-  
-  const [goals, setGoals] = useState([]);
-  const [events, setEvents] = useState([]);
-
- 
-  useEffect(() => {
-    setGoals(getGoals());
-
+  const [goals, setGoals] = useState(() => getGoals() || []);
+  const [events, setEvents] = useState(() => {
     const storedEvents = localStorage.getItem("events");
-    if (storedEvents) {
-      setEvents(JSON.parse(storedEvents));
-    }
-  }, []);
+    return storedEvents ? JSON.parse(storedEvents) : [];
+  });
 
- 
   useEffect(() => {
     saveGoals(goals);
   }, [goals]);
-
 
   useEffect(() => {
     localStorage.setItem("events", JSON.stringify(events));
   }, [events]);
 
- 
   const addEvent = (type, goalId = null) => {
     const newEvent = {
       id: Date.now(),
@@ -40,42 +29,51 @@ export const GoalProvider = ({ children }) => {
     setEvents((prev) => [...prev, newEvent]);
   };
 
-
   const addGoal = (goal) => {
-    setGoals((prev) => [...prev, goal]);
+    const newGoal = {
+      ...goal,
+      id: goal.id || Date.now(),
+      status: goal.status || "active", // ✅ FIX: default status
+    };
 
-    addEvent("CREATE_GOAL", goal.id);
+    setGoals((prev) => [...prev, newGoal]);
+    addEvent("CREATE_GOAL", newGoal.id);
   };
 
   const updateGoal = (id, updatedGoal) => {
     setGoals((prev) =>
       prev.map((g) => (g.id === id ? updatedGoal : g))
     );
-
-  
-    if (updatedGoal.completed) {
-      addEvent("COMPLETE_GOAL", id);
-    }
   };
 
   const deleteGoal = (id) => {
     setGoals((prev) => prev.filter((g) => g.id !== id));
-
     addEvent("DELETE_GOAL", id);
   };
 
+  // ✅ FIXED: STATUS UPDATE FUNCTION (MAIN FIX)
+  const updateGoalStatus = (id, status) => {
+    setGoals((prev) =>
+      prev.map((g) =>
+        g.id === id
+          ? { ...g, status: status.toLowerCase() }
+          : g
+      )
+    );
+
+    addEvent("UPDATE_STATUS", id);
+  };
 
   return (
     <GoalContext.Provider
       value={{
         goals,
         events,
-
         addGoal,
         updateGoal,
         deleteGoal,
-
         addEvent,
+        updateGoalStatus, // ✅ IMPORTANT
       }}
     >
       {children}
