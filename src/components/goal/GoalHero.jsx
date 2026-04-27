@@ -15,12 +15,16 @@ export default function GoalHero() {
 
   return (
     <Card
-      sx={{
+     
+      sx={(theme) => ({
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? theme.palette.grey[900]
+            : theme.palette.secondary.main,
         width: "100%",
-        backgroundColor: "#e6eff7",
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
-      }}
+      })}
     >
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <CardContent>
