@@ -31,12 +31,30 @@ const Appearance = () => {
   const [now, setNow] = useState(new Date());
   const [is24Hour, setIs24Hour] = useState(true);
 
+  /* ⏱ CLOCK */
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // ✅ DATE
+  /* 🔐 GET DATA FROM LOGIN */
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (storedUser) {
+      setSettings((prev) => ({
+        ...prev,
+        profile: {
+          ...prev.profile,
+          name: storedUser.name || "", // ✅ اضافه شد
+          email: storedUser.email || "",
+          phone: storedUser.phone || "",
+        },
+      }));
+    }
+  }, [setSettings]);
+
+  /* DATE */
   const formatDate = () => {
     return now.toLocaleDateString(
       settings.language === "fa" ? "fa-IR" : "en-US",
@@ -49,7 +67,7 @@ const Appearance = () => {
     );
   };
 
-  // ✅ TIME
+  /* TIME */
   const formatTime = () => {
     return now.toLocaleTimeString(
       settings.language === "fa" ? "fa-IR" : "en-US",
@@ -62,6 +80,7 @@ const Appearance = () => {
     );
   };
 
+  /* THEME */
   const toggleTheme = () => {
     setSettings({
       ...settings,
@@ -69,6 +88,7 @@ const Appearance = () => {
     });
   };
 
+  /* LANGUAGE */
   const changeLanguage = (val) => {
     if (!val) return;
 
@@ -87,18 +107,28 @@ const Appearance = () => {
         {t("settingsDesc")}
       </Typography>
 
-      <Box sx={{ display: "flex", gap: 2, flexDirection: { xs: "column", md: "row" } }}>
-
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          flexDirection: { xs: "column", md: "row" },
+        }}
+      >
         {/* LEFT CARD */}
         <Card sx={{ flex: 1.4, boxShadow: 3, borderRadius: 3 }}>
           <CardContent>
-
             <Typography variant="h6" mb={3}>
               {t("appearance")}
             </Typography>
 
             {/* LANGUAGE */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                mb: 3,
+              }}
+            >
               <Typography>{t("language")}</Typography>
 
               <ToggleButtonGroup
@@ -113,7 +143,12 @@ const Appearance = () => {
             </Box>
 
             {/* THEME */}
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
               <Typography>{t("theme")}</Typography>
 
               <IconButton onClick={toggleTheme}>
@@ -124,19 +159,17 @@ const Appearance = () => {
                 )}
               </IconButton>
             </Box>
-
           </CardContent>
         </Card>
 
         {/* RIGHT CARD */}
         <Card sx={{ flex: 1, boxShadow: 3, borderRadius: 3 }}>
           <CardContent>
-
             <Typography variant="h6" mb={2}>
               {t("live_date_time")}
             </Typography>
 
-            {/* toggle */}
+            {/* TOGGLE */}
             <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
               <Box
                 onClick={() => setIs24Hour((p) => !p)}
@@ -170,42 +203,62 @@ const Appearance = () => {
               <PublicIcon fontSize="small" />
               <Typography>{t("timezone_kabul")}</Typography>
             </Box>
-
           </CardContent>
         </Card>
-
       </Box>
 
       {/* PROFILE */}
       <Card sx={{ mt: 4, boxShadow: 3, borderRadius: 3 }}>
         <CardContent>
-
           <Typography variant="h6">{t("profile")}</Typography>
 
           <Box mt={2} display="flex" flexDirection="column" gap={2}>
-
+            {/* NAME */}
             <TextField
               label={t("fullName")}
-              value={settings.profile.name}
+              value={settings.profile.name || ""}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  profile: { ...settings.profile, name: e.target.value },
+                  profile: {
+                    ...settings.profile,
+                    name: e.target.value,
+                  },
                 })
               }
             />
 
+            {/* EMAIL */}
             <TextField
               label={t("email")}
-              value={settings.profile.email}
+              value={settings.profile.email || ""}
               onChange={(e) =>
                 setSettings({
                   ...settings,
-                  profile: { ...settings.profile, email: e.target.value },
+                  profile: {
+                    ...settings.profile,
+                    email: e.target.value,
+                  },
                 })
               }
             />
 
+            {/* PHONE */}
+            <TextField
+              label="Phone Number"
+              value={settings.profile.phone || ""}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  profile: {
+                    ...settings.profile,
+                    phone: e.target.value,
+                  },
+                })
+              }
+            />
+
+            {/* GOAL */}
             <FormControl>
               <InputLabel>{t("mainFocus")}</InputLabel>
               <Select
@@ -223,15 +276,26 @@ const Appearance = () => {
             </FormControl>
 
             <Box display="flex" justifyContent="flex-end">
-              <Button variant="contained">
-                {t("saveProfile")}
-              </Button>
+              <Button variant="contained">{t("saveProfile")}</Button>
             </Box>
+          </Box>
+          <Box display="flex" justifyContent="space-between" mt={2}>
+            <Button variant="contained">{t("saveProfile")}</Button>
 
+            {/* 🔴 LOGOUT */}
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                localStorage.removeItem("user"); // حذف کاربر
+                window.location.href = "/"; // برگشت به لاگین
+              }}
+            >
+              Logout
+            </Button>
           </Box>
         </CardContent>
       </Card>
-
     </Box>
   );
 };
