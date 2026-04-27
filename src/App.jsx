@@ -14,10 +14,13 @@ import Settings from "./pages/Settings";
 import Form from "./components/goal/form/Form";
 import Layout from "./layout/Layout";
 import LoadingScreen from "./LoadingSreen";
+import Login from "./logIn/LogIn";
 
 function App() {
   const { settings } = useContext(SettingsContext);
+
   const [loading, setLoading] = useState(true);
+  const [isAuth, setIsAuth] = useState(false);
 
   /* ⏳ LOADING */
   useEffect(() => {
@@ -28,31 +31,48 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  /* 🔐 CHECK LOGIN */
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.expireTime > Date.now()) {
+      setIsAuth(true);
+    } else {
+      localStorage.removeItem("user");
+      setIsAuth(false);
+    }
+  }, []);
+
   /* 🌍 RTL / LTR */
   useEffect(() => {
     document.documentElement.dir = settings.language === "fa" ? "rtl" : "ltr";
   }, [settings.language]);
 
+  /* ⏳ LOADING SCREEN */
+  if (loading) return <LoadingScreen />;
+
+  /* 🔐 LOGIN PAGE */
+  if (!isAuth) {
+    return <Login onLogin={() => setIsAuth(true)} />;
+  }
+
+  /* ✅ MAIN APP */
   return (
     <ThemeProvider theme={getTheme(settings.themeMode)}>
       <CssBaseline />
 
-      {loading ? (
-        <LoadingScreen />
-      ) : (
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="goals" element={<Goals />} />
-              <Route path="form" element={<Form />} />
-              <Route path="categories" element={<Categories />} />
-              <Route path="setting" element={<Settings />} />
-              <Route path="goals/:id" element={<GoalDetails />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Dashboard />} />
+            <Route path="goals" element={<Goals />} />
+            <Route path="form" element={<Form />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="setting" element={<Settings />} />
+            <Route path="goals/:id" element={<GoalDetails />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

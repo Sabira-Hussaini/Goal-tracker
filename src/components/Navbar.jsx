@@ -87,8 +87,8 @@ export default function PrimarySearchAppBar() {
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* LEFT */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} width={50} alt="logo" />
-          <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+          <img src={logo} width={70} alt="logo" color="primary" />
+          <Typography sx={{ ml: 1 , fontWeight: "bold" }}>
             Goal Tracker
           </Typography>
         </Box>

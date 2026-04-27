@@ -14,7 +14,7 @@ const getTheme = (mode, language) =>
       },
 
       secondary: {
-        main: "#37474F",
+        main: "#e6eff7",
         light: "#62727B",
         dark: "#102027",
         contrastText: "#ffffff",
