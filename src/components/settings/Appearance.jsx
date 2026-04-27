@@ -275,9 +275,7 @@ const Appearance = () => {
               </Select>
             </FormControl>
 
-            <Box display="flex" justifyContent="flex-end">
-              <Button variant="contained">{t("saveProfile")}</Button>
-            </Box>
+           
           </Box>
           <Box display="flex" justifyContent="space-between" mt={2}>
             <Button variant="contained">{t("saveProfile")}</Button>
