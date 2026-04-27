@@ -18,12 +18,15 @@ import {
 
 import { useState, useEffect } from "react";
 
-
 const Categories = () => {
-  
+  // SAFE LOAD
   const [categories, setCategories] = useState(() => {
-    const data = localStorage.getItem("categories");
-    return data ? JSON.parse(data) : [];
+    try {
+      const data = localStorage.getItem("categories");
+      return data ? JSON.parse(data) : [];
+    } catch {
+      return [];
+    }
   });
 
   const [open, setOpen] = useState(false);
@@ -33,12 +36,12 @@ const Categories = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // ✅ SAVE
+  // SAVE
   useEffect(() => {
     localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
 
-  // ================= ADD =================
+  // ADD CATEGORY
   const handleAddCategory = () => {
     if (!newName.trim()) return;
 
@@ -54,22 +57,57 @@ const Categories = () => {
     setOpen(false);
   };
 
-  // ================= STATS =================
-  const total = categories.length;
-  const active = categories.filter(c => c.goals.length > 0).length;
-  const completed = 0;
-  const progress = 0;
+  // DELETE CATEGORY (FIXED)
+  const handleDeleteCategory = (id) => {
+    setCategories((prev) => prev.filter((c) => c.id !== id));
+  };
 
-  // ================= FILTER =================
+  // HELPERS
+  const getCategoryProgress = (cat) => {
+    if (!cat.goals || cat.goals.length === 0) return 0;
+    const done = cat.goals.filter((g) => g.completed).length;
+    return Math.round((done / cat.goals.length) * 100);
+  };
+
+  // STATS
+  const total = categories.length;
+
+  const active = categories.filter((c) =>
+    c.goals.some((g) => !g.completed)
+  ).length;
+
+  const completed = categories.filter(
+    (c) => c.goals.length > 0 && c.goals.every((g) => g.completed)
+  ).length;
+
+  const progress =
+    categories.length === 0
+      ? 0
+      : Math.round(
+          categories.reduce((acc, c) => acc + getCategoryProgress(c), 0) /
+            categories.length
+        );
+
+  // FILTER
   const filtered = categories
     .filter((c) =>
       c.name.toLowerCase().includes(search.toLowerCase())
     )
     .filter((c) => {
       if (tab === "all") return true;
-      if (tab === "active") return c.goals.length > 0;
-      if (tab === "completed") return false;
-      if (tab === "attention") return c.goals.length === 0;
+
+      if (tab === "active")
+        return c.goals.some((g) => !g.completed);
+
+      if (tab === "completed")
+        return (
+          c.goals.length > 0 &&
+          c.goals.every((g) => g.completed)
+        );
+
+      if (tab === "attention")
+        return c.goals.length === 0;
+
       return true;
     })
     .sort((a, b) => {
@@ -78,22 +116,29 @@ const Categories = () => {
       return 0;
     });
 
-  // ================= UI =================
   return (
     <Box p={{ xs: 1, sm: 2, md: 3 }}>
-      
-      {/* ===== HEADER ===== */}
+      {/* HEADER */}
       <Box
         display="flex"
         justifyContent="space-between"
         alignItems="center"
         flexWrap="wrap"
         mb={3}
+        sx={{
+          width: "100%",
+          color: "#1A3263",
+          fontWeight: "bold",
+          fontSize: { xs: "24px", md: "36px" },
+          backgroundColor: "#e6eff7",
+          borderRadius: 3,
+          p: { xs: 1, sm: 2, md: 3 },
+        }}
       >
         <Box>
           <Typography variant="h4">Categories</Typography>
           <Typography color="text.secondary">
-            Track category performance
+            Monitor, analyze, and improve the performance of your categories
           </Typography>
         </Box>
 
@@ -102,30 +147,39 @@ const Categories = () => {
         </Button>
       </Box>
 
-      {/* ===== STATS CARDS ===== */}
-      <Grid container spacing={2}>
-  {[
-    { title: "Categories", value: total },
-    { title: "Active", value: active },
-    { title: "Completed", value: completed },
-    { title: "Avg Progress", value: progress + "%" },
-  ].map((item, i) => (
-    <Grid xs={12} md={3} key={i}>
-      <Card sx={{ borderRadius: 3 }}>
-        <CardContent>
-          <Typography variant="h5">
-            {item.value}
-          </Typography>
-          <Typography color="text.secondary">
-            {item.title}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
+      {/* STATS */}
+      <Grid container spacing={3}>
+        {[
+          { title: "Categories", value: total },
+          { title: "Active", value: active },
+          { title: "Completed", value: completed },
+          { title: "Avg Progress", value: progress + "%" },
+        ].map((item, i) => (
+          <Grid item xs={12} sm={6} md={3} key={i}>
+            <Card
+              sx={{
+                width: 160,
+                borderRadius: 3,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <CardContent>
+                <Typography variant="h4" fontWeight={700}>
+                  {item.value}
+                </Typography>
+                <Typography color="text.secondary" mt={1}>
+                  {item.title}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
 
-      {/* ===== FILTER CARD ===== */}
+      {/* FILTER */}
       <Card sx={{ p: 2, mt: 3, borderRadius: 3 }}>
         <Box display="flex" flexWrap="wrap" gap={2}>
           <Tabs value={tab} onChange={(e, v) => setTab(v)}>
@@ -153,7 +207,7 @@ const Categories = () => {
         </Box>
       </Card>
 
-      {/* ===== LIST ===== */}
+      {/* LIST */}
       <Card sx={{ p: 3, mt: 3, borderRadius: 3 }}>
         {filtered.length === 0 ? (
           <Typography color="text.secondary">
@@ -179,15 +233,25 @@ const Categories = () => {
                 </Typography>
 
                 <Typography mt={1}>
-                  Progress: 0%
+                  Progress: {getCategoryProgress(cat)}%
                 </Typography>
+
+                {/* DELETE BUTTON */}
+                <Button
+                  size="small"
+                  color="error"
+                  onClick={() => handleDeleteCategory(cat.id)}
+                  sx={{ mt: 1 }}
+                >
+                  Delete
+                </Button>
               </Card>
             ))}
           </Box>
         )}
       </Card>
 
-      {/* ===== DIALOG ===== */}
+      {/* DIALOG */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Create Category</DialogTitle>
 
@@ -201,9 +265,7 @@ const Categories = () => {
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
           <Button variant="contained" onClick={handleAddCategory}>
             Add
           </Button>
