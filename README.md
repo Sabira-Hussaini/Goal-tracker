@@ -124,42 +124,7 @@ Built with:
 
 ---
 
-# 📦 Data Structure
 
-## Goal Model
-
-```js
-{
-  id,
-  title,
-  category,
-  type: "daily" | "count" | "time",
-  target,
-  progress,
-  status: "active" | "paused" | "completed",
-  startDate,
-  endDate,
-  logs: [
-    { date, amount }
-  ],
-  createdAt,
-  updatedAt
-}
-```
-
----
-
-## User Stats
-
-```js
-{
-  xpTotal,
-  streak,
-  completedCount
-}
-```
-
----
 
 # 🛠️ Tech Stack
 
