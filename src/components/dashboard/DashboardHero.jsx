@@ -15,47 +15,53 @@ export default function DashboardHero() {
   return (
     <Card
       sx={(theme) => ({
-        backgroundColor:
-          theme.palette.mode === "dark"
-            ? theme.palette.grey[900]
-            : theme.palette.secondary.main,
         width: "100%",
         maxWidth: 900,
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
+
+        /* 🌙 Theme background */
+        backgroundColor: theme.palette.background.paper,
+
+        color: theme.palette.text.primary,
+
+        border:
+          theme.palette.mode === "dark"
+            ? "1px solid rgba(255,255,255,0.06)"
+            : "none",
       })}
     >
       <CardContent>
-        {/* Welcome Text */}
+        {/* Welcome */}
         <Typography
-          variant="body1"
-          sx={{
+          sx={(theme) => ({
             fontSize: { xs: "14px", md: "16px" },
-          }}
+            color: theme.palette.text.secondary,
+          })}
         >
           {t("welcomeUser")}, {userName}
         </Typography>
 
         {/* Title */}
         <Typography
-          sx={{
-            color: "#1A3263",
+          sx={(theme) => ({
             fontWeight: "bold",
             fontSize: { xs: "24px", md: "36px" },
             mt: 1,
-          }}
+
+            color: theme.palette.primary.main,
+          })}
         >
           {t("dashboardTitle")}
         </Typography>
 
         {/* Description */}
         <Typography
-          variant="body2"
-          sx={{
+          sx={(theme) => ({
             mt: 2,
             fontSize: { xs: "13px", md: "15px" },
-            color: "#333",
-          }}
+            color: theme.palette.text.secondary,
+          })}
         >
           {t("dashboardDesc")}
         </Typography>
@@ -70,31 +76,42 @@ export default function DashboardHero() {
           p: 2,
         }}
       >
+        {/* NEW GOAL */}
         <Button
           onClick={() => navigate("/form")}
           fullWidth
-          sx={{
-            backgroundColor: "#1A3263",
-            color: "white",
-            border: "2px solid #1A3263",
+          sx={(theme) => ({
             py: 1.2,
             fontSize: "14px",
+
+            backgroundColor: theme.palette.primary.main,
+            color: "#fff",
+
             "&:hover": {
-              backgroundColor: "#13264d",
+              backgroundColor: theme.palette.primary.dark,
             },
-          }}
+          })}
         >
           {t("newGoal")}
         </Button>
 
+        {/* MANAGE */}
         <Button
           fullWidth
-          sx={{
-            border: "2px solid #1A3263",
-            color: "#000",
+          sx={(theme) => ({
             py: 1.2,
             fontSize: "14px",
-          }}
+
+            border: `2px solid ${theme.palette.primary.main}`,
+            color: theme.palette.primary.main,
+
+            "&:hover": {
+              backgroundColor:
+                theme.palette.mode === "dark"
+                  ? "rgba(255,255,255,0.05)"
+                  : "rgba(26,50,99,0.08)",
+            },
+          })}
         >
           {t("manageGoal")}
         </Button>

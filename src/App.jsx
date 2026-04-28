@@ -15,6 +15,7 @@ import Form from "./components/goal/form/Form";
 import Layout from "./layout/Layout";
 import LoadingScreen from "./LoadingSreen";
 import Login from "./logIn/LogIn";
+import LogIn from "./logIn/LogIn";
 
 function App() {
   const { settings } = useContext(SettingsContext);
@@ -70,6 +71,7 @@ function App() {
             <Route path="categories" element={<Categories />} />
             <Route path="setting" element={<Settings />} />
             <Route path="goals/:id" element={<GoalDetails />} />
+            <Route path="logIn" element={<LogIn />} />
           </Route>
         </Routes>
       </BrowserRouter>

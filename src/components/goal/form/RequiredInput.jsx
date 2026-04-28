@@ -2,14 +2,14 @@ import { useState, useContext } from "react";
 import { Box, Grid, TextField, MenuItem, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { CategoryContext } from "../../../context/CategoryContext";
+import { useLanguage } from "../../../i18n/useLanguage";
 
 export default function RequiredInput({ onAddGoal }) {
   const navigate = useNavigate();
+  const { lang } = useLanguage();
 
-  // ✅ dynamic categories from context
   const { categories: customCategories } = useContext(CategoryContext);
 
-  // ✅ default categories (always exist)
   const defaultCategories = [
     "Study",
     "Work",
@@ -19,7 +19,6 @@ export default function RequiredInput({ onAddGoal }) {
     "Finance",
   ];
 
-  // ✅ merge + remove duplicates
   const mergedCategories = [
     ...defaultCategories,
     ...customCategories.map((c) => c.name),
@@ -46,6 +45,57 @@ export default function RequiredInput({ onAddGoal }) {
 
   const [errors, setErrors] = useState({});
 
+  const tText = {
+    fa: {
+      title: "عنوان",
+      category: "دسته‌بندی",
+      goalType: "نوع هدف",
+      target: "هدف",
+      session: "واحد",
+      priority: "اولویت",
+      startDate: "تاریخ شروع",
+      endDate: "تاریخ ختم",
+      deadline: "ددلاین",
+      description: "توضیحات",
+      cancel: "لغو",
+      create: "ایجاد هدف",
+      titleReq: "عنوان ضروری است",
+      categoryReq: "دسته‌بندی ضروری است",
+      goalTypeReq: "نوع هدف ضروری است",
+      targetReq: "هدف ضروری است",
+      sessionReq: "واحد ضروری است",
+      priorityReq: "اولویت ضروری است",
+      startReq: "تاریخ شروع ضروری است",
+      endReq: "تاریخ ختم ضروری است",
+      deadlineReq: "ددلاین ضروری است",
+    },
+    en: {
+      title: "Title",
+      category: "Category",
+      goalType: "Goal Type",
+      target: "Target",
+      session: "Session",
+      priority: "Priority",
+      startDate: "Start Date",
+      endDate: "End Date",
+      deadline: "Deadline",
+      description: "Description",
+      cancel: "Cancel",
+      create: "Create Goal",
+      titleReq: "Title is required",
+      categoryReq: "Category is required",
+      goalTypeReq: "Goal type is required",
+      targetReq: "Target is required",
+      sessionReq: "Session is required",
+      priorityReq: "Priority is required",
+      startReq: "Start date is required",
+      endReq: "End date is required",
+      deadlineReq: "Deadline is required",
+    },
+  };
+
+  const t = tText[lang];
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     setErrors({ ...errors, [e.target.name]: "" });
@@ -53,15 +103,17 @@ export default function RequiredInput({ onAddGoal }) {
 
   const validate = () => {
     let newErrors = {};
-    if (!formData.title) newErrors.title = "Title required";
-    if (!formData.category) newErrors.category = "Category required";
-    if (!formData.goalType) newErrors.goalType = "Goal type required";
-    if (!formData.target) newErrors.target = "Target required";
-    if (!formData.session) newErrors.session = "Session required";
-    if (!formData.priority) newErrors.priority = "Priority required";
-    if (!formData.startDate) newErrors.startDate = "Start date required";
-    if (!formData.endDate) newErrors.endDate = "End date required";
-    if (!formData.deadline) newErrors.deadline = "Deadline required";
+
+    if (!formData.title) newErrors.title = t.titleReq;
+    if (!formData.category) newErrors.category = t.categoryReq;
+    if (!formData.goalType) newErrors.goalType = t.goalTypeReq;
+    if (!formData.target) newErrors.target = t.targetReq;
+    if (!formData.session) newErrors.session = t.sessionReq;
+    if (!formData.priority) newErrors.priority = t.priorityReq;
+    if (!formData.startDate) newErrors.startDate = t.startReq;
+    if (!formData.endDate) newErrors.endDate = t.endReq;
+    if (!formData.deadline) newErrors.deadline = t.deadlineReq;
+
     return newErrors;
   };
 
@@ -125,11 +177,12 @@ export default function RequiredInput({ onAddGoal }) {
   return (
     <Box>
       <Grid container spacing={2}>
+        {/* TITLE */}
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             name="title"
-            label="Title"
+            label={t.title}
             value={formData.title}
             onChange={handleChange}
             error={!!errors.title}
@@ -137,13 +190,13 @@ export default function RequiredInput({ onAddGoal }) {
           />
         </Grid>
 
-        {/* ✅ CATEGORY (ONLY FIXED LOGIC, NO UI CHANGE) */}
+        {/* CATEGORY */}
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
             name="category"
-            label="Category"
+            label={t.category}
             value={formData.category}
             onChange={handleChange}
             error={!!errors.category}
@@ -157,12 +210,13 @@ export default function RequiredInput({ onAddGoal }) {
           </TextField>
         </Grid>
 
+        {/* GOAL TYPE */}
         <Grid item xs={12} md={6}>
           <TextField
             select
             fullWidth
             name="goalType"
-            label="Goal Type"
+            label={t.goalType}
             value={formData.goalType}
             onChange={handleChange}
             error={!!errors.goalType}
@@ -176,12 +230,13 @@ export default function RequiredInput({ onAddGoal }) {
           </TextField>
         </Grid>
 
+        {/* TARGET */}
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
             type="number"
             name="target"
-            label="Target"
+            label={t.target}
             value={formData.target}
             onChange={handleChange}
             error={!!errors.target}
@@ -189,12 +244,13 @@ export default function RequiredInput({ onAddGoal }) {
           />
         </Grid>
 
+        {/* SESSION */}
         <Grid item xs={12} md={4}>
           <TextField
             select
             fullWidth
             name="session"
-            label="Session"
+            label={t.session}
             value={formData.session}
             onChange={handleChange}
             error={!!errors.session}
@@ -208,12 +264,13 @@ export default function RequiredInput({ onAddGoal }) {
           </TextField>
         </Grid>
 
+        {/* PRIORITY */}
         <Grid item xs={12} md={4}>
           <TextField
             select
             fullWidth
             name="priority"
-            label="Priority"
+            label={t.priority}
             value={formData.priority}
             onChange={handleChange}
             error={!!errors.priority}
@@ -227,11 +284,13 @@ export default function RequiredInput({ onAddGoal }) {
           </TextField>
         </Grid>
 
+        {/* START */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="startDate"
+            label={t.startDate}
             InputLabelProps={{ shrink: true }}
             value={formData.startDate}
             onChange={handleChange}
@@ -240,11 +299,13 @@ export default function RequiredInput({ onAddGoal }) {
           />
         </Grid>
 
+        {/* END */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="endDate"
+            label={t.endDate}
             InputLabelProps={{ shrink: true }}
             value={formData.endDate}
             onChange={handleChange}
@@ -253,11 +314,13 @@ export default function RequiredInput({ onAddGoal }) {
           />
         </Grid>
 
+        {/* DEADLINE */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
             type="date"
             name="deadline"
+            label={t.deadline}
             InputLabelProps={{ shrink: true }}
             value={formData.deadline}
             onChange={handleChange}
@@ -266,13 +329,14 @@ export default function RequiredInput({ onAddGoal }) {
           />
         </Grid>
 
+        {/* DESCRIPTION */}
         <Grid item xs={12}>
           <TextField
             fullWidth
             multiline
             rows={3}
             name="description"
-            label="Description"
+            label={t.description}
             value={formData.description}
             onChange={handleChange}
           />
@@ -280,9 +344,10 @@ export default function RequiredInput({ onAddGoal }) {
       </Grid>
 
       <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
-        <Button onClick={handleCancel}>Cancel</Button>
+        <Button onClick={handleCancel}>{t.cancel}</Button>
+
         <Button variant="contained" onClick={handleSubmit}>
-          Create Goal
+          {t.create}
         </Button>
       </Box>
     </Box>

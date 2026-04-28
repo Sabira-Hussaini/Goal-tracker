@@ -1,6 +1,15 @@
-import { Card, CardContent, Typography, Chip, Box, Button, Stack } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Chip,
+  Box,
+  Button,
+  Stack,
+} from "@mui/material";
 import { useContext } from "react";
 import { GoalContext } from "../../../context/GoalContext";
+import { useLanguage } from "../../../i18n/useLanguage";
 
 const getPriorityColor = (priority) => {
   if (priority === "High") return "error";
@@ -10,6 +19,50 @@ const getPriorityColor = (priority) => {
 
 export default function GoalCard({ goal }) {
   const { updateGoalStatus } = useContext(GoalContext);
+  const { lang } = useLanguage();
+
+  const t = {
+    fa: {
+      category: "دسته‌بندی",
+      target: "هدف",
+      status: "حالت",
+      active: "فعال",
+      paused: "متوقف",
+      completed: "تکمیل‌شده",
+      start: "شروع",
+      end: "ختم",
+      activeBtn: "فعال",
+      pauseBtn: "توقف",
+      completeBtn: "تکمیل",
+    },
+    en: {
+      category: "Category",
+      target: "Target",
+      status: "Status",
+      active: "Active",
+      paused: "Paused",
+      completed: "Completed",
+      start: "Start",
+      end: "End",
+      activeBtn: "Active",
+      pauseBtn: "Pause",
+      completeBtn: "Complete",
+    },
+  };
+
+  const tr = t[lang];
+
+  const getStatusText = (status) => {
+    if (status === "completed") return tr.completed;
+    if (status === "paused") return tr.paused;
+    return tr.active;
+  };
+
+  const getStatusColor = (status) => {
+    if (status === "completed") return "green";
+    if (status === "paused") return "orange";
+    return "blue";
+  };
 
   return (
     <Card
@@ -45,12 +98,12 @@ export default function GoalCard({ goal }) {
 
         {/* CATEGORY */}
         <Typography variant="body2" color="text.secondary">
-          📂 {goal.category}
+          📂 {tr.category}: {goal.category}
         </Typography>
 
         {/* TARGET */}
         <Typography variant="body2" sx={{ mt: 1 }}>
-          🎯 {goal.target} {goal.session}
+          🎯 {tr.target}: {goal.target} {goal.session}
         </Typography>
 
         {/* DATE */}
@@ -62,33 +115,27 @@ export default function GoalCard({ goal }) {
           📅 {goal.startDate} → {goal.endDate}
         </Typography>
 
-        {/* 🔥 STATUS */}
+        {/* STATUS */}
         <Typography
           sx={{
             mt: 1,
             fontWeight: "bold",
-            color:
-              goal.status === "completed"
-                ? "green"
-                : goal.status === "paused"
-                ? "orange"
-                : "blue",
+            color: getStatusColor(goal.status),
           }}
         >
-          {goal.status}
+          {tr.status}: {getStatusText(goal.status)}
         </Typography>
 
-        {/* 🔥 ACTION BUTTONS (NO UI CHANGE, ONLY ADDITION) */}
+        {/* ACTION BUTTONS */}
         <Box sx={{ mt: 2 }}>
           <Stack direction="row" spacing={1}>
-
             <Button
               size="small"
               variant="contained"
               color="primary"
               onClick={() => updateGoalStatus(goal.id, "active")}
             >
-              Active
+              {tr.activeBtn}
             </Button>
 
             <Button
@@ -97,7 +144,7 @@ export default function GoalCard({ goal }) {
               color="warning"
               onClick={() => updateGoalStatus(goal.id, "paused")}
             >
-              Pause
+              {tr.pauseBtn}
             </Button>
 
             <Button
@@ -106,12 +153,10 @@ export default function GoalCard({ goal }) {
               color="success"
               onClick={() => updateGoalStatus(goal.id, "completed")}
             >
-              Complete
+              {tr.completeBtn}
             </Button>
-
           </Stack>
         </Box>
-
       </CardContent>
     </Card>
   );

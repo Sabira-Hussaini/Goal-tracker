@@ -9,50 +9,68 @@ import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../i18n/useLanguage";
 
 export default function GoalHero() {
-  const [userName] = useState("Maryam Mirzada");
+  const [userName] = useState();
   const navigate = useNavigate();
   const { t } = useLanguage();
 
   return (
     <Card
-     
       sx={(theme) => ({
-        backgroundColor:
-          theme.palette.mode === "dark"
-            ? theme.palette.grey[900]
-            : theme.palette.secondary.main,
         width: "100%",
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
+
+        /* 🌙 Background fully theme-aware */
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? theme.palette.background.paper
+            : theme.palette.secondary.main,
+
+        color: theme.palette.text.primary,
       })}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
         <CardContent>
-          {/* Title */}
+          {/* TITLE */}
           <Typography
-            sx={{
-              color: "#1A3263",
+            sx={(theme) => ({
               fontWeight: "bold",
               fontSize: { xs: "24px", md: "36px" },
               mt: 1,
-            }}
+
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.primary
+                  : theme.palette.primary.main,
+            })}
           >
             {t("allGoals")}
           </Typography>
 
-          {/* Description */}
+          {/* DESCRIPTION */}
           <Typography
             variant="body2"
-            sx={{
+            sx={(theme) => ({
               mt: 2,
               fontSize: { xs: "13px", md: "15px", width: "30rem" },
-              color: "#333",
-            }}
+
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.secondary
+                  : "#333",
+            })}
           >
             {t("goalsDescription")}
           </Typography>
         </CardContent>
 
+        {/* ACTIONS */}
         <CardActions
           sx={{
             display: "flex",
@@ -61,32 +79,49 @@ export default function GoalHero() {
             p: 2,
           }}
         >
+          {/* NEW GOAL */}
           <Button
             fullWidth
-            sx={{
-              backgroundColor: "#1A3263",
-              color: "white",
-              border: "2px solid #1A3263",
+            sx={(theme) => ({
               py: 1.2,
               fontSize: "14px",
               px: "5rem",
               borderRadius: "20px",
-            }}
+
+              backgroundColor: theme.palette.primary.main,
+              color: "#fff",
+
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              },
+            })}
             onClick={() => navigate("/form")}
           >
             {t("newGoal")}
           </Button>
 
+          {/* MANAGE */}
           <Button
             fullWidth
-            sx={{
-              border: "2px solid #1A3263",
-              color: "#000",
+            sx={(theme) => ({
               py: 1.2,
               px: "5rem",
               fontSize: "14px",
               borderRadius: "20px",
-            }}
+
+              border: `2px solid ${theme.palette.primary.main}`,
+              color:
+                theme.palette.mode === "dark"
+                  ? theme.palette.text.primary
+                  : theme.palette.primary.main,
+
+              "&:hover": {
+                backgroundColor:
+                  theme.palette.mode === "dark"
+                    ? "rgba(255,255,255,0.05)"
+                    : "rgba(26,50,99,0.08)",
+              },
+            })}
           >
             {t("manageGoal")}
           </Button>

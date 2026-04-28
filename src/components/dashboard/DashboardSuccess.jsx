@@ -9,28 +9,36 @@ import {
 import { useState, useEffect } from "react";
 import FormClock from "../goal/form/FormClock";
 import quotes from "../../data/quotes";
+import { useLanguage } from "../../i18n/useLanguage";
 
 export default function DashboardSuccess() {
   const [quote, setQuote] = useState(null);
+  const { lang } = useLanguage();
 
-const getRandomQuote = (lang = "en") => {
-  const list = quotes[lang] || [];
+  const getRandomQuote = (language) => {
+    const list = quotes[language] || [];
 
-  if (list.length === 0) return null;
+    if (list.length === 0) return null;
 
-  const randomIndex = Math.floor(Math.random() * list.length);
-  return list[randomIndex];
-};
+    const randomIndex = Math.floor(Math.random() * list.length);
+    return list[randomIndex];
+  };
 
   useEffect(() => {
-    setQuote(getRandomQuote());
+    const updateQuote = () => {
+      setQuote(getRandomQuote(lang));
+    };
 
+    // اولین بار
+    updateQuote();
+
+    // هر 10 ثانیه تغییر کند
     const interval = setInterval(() => {
-      setQuote(getRandomQuote());
+      updateQuote();
     }, 10000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [lang]);
 
   return (
     <Card
@@ -38,7 +46,6 @@ const getRandomQuote = (lang = "en") => {
         width: "100%",
         bgcolor: "background.paper",
         color: "text.primary",
-        backgroundImage: "none",
         boxShadow: 3,
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
@@ -54,7 +61,7 @@ const getRandomQuote = (lang = "en") => {
             mb: 2,
           }}
         >
-          Daily Motivation
+          {lang === "fa" ? "انگیزه روزانه" : "Daily Motivation"}
         </Typography>
 
         {/* Quote */}
@@ -82,7 +89,9 @@ const getRandomQuote = (lang = "en") => {
             </Typography>
           </Box>
         ) : (
-          <Typography>No quotes found</Typography>
+          <Typography>
+            {lang === "fa" ? "نقل قولی پیدا نشد" : "No quotes found"}
+          </Typography>
         )}
       </CardContent>
 

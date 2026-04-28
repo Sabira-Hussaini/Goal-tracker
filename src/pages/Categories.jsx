@@ -18,9 +18,11 @@ import {
 
 import { useState, useContext } from "react";
 import { CategoryContext } from "../context/CategoryContext";
+import { useLanguage } from "../i18n/useLanguage";
 
 const Categories = () => {
-  // ✅ GLOBAL STATE (FIXED)
+  const { lang } = useLanguage(); // ✅ LANGUAGE ADDED
+
   const { categories, addCategory, deleteCategory } =
     useContext(CategoryContext);
 
@@ -31,7 +33,6 @@ const Categories = () => {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
-  // ADD CATEGORY (FIXED)
   const handleAddCategory = () => {
     if (!newName.trim()) return;
 
@@ -46,22 +47,18 @@ const Categories = () => {
     setOpen(false);
   };
 
-  // DELETE CATEGORY (FIXED)
   const handleDeleteCategory = (id) => {
     deleteCategory(id);
   };
 
-  // SAFE HELPERS
   const getCategoryProgress = (cat) => {
     const goals = cat.goals || [];
-
     if (goals.length === 0) return 0;
 
     const done = goals.filter((g) => g.completed).length;
     return Math.round((done / goals.length) * 100);
   };
 
-  // STATS (SAFE)
   const total = categories.length;
 
   const active = categories.filter((c) =>
@@ -70,36 +67,26 @@ const Categories = () => {
 
   const completed = categories.filter(
     (c) =>
-      (c.goals || []).length > 0 &&
-      (c.goals || []).every((g) => g.completed)
+      (c.goals || []).length > 0 && (c.goals || []).every((g) => g.completed)
   ).length;
 
   const progress =
     categories.length === 0
       ? 0
       : Math.round(
-          categories.reduce(
-            (acc, c) => acc + getCategoryProgress(c),
-            0
-          ) / categories.length
+          categories.reduce((acc, c) => acc + getCategoryProgress(c), 0) /
+            categories.length
         );
 
-  // FILTER (SAFE)
   const filtered = categories
-    .filter((c) =>
-      c.name.toLowerCase().includes(search.toLowerCase())
-    )
+    .filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
     .filter((c) => {
       const goals = c.goals || [];
 
       if (tab === "all") return true;
-
-      if (tab === "active")
-        return goals.some((g) => !g.completed);
-
+      if (tab === "active") return goals.some((g) => !g.completed);
       if (tab === "completed")
         return goals.length > 0 && goals.every((g) => g.completed);
-
       if (tab === "attention") return goals.length === 0;
 
       return true;
@@ -130,36 +117,44 @@ const Categories = () => {
         }}
       >
         <Box>
-          <Typography variant="h4">Categories</Typography>
+          <Typography variant="h4">
+            {lang === "fa" ? "دسته‌بندی‌ها" : "Categories"}
+          </Typography>
+
           <Typography color="text.secondary">
-            Monitor, analyze, and improve the performance of your categories
+            {lang === "fa"
+              ? "بررسی و مدیریت پیشرفت دسته‌ها"
+              : "Monitor and improve category performance"}
           </Typography>
         </Box>
 
         <Button variant="contained" onClick={() => setOpen(true)}>
-          + New Category
+          {lang === "fa" ? "+ دسته جدید" : "+ New Category"}
         </Button>
       </Box>
 
       {/* STATS */}
       <Grid container spacing={3}>
         {[
-          { title: "Categories", value: total },
-          { title: "Active", value: active },
-          { title: "Completed", value: completed },
-          { title: "Avg Progress", value: progress + "%" },
+          {
+            title: lang === "fa" ? "دسته‌ها" : "Categories",
+            value: total,
+          },
+          {
+            title: lang === "fa" ? "فعال" : "Active",
+            value: active,
+          },
+          {
+            title: lang === "fa" ? "تکمیل‌شده" : "Completed",
+            value: completed,
+          },
+          {
+            title: lang === "fa" ? "میانگین پیشرفت" : "Avg Progress",
+            value: progress + "%",
+          },
         ].map((item, i) => (
           <Grid item xs={12} sm={6} md={3} key={i}>
-            <Card
-              sx={{
-                width: 160,
-                borderRadius: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-              }}
-            >
+            <Card sx={{ width: 160, borderRadius: 3, textAlign: "center" }}>
               <CardContent>
                 <Typography variant="h4" fontWeight={700}>
                   {item.value}
@@ -177,15 +172,21 @@ const Categories = () => {
       <Card sx={{ p: 2, mt: 3, borderRadius: 3 }}>
         <Box display="flex" flexWrap="wrap" gap={2}>
           <Tabs value={tab} onChange={(e, v) => setTab(v)}>
-            <Tab label="ALL" value="all" />
-            <Tab label="ACTIVE" value="active" />
-            <Tab label="COMPLETED" value="completed" />
-            <Tab label="NEEDS ATTENTION" value="attention" />
+            <Tab label={lang === "fa" ? "همه" : "ALL"} value="all" />
+            <Tab label={lang === "fa" ? "فعال" : "ACTIVE"} value="active" />
+            <Tab
+              label={lang === "fa" ? "تکمیل‌شده" : "COMPLETED"}
+              value="completed"
+            />
+            <Tab
+              label={lang === "fa" ? "نیاز به توجه" : "NEEDS ATTENTION"}
+              value="attention"
+            />
           </Tabs>
 
           <TextField
             size="small"
-            placeholder="Search..."
+            placeholder={lang === "fa" ? "جستجو..." : "Search..."}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -195,8 +196,10 @@ const Categories = () => {
             value={sort}
             onChange={(e) => setSort(e.target.value)}
           >
-            <MenuItem value="newest">Newest</MenuItem>
-            <MenuItem value="name">Name</MenuItem>
+            <MenuItem value="newest">
+              {lang === "fa" ? "جدیدترین" : "Newest"}
+            </MenuItem>
+            <MenuItem value="name">{lang === "fa" ? "نام" : "Name"}</MenuItem>
           </Select>
         </Box>
       </Card>
@@ -205,29 +208,26 @@ const Categories = () => {
       <Card sx={{ p: 3, mt: 3, borderRadius: 3 }}>
         {filtered.length === 0 ? (
           <Typography color="text.secondary">
-            No categories yet
+            {lang === "fa" ? "هیچ دسته‌بندی موجود نیست" : "No categories yet"}
           </Typography>
         ) : (
           <Box display="flex" flexWrap="wrap" gap={2}>
             {filtered.map((cat, i) => (
               <Card
                 key={cat.id}
-                sx={{
-                  width: { xs: "100%", sm: 260 },
-                  p: 2,
-                  borderRadius: 3,
-                }}
+                sx={{ width: { xs: "100%", sm: 260 }, p: 2, borderRadius: 3 }}
               >
                 <Typography fontWeight={600}>
                   #{i + 1} {cat.name}
                 </Typography>
 
                 <Typography variant="caption">
-                  {(cat.goals || []).length} goals
+                  {(cat.goals || []).length} {lang === "fa" ? "هدف" : "goals"}
                 </Typography>
 
                 <Typography mt={1}>
-                  Progress: {getCategoryProgress(cat)}%
+                  {lang === "fa" ? "پیشرفت" : "Progress"}:{" "}
+                  {getCategoryProgress(cat)}%
                 </Typography>
 
                 <Button
@@ -236,7 +236,7 @@ const Categories = () => {
                   onClick={() => handleDeleteCategory(cat.id)}
                   sx={{ mt: 1 }}
                 >
-                  Delete
+                  {lang === "fa" ? "حذف" : "Delete"}
                 </Button>
               </Card>
             ))}
@@ -246,21 +246,25 @@ const Categories = () => {
 
       {/* DIALOG */}
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Create Category</DialogTitle>
+        <DialogTitle>
+          {lang === "fa" ? "ساخت دسته‌بندی" : "Create Category"}
+        </DialogTitle>
 
         <DialogContent>
           <TextField
             fullWidth
-            label="Category Name"
+            label={lang === "fa" ? "نام دسته‌بندی" : "Category Name"}
             value={newName}
             onChange={(e) => setNewName(e.target.value)}
           />
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={() => setOpen(false)}>
+            {lang === "fa" ? "لغو" : "Cancel"}
+          </Button>
           <Button variant="contained" onClick={handleAddCategory}>
-            Add
+            {lang === "fa" ? "افزودن" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>

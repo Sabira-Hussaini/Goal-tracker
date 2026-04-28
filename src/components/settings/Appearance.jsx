@@ -279,8 +279,6 @@ const Appearance = () => {
           </Box>
           <Box display="flex" justifyContent="space-between" mt={2}>
             <Button variant="contained">{t("saveProfile")}</Button>
-
-            {/* 🔴 LOGOUT */}
             <Button
               variant="outlined"
               color="error"
