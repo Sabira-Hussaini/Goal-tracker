@@ -26,14 +26,17 @@ export default function Form() {
       <FormHero />
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 8 }}>
-          <Item size={{ md: 12 }} elevation={0}>
+          <Item
+            elevation={0}
+            sx={{ background: "transparent", boxShadow: "none" , mt : 1 }}
+          >
             <FormContent />
           </Item>
         </Grid>
         <Grid size={{ xs: 6, md: 4 }}>
           <Item
             elevation={0}
-            sx={{ background: "transparent", boxShadow: "none" }}
+            sx={{ background: "transparent", boxShadow: "none" , mt :4}}
           >
             <DashboardSuccess />
           </Item>
@@ -41,7 +44,6 @@ export default function Form() {
           <Item
             elevation={0}
             sx={{
-              
               background: "transparent",
               boxShadow: "none",
             }}

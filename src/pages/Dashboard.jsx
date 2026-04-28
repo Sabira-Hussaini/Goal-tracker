@@ -17,9 +17,6 @@ import ActiveGoalsList from "../components/ActiveGoalsList";
 const Dashboard = () => {
   const { goals = [], events = [] } = useContext(GoalContext);
 
-  // =========================
-  // 1. BASIC DERIVED DATA
-  // =========================
   const completedGoals = useMemo(
     () => goals.filter((g) => g.completed),
     [goals]
@@ -30,9 +27,6 @@ const Dashboard = () => {
     [goals]
   );
 
-  // =========================
-  // 2. XP + STREAK FIRST
-  // =========================
   const xp = useMemo(() => calculateXP(events), [events]);
 
   const streak = useMemo(
@@ -40,9 +34,6 @@ const Dashboard = () => {
     [events]
   );
 
-  // =========================
-  // 3. LEVEL (depends on XP)
-  // =========================
   const level = useMemo(() => calculateLevel(xp), [xp]);
 
   const { progress } = useMemo(
@@ -50,9 +41,6 @@ const Dashboard = () => {
     [xp]
   );
 
-  // =========================
-  // 4. STATS OBJECT
-  // =========================
   const stats = useMemo(() => {
     const total = goals.length;
     const completed = completedGoals.length;
@@ -80,9 +68,6 @@ const Dashboard = () => {
     progress,
   ]);
 
-  // =========================
-  // 5. RECENT EVENTS
-  // =========================
   const recentEvents = useMemo(() => {
     return [...events].slice(-5).reverse();
   }, [events]);
@@ -96,7 +81,6 @@ const Dashboard = () => {
     width: "100%",
   }}
 >
-  {/* ================= TOP ROW ================= */}
   <Box
     sx={{
       display: "grid",
@@ -107,11 +91,7 @@ const Dashboard = () => {
     <DashboardHero />
     <DashboardSuccess />
   </Box>
-
-  {/* ================= CARDS ROW ================= */}
   <DashboardCards stats={stats} />
-
-  {/* ================= BOTTOM ROW ================= */}
   <Box
     sx={{
       display: "grid",

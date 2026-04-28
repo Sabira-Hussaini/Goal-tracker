@@ -151,8 +151,13 @@ export default function PrimarySearchAppBar() {
           </IconButton>
 
           {/* LOGOUT */}
-          <IconButton onClick={handleLogout}>
-            <LogoutIcon />
+          <IconButton>
+            <LogoutIcon
+              onClick={() => {
+                localStorage.removeItem("user"); // حذف کاربر
+                window.location.href = "/"; // برگشت به لاگین
+              }}
+            />
           </IconButton>
         </Box>
       </Toolbar>

@@ -10,7 +10,7 @@ const getTheme = (mode, language) =>
       mode,
 
       primary: {
-        main: "#1A3263",
+        main: mode === "light" ? "#1A3263" : "#60A5FA",
         contrastText: "#ffffff",
       },
 
@@ -19,13 +19,19 @@ const getTheme = (mode, language) =>
       },
 
       background: {
-        default: mode === "light" ? "#F4F6F8" : "#0F172A", // 👈 soft dark
-        paper: mode === "light" ? "#FFFFFF" : "#1E293B", // 👈 soft card
+        default: mode === "light" ? "#F4F6F8" : "#0F172A",
+        paper: mode === "light" ? "#FFFFFF" : "#1E293B",
       },
 
       text: {
-        primary: mode === "light" ? "#1E1E1E" : "#F1F5F9",
-        secondary: mode === "light" ? "#616161" : "#94A3B8",
+        primary: mode === "light" ? "#1E1E1E" : "#F8FAFC",
+        secondary: mode === "light" ? "#616161" : "#CBD5E1",
+        disabled: mode === "light" ? "#9CA3AF" : "#64748B",
+      },
+
+      // 🔥 optional accent color (usable in components)
+      custom: {
+        accent: mode === "light" ? "#1A3263" : "#60A5FA",
       },
     },
 
@@ -47,11 +53,11 @@ const getTheme = (mode, language) =>
           root: {
             backgroundImage: "none",
             border: mode === "dark" ?
-              "1px solid rgba(255,255,255,0.05)" :
+              "1px solid rgba(255,255,255,0.08)" :
               "none",
             boxShadow: mode === "light" ?
               "0 4px 20px rgba(0,0,0,0.05)" :
-              "0 10px 30px rgba(0,0,0,0.25)",
+              "0 10px 30px rgba(0,0,0,0.35)",
           },
         },
       },
@@ -69,14 +75,6 @@ const getTheme = (mode, language) =>
           root: {
             boxShadow: "none",
             backgroundColor: mode === "dark" ? "#1E293B" : "#ffffff",
-          },
-        },
-      },
-
-      MuiTypography: {
-        styleOverrides: {
-          root: {
-            color: mode === "dark" ? "#F1F5F9" : "inherit",
           },
         },
       },

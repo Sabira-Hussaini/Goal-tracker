@@ -8,14 +8,12 @@ const GoalList = ({ filter = "all", search = "" }) => {
 
   let filtered = [...goals];
 
-  // ✅ FIX: safe status filtering (case + undefined safe)
   if (filter !== "all") {
     filtered = filtered.filter(
       (g) => (g.status || "active").toLowerCase() === filter
     );
   }
 
-  // search filter (safe)
   filtered = filtered.filter((g) =>
     g?.title?.toLowerCase().includes(search.toLowerCase())
   );
@@ -28,10 +26,10 @@ const GoalList = ({ filter = "all", search = "" }) => {
             textAlign="center"
             sx={{ py: 5, color: "gray", fontSize: "18px" }}
           >
-            گولی وجود ندارد
+            No Goal
           </Typography>
         ) : (
-          <Box className="grid grid-cols-3 gap-4 mt-5">
+          <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
             {filtered.map((goal) => (
               <GoalCard key={goal.id} goal={goal} />
             ))}

@@ -6,157 +6,195 @@ import {
   Box,
   Button,
   Stack,
+  TextField,
+  Divider,
+  useTheme,
 } from "@mui/material";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { GoalContext } from "../../../context/GoalContext";
-import { useLanguage } from "../../../i18n/useLanguage";
 
-const getPriorityColor = (priority) => {
-  if (priority === "High") return "error";
-  if (priority === "Medium") return "warning";
-  return "success";
+const getPriorityStyle = (priority) => {
+  if (priority === "High") return { colorKey: "error" };
+  if (priority === "Medium") return { colorKey: "warning" };
+  return { colorKey: "success" };
 };
 
 export default function GoalCard({ goal }) {
-  const { updateGoalStatus } = useContext(GoalContext);
-  const { lang } = useLanguage();
+  const theme = useTheme();
+  const { updateGoalStatus, updateGoal, deleteGoal } = useContext(GoalContext);
 
-  const t = {
-    fa: {
-      category: "دسته‌بندی",
-      target: "هدف",
-      status: "حالت",
-      active: "فعال",
-      paused: "متوقف",
-      completed: "تکمیل‌شده",
-      start: "شروع",
-      end: "ختم",
-      activeBtn: "فعال",
-      pauseBtn: "توقف",
-      completeBtn: "تکمیل",
-    },
-    en: {
-      category: "Category",
-      target: "Target",
-      status: "Status",
-      active: "Active",
-      paused: "Paused",
-      completed: "Completed",
-      start: "Start",
-      end: "End",
-      activeBtn: "Active",
-      pauseBtn: "Pause",
-      completeBtn: "Complete",
-    },
+  const [showDetail, setShowDetail] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [form, setForm] = useState({
+    title: goal.title || "",
+    category: goal.category || "",
+    target: goal.target || "",
+    session: goal.session || "",
+    description: goal.description || "",
+    startDate: goal.startDate || "",
+    endDate: goal.endDate || "",
+    deadline: goal.deadline || "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const tr = t[lang];
-
-  const getStatusText = (status) => {
-    if (status === "completed") return tr.completed;
-    if (status === "paused") return tr.paused;
-    return tr.active;
+  const handleSave = () => {
+    updateGoal(goal.id, form);
+    setIsEditing(false);
   };
 
-  const getStatusColor = (status) => {
-    if (status === "completed") return "green";
-    if (status === "paused") return "orange";
-    return "blue";
-  };
+  const priority = getPriorityStyle(goal.priority);
 
   return (
     <Card
       sx={{
-        height: "100%",
-        transition: "0.2s",
+        borderRadius: 3,
+        backgroundColor: "background.paper",
+        border: `1px solid ${theme.palette.divider}`,
+        boxShadow: theme.shadows[1],
+        transition: "0.3s",
         "&:hover": {
-          transform: "translateY(-4px)",
-          boxShadow: 4,
+          boxShadow: theme.shadows[4],
         },
       }}
     >
       <CardContent>
-        {/* HEADER */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 1,
-          }}
-        >
-          <Typography variant="h6" fontWeight="bold">
+        {/* TITLE */}
+        {isEditing ? (
+          <TextField
+            fullWidth
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            sx={{ mb: 1 }}
+          />
+        ) : (
+          <Typography variant="h6" fontWeight={700}>
             {goal.title}
           </Typography>
+        )}
 
-          <Chip
-            label={goal.priority}
-            size="small"
-            color={getPriorityColor(goal.priority)}
-          />
-        </Box>
+        {/* PRIORITY */}
+        <Chip
+          label={goal.priority}
+          size="small"
+          color={priority.colorKey}
+          sx={{ mt: 1 }}
+        />
+
+        <Divider sx={{ my: 2 }} />
 
         {/* CATEGORY */}
-        <Typography variant="body2" color="text.secondary">
-          📂 {tr.category}: {goal.category}
+        <Typography color="text.secondary">
+          📂{" "}
+          <b style={{ color: theme.palette.text.primary }}>{goal.category}</b>
         </Typography>
 
         {/* TARGET */}
-        <Typography variant="body2" sx={{ mt: 1 }}>
-          🎯 {tr.target}: {goal.target} {goal.session}
-        </Typography>
-
-        {/* DATE */}
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ mt: 1, display: "block" }}
-        >
-          📅 {goal.startDate} → {goal.endDate}
+        <Typography color="text.secondary" mt={1}>
+          🎯 <b style={{ color: theme.palette.text.primary }}>{goal.target}</b>{" "}
+          {goal.session}
         </Typography>
 
         {/* STATUS */}
         <Typography
-          sx={{
-            mt: 1,
-            fontWeight: "bold",
-            color: getStatusColor(goal.status),
-          }}
+          fontWeight={700}
+          mt={1}
+          color={
+            goal.status === "completed"
+              ? "success.main"
+              : goal.status === "paused"
+              ? "warning.main"
+              : "primary.main"
+          }
         >
-          {tr.status}: {getStatusText(goal.status)}
+          {goal.status}
         </Typography>
 
-        {/* ACTION BUTTONS */}
-        <Box sx={{ mt: 2 }}>
+        {/* ACTIONS */}
+        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
           <Stack direction="row" spacing={1}>
             <Button
-              size="small"
-              variant="contained"
-              color="primary"
+              variant="outlined"
               onClick={() => updateGoalStatus(goal.id, "active")}
             >
-              {tr.activeBtn}
+              Active
             </Button>
 
             <Button
-              size="small"
-              variant="contained"
+              variant="outlined"
               color="warning"
               onClick={() => updateGoalStatus(goal.id, "paused")}
             >
-              {tr.pauseBtn}
+              Pause
             </Button>
 
             <Button
-              size="small"
               variant="contained"
-              color="success"
               onClick={() => updateGoalStatus(goal.id, "completed")}
             >
-              {tr.completeBtn}
+              Done
+            </Button>
+          </Stack>
+
+          <Stack direction="row" spacing={1}>
+            {!isEditing ? (
+              <Button
+                sx={{ bgcolor: "grey.900", color: "white" }}
+                onClick={() => setIsEditing(true)}
+              >
+                Edit
+              </Button>
+            ) : (
+              <Button variant="contained" color="success" onClick={handleSave}>
+                Save
+              </Button>
+            )}
+
+            <Button color="error" onClick={() => deleteGoal(goal.id)}>
+              Delete
             </Button>
           </Stack>
         </Box>
+
+        {/* DETAILS */}
+        <Button
+          sx={{ mt: 2, fontWeight: 600 }}
+          onClick={() => setShowDetail(!showDetail)}
+        >
+          {showDetail ? "Hide Details" : "More Details"}
+        </Button>
+
+        {showDetail && (
+          <Box
+            sx={{
+              mt: 2,
+              p: 2,
+              borderRadius: 2,
+              backgroundColor: "grey.100",
+              border: `1px solid ${theme.palette.divider}`,
+            }}
+          >
+            <Typography color="text.secondary">
+              📝 {goal.description || "No description"}
+            </Typography>
+
+            <Typography color="text.secondary">
+              📅 Start: {goal.startDate || "Not set"}
+            </Typography>
+
+            <Typography color="text.secondary">
+              📅 End: {goal.endDate || "Not set"}
+            </Typography>
+
+            <Typography color="text.secondary">
+              ⏳ Deadline: {goal.deadline || "Not set"}
+            </Typography>
+          </Box>
+        )}
       </CardContent>
     </Card>
   );

@@ -6,7 +6,7 @@ const GoalHero = () => {
 
   return (
     <Box>
-      <Typography variant="h3" color="primary" sx={{ marginTop: "18px" }}>
+      <Typography variant="h3" sx={{ marginTop: "18px" , fontWeight : 'bold' , color : 'primary.main'  }}>
         {t("createNewGoal")}
       </Typography>
 

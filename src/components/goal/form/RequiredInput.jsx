@@ -201,6 +201,7 @@ export default function RequiredInput({ onAddGoal }) {
             onChange={handleChange}
             error={!!errors.category}
             helperText={errors.category}
+            sx={{ width: "200px" }}
           >
             {categories.map((c) => (
               <MenuItem key={c} value={c}>
@@ -221,6 +222,7 @@ export default function RequiredInput({ onAddGoal }) {
             onChange={handleChange}
             error={!!errors.goalType}
             helperText={errors.goalType}
+            sx={{ width: "200px" }}
           >
             {goalTypes.map((g) => (
               <MenuItem key={g} value={g}>
@@ -233,6 +235,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* TARGET */}
         <Grid item xs={12} md={6}>
           <TextField
+            sx={{ width: "130px" }}
             fullWidth
             type="number"
             name="target"
@@ -247,6 +250,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* SESSION */}
         <Grid item xs={12} md={4}>
           <TextField
+            sx={{ width: "200px" }}
             select
             fullWidth
             name="session"
@@ -267,6 +271,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* PRIORITY */}
         <Grid item xs={12} md={4}>
           <TextField
+            sx={{ width: "220px" }}
             select
             fullWidth
             name="priority"
@@ -287,6 +292,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* START */}
         <Grid item xs={12} md={4}>
           <TextField
+            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="startDate"
@@ -302,6 +308,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* END */}
         <Grid item xs={12} md={4}>
           <TextField
+            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="endDate"
@@ -317,6 +324,7 @@ export default function RequiredInput({ onAddGoal }) {
         {/* DEADLINE */}
         <Grid item xs={12} md={4}>
           <TextField
+            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="deadline"
@@ -330,7 +338,7 @@ export default function RequiredInput({ onAddGoal }) {
         </Grid>
 
         {/* DESCRIPTION */}
-        <Grid item xs={12}>
+        <Grid item >
           <TextField
             fullWidth
             multiline
@@ -339,6 +347,7 @@ export default function RequiredInput({ onAddGoal }) {
             label={t.description}
             value={formData.description}
             onChange={handleChange}
+            sx={{ width: "760px" }}
           />
         </Grid>
       </Grid>
