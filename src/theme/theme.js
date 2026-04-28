@@ -11,6 +11,7 @@ const getTheme = (mode, language) =>
 
       primary: {
         main: mode === "light" ? "#1A3263" : "#60A5FA",
+        dark: mode === "light" ? "#0f234a" : "#3b82f6",
         contrastText: "#ffffff",
       },
 
@@ -29,7 +30,6 @@ const getTheme = (mode, language) =>
         disabled: mode === "light" ? "#9CA3AF" : "#64748B",
       },
 
-      // 🔥 optional accent color (usable in components)
       custom: {
         accent: mode === "light" ? "#1A3263" : "#60A5FA",
       },

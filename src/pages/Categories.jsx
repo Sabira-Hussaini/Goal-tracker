@@ -14,6 +14,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  useTheme,
 } from "@mui/material";
 
 import { useState, useContext } from "react";
@@ -21,7 +22,8 @@ import { CategoryContext } from "../context/CategoryContext";
 import { useLanguage } from "../i18n/useLanguage";
 
 const Categories = () => {
-  const { lang } = useLanguage(); // ✅ LANGUAGE ADDED
+  const theme = useTheme();
+  const { lang } = useLanguage();
 
   const { categories, addCategory, deleteCategory } =
     useContext(CategoryContext);
@@ -107,17 +109,19 @@ const Categories = () => {
         flexWrap="wrap"
         mb={3}
         sx={{
-          width: "100%",
-          color: "#1A3263",
-          fontWeight: "bold",
-          fontSize: { xs: "24px", md: "36px" },
-          backgroundColor: "#e6eff7",
+          backgroundColor:
+            theme.palette.mode === "dark"
+              ? theme.palette.background.paper
+              : theme.palette.secondary.main,
+
+          color: theme.palette.text.primary,
+          border: `1px solid ${theme.palette.divider}`,
           borderRadius: 3,
-          p: { xs: 1, sm: 2, md: 3 },
+          p: 3,
         }}
       >
         <Box>
-          <Typography variant="h4">
+          <Typography variant="h4" color="primary.main">
             {lang === "fa" ? "دسته‌بندی‌ها" : "Categories"}
           </Typography>
 
@@ -134,16 +138,10 @@ const Categories = () => {
       </Box>
 
       {/* STATS */}
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         {[
-          {
-            title: lang === "fa" ? "دسته‌ها" : "Categories",
-            value: total,
-          },
-          {
-            title: lang === "fa" ? "فعال" : "Active",
-            value: active,
-          },
+          { title: lang === "fa" ? "دسته‌ها" : "Categories", value: total },
+          { title: lang === "fa" ? "فعال" : "Active", value: active },
           {
             title: lang === "fa" ? "تکمیل‌شده" : "Completed",
             value: completed,
@@ -154,14 +152,19 @@ const Categories = () => {
           },
         ].map((item, i) => (
           <Grid item xs={12} sm={6} md={3} key={i}>
-            <Card sx={{ width: 160, borderRadius: 3, textAlign: "center" }}>
+            <Card
+              sx={{
+                textAlign: "center",
+                borderRadius: 3,
+                bgcolor: "background.paper",
+                border: `1px solid ${theme.palette.divider}`,
+              }}
+            >
               <CardContent>
                 <Typography variant="h4" fontWeight={700}>
                   {item.value}
                 </Typography>
-                <Typography color="text.secondary" mt={1}>
-                  {item.title}
-                </Typography>
+                <Typography color="text.secondary">{item.title}</Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -169,7 +172,15 @@ const Categories = () => {
       </Grid>
 
       {/* FILTER */}
-      <Card sx={{ p: 2, mt: 3, borderRadius: 3 }}>
+      <Card
+        sx={{
+          mt: 3,
+          p: 2,
+          borderRadius: 3,
+          bgcolor: "background.paper",
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
         <Box display="flex" flexWrap="wrap" gap={2}>
           <Tabs value={tab} onChange={(e, v) => setTab(v)}>
             <Tab label={lang === "fa" ? "همه" : "ALL"} value="all" />
@@ -205,7 +216,15 @@ const Categories = () => {
       </Card>
 
       {/* LIST */}
-      <Card sx={{ p: 3, mt: 3, borderRadius: 3 }}>
+      <Card
+        sx={{
+          mt: 3,
+          p: 3,
+          borderRadius: 3,
+          bgcolor: "background.paper",
+          border: `1px solid ${theme.palette.divider}`,
+        }}
+      >
         {filtered.length === 0 ? (
           <Typography color="text.secondary">
             {lang === "fa" ? "هیچ دسته‌بندی موجود نیست" : "No categories yet"}
@@ -215,17 +234,23 @@ const Categories = () => {
             {filtered.map((cat, i) => (
               <Card
                 key={cat.id}
-                sx={{ width: { xs: "100%", sm: 260 }, p: 2, borderRadius: 3 }}
+                sx={{
+                  width: { xs: "100%", sm: 260 },
+                  p: 2,
+                  borderRadius: 3,
+                  bgcolor: "background.paper",
+                  border: `1px solid ${theme.palette.divider}`,
+                }}
               >
                 <Typography fontWeight={600}>
                   #{i + 1} {cat.name}
                 </Typography>
 
-                <Typography variant="caption">
+                <Typography variant="caption" color="text.secondary">
                   {(cat.goals || []).length} {lang === "fa" ? "هدف" : "goals"}
                 </Typography>
 
-                <Typography mt={1}>
+                <Typography mt={1} color="text.secondary">
                   {lang === "fa" ? "پیشرفت" : "Progress"}:{" "}
                   {getCategoryProgress(cat)}%
                 </Typography>

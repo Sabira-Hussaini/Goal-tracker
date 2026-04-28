@@ -21,14 +21,12 @@ export default function DashboardHero() {
         p: { xs: 1, sm: 2, md: 3 },
 
         /* 🌙 Theme background */
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? theme.palette.background.paper
+            : theme.palette.secondary.main,
 
         color: theme.palette.text.primary,
-
-        border:
-          theme.palette.mode === "dark"
-            ? "1px solid rgba(255,255,255,0.06)"
-            : "none",
       })}
     >
       <CardContent>

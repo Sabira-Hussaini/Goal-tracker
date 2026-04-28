@@ -7,28 +7,41 @@ import { useLanguage } from "../../../i18n/useLanguage";
 export default function RequiredInput({ onAddGoal }) {
   const navigate = useNavigate();
   const { lang } = useLanguage();
-
   const { categories: customCategories } = useContext(CategoryContext);
 
-  const defaultCategories = [
-    "Study",
-    "Work",
-    "Sport",
-    "Health",
-    "Hobby",
-    "Finance",
+  // ✅ FIXED: categories per language (correct structure)
+  const defaultCategories = {
+    fa: ["مطالعه", "کار", "ورزش", "سلامتی", "سرگرمی", "مالی"],
+    en: ["Study", "Work", "Sport", "Health", "Hobby", "Finance"],
+  };
+
+  // ✅ merge correctly
+  const categories = [
+    ...new Set([
+      ...defaultCategories[lang], // 👈 important fix
+      ...customCategories.map((c) => c.name),
+    ]),
   ];
 
-  const mergedCategories = [
-    ...defaultCategories,
-    ...customCategories.map((c) => c.name),
-  ];
+  // 🌍 OPTIONS
+  const options = {
+    fa: {
+      sessions: ["صفحات", "دقیقه", "ساعت"],
+      priorities: ["زیاد", "متوسط", "کم"],
+      goalTypes: ["روزانه", "تعداد محور", "زمان محور"],
+      cancel: "لغو",
+      create: "ایجاد هدف",
+    },
+    en: {
+      sessions: ["Pages", "Minutes", "Hours"],
+      priorities: ["High", "Medium", "Low"],
+      goalTypes: ["Daily", "Count Based", "Time Based"],
+      cancel: "Cancel",
+      create: "Create Goal",
+    },
+  };
 
-  const categories = [...new Set(mergedCategories)];
-
-  const sessions = ["Pages", "Minutes", "Hours"];
-  const priorities = ["High", "Medium", "Low"];
-  const goalTypes = ["Daily", "Count Base", "Time Based"];
+  const t = options[lang];
 
   const [formData, setFormData] = useState({
     title: "",
@@ -43,100 +56,20 @@ export default function RequiredInput({ onAddGoal }) {
     description: "",
   });
 
-  const [errors, setErrors] = useState({});
-
-  const tText = {
-    fa: {
-      title: "عنوان",
-      category: "دسته‌بندی",
-      goalType: "نوع هدف",
-      target: "هدف",
-      session: "واحد",
-      priority: "اولویت",
-      startDate: "تاریخ شروع",
-      endDate: "تاریخ ختم",
-      deadline: "ددلاین",
-      description: "توضیحات",
-      cancel: "لغو",
-      create: "ایجاد هدف",
-      titleReq: "عنوان ضروری است",
-      categoryReq: "دسته‌بندی ضروری است",
-      goalTypeReq: "نوع هدف ضروری است",
-      targetReq: "هدف ضروری است",
-      sessionReq: "واحد ضروری است",
-      priorityReq: "اولویت ضروری است",
-      startReq: "تاریخ شروع ضروری است",
-      endReq: "تاریخ ختم ضروری است",
-      deadlineReq: "ددلاین ضروری است",
-    },
-    en: {
-      title: "Title",
-      category: "Category",
-      goalType: "Goal Type",
-      target: "Target",
-      session: "Session",
-      priority: "Priority",
-      startDate: "Start Date",
-      endDate: "End Date",
-      deadline: "Deadline",
-      description: "Description",
-      cancel: "Cancel",
-      create: "Create Goal",
-      titleReq: "Title is required",
-      categoryReq: "Category is required",
-      goalTypeReq: "Goal type is required",
-      targetReq: "Target is required",
-      sessionReq: "Session is required",
-      priorityReq: "Priority is required",
-      startReq: "Start date is required",
-      endReq: "End date is required",
-      deadlineReq: "Deadline is required",
-    },
-  };
-
-  const t = tText[lang];
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
-  };
-
-  const validate = () => {
-    let newErrors = {};
-
-    if (!formData.title) newErrors.title = t.titleReq;
-    if (!formData.category) newErrors.category = t.categoryReq;
-    if (!formData.goalType) newErrors.goalType = t.goalTypeReq;
-    if (!formData.target) newErrors.target = t.targetReq;
-    if (!formData.session) newErrors.session = t.sessionReq;
-    if (!formData.priority) newErrors.priority = t.priorityReq;
-    if (!formData.startDate) newErrors.startDate = t.startReq;
-    if (!formData.endDate) newErrors.endDate = t.endReq;
-    if (!formData.deadline) newErrors.deadline = t.deadlineReq;
-
-    return newErrors;
   };
 
   const handleSubmit = () => {
-    const newErrors = validate();
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
     const newGoal = {
       id: Date.now(),
       ...formData,
-      category: formData.category.trim(),
       status: "active",
       progress: 0,
       createdAt: new Date().toISOString(),
     };
 
-    if (typeof onAddGoal === "function") {
-      onAddGoal(newGoal);
-    }
+    onAddGoal?.(newGoal);
 
     setFormData({
       title: "",
@@ -151,27 +84,12 @@ export default function RequiredInput({ onAddGoal }) {
       description: "",
     });
 
-    setErrors({});
-
-    setTimeout(() => {
-      navigate("/goals");
-    }, 0);
+    navigate("/goals");
   };
 
-  const handleCancel = () => {
-    setFormData({
-      title: "",
-      category: "",
-      goalType: "",
-      target: "",
-      session: "",
-      priority: "",
-      startDate: "",
-      endDate: "",
-      deadline: "",
-      description: "",
-    });
-    setErrors({});
+  const fieldSx = {
+    bgcolor: "background.paper",
+    borderRadius: 2,
   };
 
   return (
@@ -182,11 +100,10 @@ export default function RequiredInput({ onAddGoal }) {
           <TextField
             fullWidth
             name="title"
-            label={t.title}
+            label={lang === "fa" ? "عنوان" : "Title"}
             value={formData.title}
             onChange={handleChange}
-            error={!!errors.title}
-            helperText={errors.title}
+            sx={fieldSx}
           />
         </Grid>
 
@@ -196,11 +113,10 @@ export default function RequiredInput({ onAddGoal }) {
             select
             fullWidth
             name="category"
-            label={t.category}
+            label={lang === "fa" ? "دسته‌بندی" : "Category"}
             value={formData.category}
             onChange={handleChange}
-            error={!!errors.category}
-            helperText={errors.category}
+            sx={fieldSx}
             sx={{ width: "200px" }}
           >
             {categories.map((c) => (
@@ -217,14 +133,13 @@ export default function RequiredInput({ onAddGoal }) {
             select
             fullWidth
             name="goalType"
-            label={t.goalType}
+            label={lang === "fa" ? "نوع هدف" : "Goal Type"}
             value={formData.goalType}
             onChange={handleChange}
-            error={!!errors.goalType}
-            helperText={errors.goalType}
+            sx={fieldSx}
             sx={{ width: "200px" }}
           >
-            {goalTypes.map((g) => (
+            {t.goalTypes.map((g) => (
               <MenuItem key={g} value={g}>
                 {g}
               </MenuItem>
@@ -235,32 +150,30 @@ export default function RequiredInput({ onAddGoal }) {
         {/* TARGET */}
         <Grid item xs={12} md={6}>
           <TextField
-            sx={{ width: "130px" }}
             fullWidth
             type="number"
             name="target"
-            label={t.target}
+            label={lang === "fa" ? "هدف" : "Target"}
             value={formData.target}
             onChange={handleChange}
-            error={!!errors.target}
-            helperText={errors.target}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           />
         </Grid>
 
         {/* SESSION */}
         <Grid item xs={12} md={4}>
           <TextField
-            sx={{ width: "200px" }}
             select
             fullWidth
             name="session"
-            label={t.session}
+            label={lang === "fa" ? "واحد" : "Session"}
             value={formData.session}
             onChange={handleChange}
-            error={!!errors.session}
-            helperText={errors.session}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           >
-            {sessions.map((s) => (
+            {t.sessions.map((s) => (
               <MenuItem key={s} value={s}>
                 {s}
               </MenuItem>
@@ -271,17 +184,16 @@ export default function RequiredInput({ onAddGoal }) {
         {/* PRIORITY */}
         <Grid item xs={12} md={4}>
           <TextField
-            sx={{ width: "220px" }}
             select
             fullWidth
             name="priority"
-            label={t.priority}
+            label={lang === "fa" ? "اولویت" : "Priority"}
             value={formData.priority}
             onChange={handleChange}
-            error={!!errors.priority}
-            helperText={errors.priority}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           >
-            {priorities.map((p) => (
+            {t.priorities.map((p) => (
               <MenuItem key={p} value={p}>
                 {p}
               </MenuItem>
@@ -292,69 +204,67 @@ export default function RequiredInput({ onAddGoal }) {
         {/* START */}
         <Grid item xs={12} md={4}>
           <TextField
-            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="startDate"
-            label={t.startDate}
+            label={lang === "fa" ? "شروع" : "Start Date"}
             InputLabelProps={{ shrink: true }}
             value={formData.startDate}
             onChange={handleChange}
-            error={!!errors.startDate}
-            helperText={errors.startDate}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           />
         </Grid>
 
         {/* END */}
         <Grid item xs={12} md={4}>
           <TextField
-            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="endDate"
-            label={t.endDate}
+            label={lang === "fa" ? "ختم" : "End Date"}
             InputLabelProps={{ shrink: true }}
             value={formData.endDate}
             onChange={handleChange}
-            error={!!errors.endDate}
-            helperText={errors.endDate}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           />
         </Grid>
 
         {/* DEADLINE */}
         <Grid item xs={12} md={4}>
           <TextField
-            sx={{ width: "220px" }}
             fullWidth
             type="date"
             name="deadline"
-            label={t.deadline}
+            label={lang === "fa" ? "ددلاین" : "Deadline"}
             InputLabelProps={{ shrink: true }}
             value={formData.deadline}
             onChange={handleChange}
-            error={!!errors.deadline}
-            helperText={errors.deadline}
+            sx={fieldSx}
+            sx={{ width: "200px" }}
           />
         </Grid>
 
         {/* DESCRIPTION */}
-        <Grid item >
+        <Grid item xs={12}>
           <TextField
             fullWidth
             multiline
             rows={3}
             name="description"
-            label={t.description}
+            label={lang === "fa" ? "توضیحات" : "Description"}
             value={formData.description}
             onChange={handleChange}
+            sx={fieldSx}
             sx={{ width: "760px" }}
           />
         </Grid>
       </Grid>
 
+      {/* ACTIONS */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
-        <Button onClick={handleCancel}>{t.cancel}</Button>
-
+        <Button>{t.cancel}</Button>
         <Button variant="contained" onClick={handleSubmit}>
           {t.create}
         </Button>

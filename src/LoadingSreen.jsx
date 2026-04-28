@@ -1,6 +1,5 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import { keyframes } from "@mui/system";
-import logo from "./assets/logo.jpeg";
 
 /* 🔥 Animations */
 const fadeIn = keyframes`
@@ -8,13 +7,15 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const float = keyframes`
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
+const pulse = keyframes`
+  0% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.8; }
 `;
 
 export default function LoadingScreen() {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -24,73 +25,83 @@ export default function LoadingScreen() {
         justifyContent: "center",
         alignItems: "center",
 
-        /* 🎨 خیلی تمیز و حرفه‌ای */
-        background: "#f4f7fb",
+        // ✅ THEME BACKGROUND
+        backgroundColor: theme.palette.background.default,
       }}
     >
-      {/* 💎 Card */}
+      {/* CARD */}
       <Box
         sx={{
-          width: 320,
-          p: 4,
+          width: 340,
+          p: 5,
           borderRadius: 4,
           textAlign: "center",
 
-          /* Glass Effect */
-          backdropFilter: "blur(10px)",
-          background: "rgba(255,255,255,0.7)",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
+          // ✅ THEME PAPER
+          backgroundColor: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
+          boxShadow: theme.shadows[3],
 
           animation: `${fadeIn} 0.6s ease`,
         }}
       >
-        {/* 🔵 Logo */}
+        {/* LOGO */}
         <Box
-          component="img"
-          src={logo}
-          alt="logo"
           sx={{
             width: 70,
             height: 70,
-            borderRadius: 3,
-            mb: 2,
             mx: "auto",
-            display: "block",
-            animation: `${float} 3s ease-in-out infinite`,
-          }}
-        />
+            mb: 2,
+            borderRadius: "50%",
 
-        {/* 🏷 Title */}
+            // ✅ PRIMARY COLOR FROM THEME
+            backgroundColor: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+
+            fontWeight: "bold",
+            fontSize: 20,
+
+            animation: `${pulse} 2s infinite ease-in-out`,
+          }}
+        >
+          GT
+        </Box>
+
+        {/* TITLE */}
         <Typography
           variant="h6"
           sx={{
-            fontWeight: "bold",
-            color: "#1a237e",
-            mb: 2,
+            fontWeight: 700,
+            color: theme.palette.text.primary,
+            mb: 1,
           }}
         >
           Goal Tracker
         </Typography>
 
-        {/* 🔄 Loader */}
-        <CircularProgress
-          size={45}
-          thickness={4}
-          sx={{
-            color: "#1976d2",
-          }}
-        />
-
-        {/* ✨ Text */}
+        {/* SUB TEXT */}
         <Typography
           sx={{
-            mt: 2,
             fontSize: 14,
-            color: "#555",
+            color: theme.palette.text.secondary,
+            mb: 3,
           }}
         >
-          Loading your dashboard...
+          Preparing your dashboard...
         </Typography>
+
+        {/* LOADER */}
+        <CircularProgress
+          size={40}
+          thickness={4}
+          sx={{
+            color: theme.palette.primary.main,
+          }}
+        />
       </Box>
     </Box>
   );

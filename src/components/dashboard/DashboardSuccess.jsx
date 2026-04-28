@@ -5,6 +5,7 @@ import {
   Box,
   CardActions,
   Stack,
+  useTheme,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import FormClock from "../goal/form/FormClock";
@@ -12,12 +13,12 @@ import quotes from "../../data/quotes";
 import { useLanguage } from "../../i18n/useLanguage";
 
 export default function DashboardSuccess() {
-  const [quote, setQuote] = useState(null);
+  const theme = useTheme();
   const { lang } = useLanguage();
+  const [quote, setQuote] = useState(null);
 
   const getRandomQuote = (language) => {
     const list = quotes[language] || [];
-
     if (list.length === 0) return null;
 
     const randomIndex = Math.floor(Math.random() * list.length);
@@ -29,10 +30,8 @@ export default function DashboardSuccess() {
       setQuote(getRandomQuote(lang));
     };
 
-    // اولین بار
     updateQuote();
 
-    // هر 10 ثانیه تغییر کند
     const interval = setInterval(() => {
       updateQuote();
     }, 10000);
@@ -46,33 +45,34 @@ export default function DashboardSuccess() {
         width: "100%",
         bgcolor: "background.paper",
         color: "text.primary",
-        boxShadow: 3,
+        boxShadow: theme.shadows[3],
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
+        border: `1px solid ${theme.palette.divider}`,
       }}
     >
       <CardContent>
-        {/* Title */}
+        {/* TITLE */}
         <Typography
           sx={{
             fontSize: { xs: "14px", md: "18px" },
             fontWeight: "bold",
-            color: "#1A3263",
+            color: "primary.main",
             mb: 2,
           }}
         >
           {lang === "fa" ? "انگیزه روزانه" : "Daily Motivation"}
         </Typography>
 
-        {/* Quote */}
+        {/* QUOTE */}
         {quote ? (
           <Box>
             <Typography
               sx={{
                 fontSize: { xs: "18px", md: "28px" },
-                fontWeight: "500",
+                fontWeight: 500,
                 lineHeight: 1.4,
-                color: "#111",
+                color: "text.primary",
               }}
             >
               {quote.text}
@@ -82,31 +82,32 @@ export default function DashboardSuccess() {
               sx={{
                 mt: 2,
                 fontSize: { xs: "13px", md: "16px" },
-                color: "gray",
+                color: "text.secondary",
               }}
             >
               — {quote.author}
             </Typography>
           </Box>
         ) : (
-          <Typography>
+          <Typography color="text.secondary">
             {lang === "fa" ? "نقل قولی پیدا نشد" : "No quotes found"}
           </Typography>
         )}
       </CardContent>
 
+      {/* CLOCK SECTION */}
       <CardActions sx={{ p: 2 }}>
         <Stack
           sx={{
-            backgroundColor: "#1A3263",
-            color: "white",
             width: "100%",
             textAlign: "center",
-            borderRadius: "10px",
-            fontSize: "14px",
+            borderRadius: 2,
             py: 1,
+            bgcolor: "primary.main",
+            color: "primary.contrastText",
+            transition: "0.3s",
             "&:hover": {
-              backgroundColor: "#13264d",
+              bgcolor: "primary.dark",
             },
           }}
         >

@@ -10,17 +10,21 @@ import {
   Divider,
   useTheme,
 } from "@mui/material";
+
 import { useContext, useState } from "react";
 import { GoalContext } from "../../../context/GoalContext";
+import { useLanguage } from "../../../i18n/useLanguage";
 
 const getPriorityStyle = (priority) => {
-  if (priority === "High") return { colorKey: "error" };
-  if (priority === "Medium") return { colorKey: "warning" };
-  return { colorKey: "success" };
+  if (priority === "High") return "error";
+  if (priority === "Medium") return "warning";
+  return "success";
 };
 
 export default function GoalCard({ goal }) {
   const theme = useTheme();
+  const { lang } = useLanguage();
+
   const { updateGoalStatus, updateGoal, deleteGoal } = useContext(GoalContext);
 
   const [showDetail, setShowDetail] = useState(false);
@@ -46,13 +50,11 @@ export default function GoalCard({ goal }) {
     setIsEditing(false);
   };
 
-  const priority = getPriorityStyle(goal.priority);
-
   return (
     <Card
       sx={{
         borderRadius: 3,
-        backgroundColor: "background.paper",
+        bgcolor: "background.paper",
         border: `1px solid ${theme.palette.divider}`,
         boxShadow: theme.shadows[1],
         transition: "0.3s",
@@ -81,22 +83,18 @@ export default function GoalCard({ goal }) {
         <Chip
           label={goal.priority}
           size="small"
-          color={priority.colorKey}
+          color={getPriorityStyle(goal.priority)}
           sx={{ mt: 1 }}
         />
 
         <Divider sx={{ my: 2 }} />
 
         {/* CATEGORY */}
-        <Typography color="text.secondary">
-          📂{" "}
-          <b style={{ color: theme.palette.text.primary }}>{goal.category}</b>
-        </Typography>
+        <Typography color="text.secondary">📂 {goal.category}</Typography>
 
         {/* TARGET */}
         <Typography color="text.secondary" mt={1}>
-          🎯 <b style={{ color: theme.palette.text.primary }}>{goal.target}</b>{" "}
-          {goal.session}
+          🎯 {goal.target} {goal.session}
         </Typography>
 
         {/* STATUS */}
@@ -115,13 +113,21 @@ export default function GoalCard({ goal }) {
         </Typography>
 
         {/* ACTIONS */}
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            mt: 3,
+            flexWrap: "wrap",
+            gap: 1,
+          }}
+        >
           <Stack direction="row" spacing={1}>
             <Button
               variant="outlined"
               onClick={() => updateGoalStatus(goal.id, "active")}
             >
-              Active
+              {lang === "fa" ? "فعال" : "Active"}
             </Button>
 
             <Button
@@ -129,69 +135,82 @@ export default function GoalCard({ goal }) {
               color="warning"
               onClick={() => updateGoalStatus(goal.id, "paused")}
             >
-              Pause
+              {lang === "fa" ? "توقف" : "Pause"}
             </Button>
 
             <Button
               variant="contained"
               onClick={() => updateGoalStatus(goal.id, "completed")}
             >
-              Done
+              {lang === "fa" ? "تکمیل" : "Done"}
             </Button>
           </Stack>
 
           <Stack direction="row" spacing={1}>
             {!isEditing ? (
               <Button
-                sx={{ bgcolor: "grey.900", color: "white" }}
+                sx={{
+                  bgcolor: "grey.900",
+                  color: "white",
+                  "&:hover": { bgcolor: "grey.800" },
+                }}
                 onClick={() => setIsEditing(true)}
               >
-                Edit
+                {lang === "fa" ? "ویرایش" : "Edit"}
               </Button>
             ) : (
               <Button variant="contained" color="success" onClick={handleSave}>
-                Save
+                {lang === "fa" ? "ذخیره" : "Save"}
               </Button>
             )}
 
             <Button color="error" onClick={() => deleteGoal(goal.id)}>
-              Delete
+              {lang === "fa" ? "حذف" : "Delete"}
             </Button>
           </Stack>
         </Box>
 
-        {/* DETAILS */}
-        <Button
-          sx={{ mt: 2, fontWeight: 600 }}
-          onClick={() => setShowDetail(!showDetail)}
-        >
-          {showDetail ? "Hide Details" : "More Details"}
+        {/* DETAILS BUTTON */}
+        <Button sx={{ mt: 2 }} onClick={() => setShowDetail(!showDetail)}>
+          {showDetail
+            ? lang === "fa"
+              ? "بستن"
+              : "Hide"
+            : lang === "fa"
+            ? "جزئیات"
+            : "Details"}
         </Button>
 
+        {/* DETAILS */}
         {showDetail && (
           <Box
             sx={{
               mt: 2,
               p: 2,
               borderRadius: 2,
-              backgroundColor: "grey.100",
+              bgcolor: "background.paper",
               border: `1px solid ${theme.palette.divider}`,
             }}
           >
-            <Typography color="text.secondary">
-              📝 {goal.description || "No description"}
+            <Typography color="text.secondary" sx={{ mb: 1 }}>
+              📝{" "}
+              {goal.description ||
+                (lang === "fa" ? "بدون توضیحات" : "No description")}
+            </Typography>
+
+            <Typography color="text.secondary" sx={{ mb: 1 }}>
+              📅 {lang === "fa" ? "شروع:" : "Start:"}{" "}
+              {goal.startDate || (lang === "fa" ? "تنظیم نشده" : "Not set")}
+            </Typography>
+
+            <Typography color="text.secondary" sx={{ mb: 1 }}>
+              📅 {lang === "fa" ? "ختم:" : "End:"}{" "}
+              {goal.endDate || (lang === "fa" ? "تنظیم نشده" : "Not set")}
             </Typography>
 
             <Typography color="text.secondary">
-              📅 Start: {goal.startDate || "Not set"}
-            </Typography>
-
-            <Typography color="text.secondary">
-              📅 End: {goal.endDate || "Not set"}
-            </Typography>
-
-            <Typography color="text.secondary">
-              ⏳ Deadline: {goal.deadline || "Not set"}
+              ⏳ {lang === "fa" ? "ددلاین:" : "Deadline:"}{" "}
+              {goal.deadline || (lang === "fa" ? "تنظیم نشده" : "Not set")}
             </Typography>
           </Box>
         )}

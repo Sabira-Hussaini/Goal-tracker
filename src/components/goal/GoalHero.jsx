@@ -74,19 +74,20 @@ export default function GoalHero() {
         <CardActions
           sx={{
             display: "flex",
-            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "flex-end", // ✅ می‌بره سمت راست
             gap: 2,
             p: 2,
+            width: "100%",
+            mt: -20,
           }}
         >
           {/* NEW GOAL */}
           <Button
-            fullWidth
             sx={(theme) => ({
-              py: 1.2,
+              height: 42,
+              minWidth: 200, // ✅ اندازه ثابت و تمیز
               fontSize: "14px",
-              px: "5rem",
-              borderRadius: "20px",
+              borderRadius: "14px",
 
               backgroundColor: theme.palette.primary.main,
               color: "#fff",
@@ -102,24 +103,17 @@ export default function GoalHero() {
 
           {/* MANAGE */}
           <Button
-            fullWidth
             sx={(theme) => ({
-              py: 1.2,
-              px: "5rem",
+              height: 42,
+              minWidth: 200, // ✅ هم‌اندازه دکمه اول
               fontSize: "14px",
-              borderRadius: "20px",
+              borderRadius: "14px",
 
               border: `2px solid ${theme.palette.primary.main}`,
-              color:
-                theme.palette.mode === "dark"
-                  ? theme.palette.text.primary
-                  : theme.palette.primary.main,
+              color: theme.palette.primary.main,
 
               "&:hover": {
-                backgroundColor:
-                  theme.palette.mode === "dark"
-                    ? "rgba(255,255,255,0.05)"
-                    : "rgba(26,50,99,0.08)",
+                backgroundColor: "rgba(26,50,99,0.08)",
               },
             })}
           >

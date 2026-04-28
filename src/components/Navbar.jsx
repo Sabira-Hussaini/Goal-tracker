@@ -1,17 +1,23 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import { useLanguage } from "../i18n/useLanguage";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SettingsContext } from "../context/SettingsContext";
 import { Link, useNavigate } from "react-router-dom";
 
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Button from "@mui/material/Button";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Button,
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -19,13 +25,14 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import TranslateIcon from "@mui/icons-material/Translate";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
 import logo from "../assets/logo1.png";
 
-/* SEARCH (theme aware) */
+/* SEARCH */
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   border: `1px solid ${theme.palette.divider}`,
@@ -34,12 +41,6 @@ const Search = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   backgroundColor: theme.palette.background.paper,
-}));
-
-const SearchIconWrapper = styled("div")(() => ({
-  marginRight: 6,
-  display: "flex",
-  alignItems: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -55,27 +56,7 @@ export default function PrimarySearchAppBar() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const navigate = useNavigate();
 
-  /* LANGUAGE */
-  const handleLanguageChange = () => {
-    setSettings({
-      ...settings,
-      language: lang === "en" ? "fa" : "en",
-    });
-  };
-
-  /* THEME */
-  const toggleTheme = () => {
-    setSettings({
-      ...settings,
-      themeMode: settings.themeMode === "light" ? "dark" : "light",
-    });
-  };
-
-  /* LOGOUT */
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/login");
-  };
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const pages = [
     { id: 1, key: "dashboard", to: "/" },
@@ -84,23 +65,51 @@ export default function PrimarySearchAppBar() {
     { id: 4, key: "settings", to: "/setting" },
   ];
 
+  const handleLanguageChange = () => {
+    setSettings({
+      ...settings,
+      language: lang === "en" ? "fa" : "en",
+    });
+  };
+
+  const toggleTheme = () => {
+    setSettings({
+      ...settings,
+      themeMode: settings.themeMode === "light" ? "dark" : "light",
+    });
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // حذف کاربر
+    window.location.href = "/"; // برگشت به لاگین
+  };
+
   return (
     <AppBar
       position="static"
       sx={(theme) => ({
         bgcolor: "background.paper",
         color: "text.primary",
-        boxShadow: theme.palette.mode === "dark" ? 3 : 1,
         borderBottom: `1px solid ${theme.palette.divider}`,
       })}
     >
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         {/* LEFT */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <img src={logo} width={70} alt="logo" />
-          <Typography sx={{ ml: 1, fontWeight: "bold" }}>
-            Goal Tracker
-          </Typography>
+          {isMobile && (
+            <IconButton onClick={() => setOpenDrawer(true)}>
+              <MenuIcon />
+            </IconButton>
+          )}
+
+          <img src={logo} width={60} alt="logo" />
+
+          {/* ✅ فقط دسکتاپ */}
+          {!isMobile && (
+            <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+              Goal Tracker
+            </Typography>
+          )}
         </Box>
 
         {/* CENTER */}
@@ -111,19 +120,14 @@ export default function PrimarySearchAppBar() {
                 key={p.id}
                 component={Link}
                 to={p.to}
-                sx={{
-                  fontSize: "17px",
-                  color: "text.primary",
-                }}
+                sx={{ color: "text.primary" }}
               >
                 {t(p.key)}
               </Button>
             ))}
 
             <Search>
-              <SearchIconWrapper>
-                <SearchIcon fontSize="small" />
-              </SearchIconWrapper>
+              <SearchIcon fontSize="small" />
               <StyledInputBase placeholder={t("search")} />
             </Search>
           </Box>
@@ -131,12 +135,10 @@ export default function PrimarySearchAppBar() {
 
         {/* RIGHT */}
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          {/* LANGUAGE */}
           <IconButton onClick={handleLanguageChange}>
             <TranslateIcon />
           </IconButton>
 
-          {/* THEME */}
           <IconButton onClick={toggleTheme}>
             {settings.themeMode === "light" ? (
               <DarkModeIcon />
@@ -145,22 +147,37 @@ export default function PrimarySearchAppBar() {
             )}
           </IconButton>
 
-          {/* ACCOUNT */}
           <IconButton component={Link} to="/setting">
             <AccountCircle />
           </IconButton>
 
-          {/* LOGOUT */}
-          <IconButton>
-            <LogoutIcon
-              onClick={() => {
-                localStorage.removeItem("user"); // حذف کاربر
-                window.location.href = "/"; // برگشت به لاگین
-              }}
-            />
+          <IconButton onClick={handleLogout}>
+            <LogoutIcon />
           </IconButton>
         </Box>
       </Toolbar>
+
+      {/* MOBILE DRAWER */}
+      <Drawer
+        anchor="left"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+      >
+        <Box sx={{ width: 250 }}>
+          <List>
+            {pages.map((p) => (
+              <ListItemButton
+                key={p.id}
+                component={Link}
+                to={p.to}
+                onClick={() => setOpenDrawer(false)}
+              >
+                <ListItemText primary={t(p.key)} />
+              </ListItemButton>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
     </AppBar>
   );
 }

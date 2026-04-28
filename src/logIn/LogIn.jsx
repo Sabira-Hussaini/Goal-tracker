@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   TextField,
@@ -6,39 +5,30 @@ import {
   Typography,
   Paper,
   InputAdornment,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
-import { keyframes } from "@mui/system";
+
+import { useTheme } from "@mui/material/styles";
+import { useForm } from "react-hook-form";
 
 import EmailIcon from "@mui/icons-material/Email";
-import PhoneIcon from "@mui/icons-material/Phone";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 
-/* animation */
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(25px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
 export default function Login({ onLogin }) {
-  const [name, setName] = useState(""); // ✅ NEW
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const theme = useTheme();
 
-  const handleLogin = () => {
-    if (!name || !email || !password || !phone) return;
+  // ✅ React Hook Form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-    const user = {
-      name, // ✅ SAVE NAME
-      email,
-      phone,
-      loginTime: Date.now(),
-      expireTime: Date.now() + 60 * 60 * 24 * 60 * 1000,
-    };
-
-    localStorage.setItem("user", JSON.stringify(user));
-    onLogin();
+  const onSubmit = (data) => {
+    localStorage.setItem("user", JSON.stringify(data));
+    onLogin?.();
   };
 
   return (
@@ -46,113 +36,157 @@ export default function Login({ onLogin }) {
       sx={{
         height: "100vh",
         display: "flex",
-        justifyContent: "center",
         alignItems: "center",
-        bgcolor: "#ffffff",
+        justifyContent: "center",
+        bgcolor: theme.palette.background.default,
+        p: 2,
       }}
     >
       <Paper
-        elevation={10}
+        elevation={8}
         sx={{
-          width: 400,
-          p: 4,
+          width: { xs: "100%", md: 900 },
+          display: "flex",
           borderRadius: 4,
-          animation: `${fadeIn} 0.6s ease`,
-          background: "#0d47a1",
-          color: "#fff",
+          overflow: "hidden",
         }}
       >
-        <Typography variant="h5" fontWeight="bold" textAlign="center">
-          Goal Tracker
-        </Typography>
-
-        <Typography sx={{ mb: 3, mt: 1, textAlign: "center", fontSize: 14 }}>
-          Sign in to continue
-        </Typography>
-
-        {/* ✅ FULL NAME */}
-        <TextField
-          fullWidth
-          placeholder="Full Name"
-          variant="filled"
-          sx={{ mb: 2, background: "#fff", borderRadius: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PersonIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => setName(e.target.value)}
-        />
-
-        {/* EMAIL */}
-        <TextField
-          fullWidth
-          placeholder="Email"
-          variant="filled"
-          sx={{ mb: 2, background: "#fff", borderRadius: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <EmailIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        {/* PHONE */}
-        <TextField
-          fullWidth
-          placeholder="Phone Number"
-          variant="filled"
-          sx={{ mb: 2, background: "#fff", borderRadius: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PhoneIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => setPhone(e.target.value)}
-        />
-
-        {/* PASSWORD */}
-        <TextField
-          fullWidth
-          placeholder="Password"
-          type="password"
-          variant="filled"
-          sx={{ mb: 3, background: "#fff", borderRadius: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LockIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Button
-          fullWidth
-          variant="contained"
-          onClick={handleLogin}
+        {/* LEFT SIDE */}
+        <Box
           sx={{
-            py: 1.3,
-            borderRadius: 2,
-            fontWeight: "bold",
-            background: "#ffffff",
-            color: "#0d47a1",
+            flex: 1,
+            display: { xs: "none", md: "flex" },
+            flexDirection: "column",
+            justifyContent: "center",
+            p: 5,
+            background: `linear-gradient(135deg,
+              ${theme.palette.primary.main},
+              ${theme.palette.primary.dark}
+            )`,
+            color: theme.palette.primary.contrastText,
           }}
         >
-          Sign In
-        </Button>
+          <Typography variant="h4" fontWeight={800}>
+            Focus Hub
+          </Typography>
 
-        <Typography sx={{ mt: 2, fontSize: 12, textAlign: "center" }}>
-          Secure login • Goal Tracker
-        </Typography>
+          <Typography sx={{ mt: 2, opacity: 0.9 }}>
+            Manage your daily focus, habits, and personal growth in one place.
+          </Typography>
+        </Box>
+
+        {/* RIGHT SIDE FORM */}
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          sx={{
+            flex: 1,
+            p: { xs: 3, md: 5 },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: 2,
+            bgcolor: theme.palette.background.paper,
+          }}
+        >
+          <Typography variant="h5" fontWeight={700}>
+            Welcome Back 👋
+          </Typography>
+
+          <Typography color="text.secondary" fontSize={14}>
+            Sign in to continue your journey
+          </Typography>
+
+          {/* NAME */}
+          <TextField
+            fullWidth
+            label="Full Name (optional)"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonIcon />
+                </InputAdornment>
+              ),
+            }}
+            {...register("name")}
+          />
+
+          {/* EMAIL */}
+          <TextField
+            fullWidth
+            label="Email Address"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <EmailIcon />
+                </InputAdornment>
+              ),
+            }}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Invalid email format",
+              },
+            })}
+          />
+
+          {/* PASSWORD */}
+          <TextField
+            fullWidth
+            type="password"
+            label="Password"
+            error={!!errors.password}
+            helperText={errors.password?.message}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+            }}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 6,
+                message: "Minimum 6 characters",
+              },
+            })}
+          />
+
+          {/* CHECKBOX */}
+          <FormControlLabel
+            control={<Checkbox defaultChecked />}
+            label="Keep me signed in"
+          />
+
+          {/* BUTTON */}
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              py: 1.3,
+              borderRadius: 3,
+              fontWeight: 700,
+              textTransform: "none",
+              backgroundColor: theme.palette.primary.main,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              },
+            }}
+          >
+            Enter Dashboard
+          </Button>
+
+          <Typography
+            sx={{ mt: 2, fontSize: 12, textAlign: "center", opacity: 0.7 }}
+          >
+            By continuing you agree to our terms & privacy policy
+          </Typography>
+        </Box>
       </Paper>
     </Box>
   );
