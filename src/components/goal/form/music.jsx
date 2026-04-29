@@ -18,7 +18,7 @@ export default function MediaControlCard() {
   const theme = useTheme();
   const { t } = useLanguage();
 
-  // 🎵 MULTIPLE MOTIVATION SONGS
+  
   const playlist = [
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",

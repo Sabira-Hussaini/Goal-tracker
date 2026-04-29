@@ -16,10 +16,8 @@ import ActiveGoalsList from "../components/ActiveGoalsList";
 
 const Dashboard = () => {
   const { goals = [], events = [] } = useContext(GoalContext);
-<<<<<<< HEAD
 
-=======
->>>>>>> 6ad47bbda7416a60b4a3fdae3db106dfe22713dc
+
   const completedGoals = useMemo(
     () =>
       goals.filter(
@@ -36,29 +34,31 @@ const Dashboard = () => {
     [goals]
   );
 
+  
   const xp = useMemo(() => calculateXP(events), [events]);
-
-  const streak = useMemo(() => calculateStreak(events), [events]);
 
   const level = useMemo(() => calculateLevel(xp), [xp]);
 
+  
   const { progress } = useMemo(
     () => getLevelProgress(xp),
     [xp]
   );
 
+  
+  const streak = useMemo(() => calculateStreak(events), [events]);
+
+ 
   const stats = useMemo(() => {
     const total = goals.length;
     const completed = completedGoals.length;
-
-    const completionRate =
-      total === 0 ? 0 : (completed / total) * 100;
 
     return {
       total,
       completed,
       active: activeGoals.length,
-      completionRate,
+      completionRate:
+        total === 0 ? 0 : (completed / total) * 100,
       xp,
       streak,
       level,
@@ -74,9 +74,13 @@ const Dashboard = () => {
     progress,
   ]);
 
+ 
   const recentEvents = useMemo(() => {
     return [...events].slice(-5).reverse();
   }, [events]);
+  console.log("XP:", xp);
+console.log("LEVEL:", level);
+console.log("EVENTS:", events);
 
   return (
     <Box
@@ -87,7 +91,7 @@ const Dashboard = () => {
         width: "100%",
       }}
     >
-      {/* HERO */}
+    
       <Box
         sx={{
           display: "grid",
@@ -99,10 +103,10 @@ const Dashboard = () => {
         <DashboardSuccess />
       </Box>
 
-      {/* STATS */}
+      {/* STATS CARDS */}
       <DashboardCards stats={stats} />
 
-      {/* MAIN SECTION (FIXED LAYOUT) */}
+      {/* MAIN CONTENT */}
       <Box
         sx={{
           display: "grid",
@@ -111,15 +115,11 @@ const Dashboard = () => {
           alignItems: "start",
         }}
       >
-        {/* LEFT SIDE */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <ActiveGoalsList goals={activeGoals} />
-
-          {/* 🔥 MOVED HERE */}
           <RecentActivity activities={recentEvents} />
         </Box>
 
-        {/* RIGHT SIDE */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <CompletionInsight
             total={stats.total}

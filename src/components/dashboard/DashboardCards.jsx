@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import StatCard from "./StatCard";
+
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
@@ -20,7 +21,7 @@ const DashboardCards = ({ stats }) => {
         width: "100%",
       }}
     >
-      {/* ACTIVE GOALS */}
+     
       <StatCard
         title={t("activeGoals")}
         value={stats.active}
@@ -29,7 +30,7 @@ const DashboardCards = ({ stats }) => {
         color="#1b5e20"
       />
 
-      {/* COMPLETED */}
+      {/* COMPLETED GOALS */}
       <StatCard
         title={t("completed")}
         value={stats.completed}
@@ -38,7 +39,7 @@ const DashboardCards = ({ stats }) => {
         color="#2e7d32"
       />
 
-      {/* STREAK */}
+     
       <StatCard
         title={t("currentStreak")}
         value={t("streak_days", { value: stats.streak })}
@@ -47,7 +48,7 @@ const DashboardCards = ({ stats }) => {
         color="#ef6c00"
       />
 
-      {/* XP */}
+      
       <StatCard
         title={t("totalXp")}
         value={stats.xp}
@@ -56,10 +57,10 @@ const DashboardCards = ({ stats }) => {
         color="#6a1b9a"
       />
 
-      {/* LEVEL */}
+      
       <StatCard
         title={t("titles")}
-        value={t("level", { value: stats.level })}
+        value={stats.level}   
         subtitle={t("basedOnXp")}
         icon={<MilitaryTechIcon />}
         color="#1565c0"

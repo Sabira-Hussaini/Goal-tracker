@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    // general
+  
     settings: "Settings",
     settingsDesc: "Personalize language, theme, and experience preferences.",
     appearance: "Appearance",
@@ -8,19 +8,19 @@ export const translations = {
     theme: "Theme",
     profile: "Profile",
 
-    // profile fields
+  
     fullName: "Full Name",
     email: "Email",
     mainFocus: "Main Focus",
     saveProfile: "Save Profile",
 
-    // categories / goals
+   
     study: "Study",
     work: "Work",
     fitness: "Fitness",
     personal: "Personal Growth",
 
-    // buttons / actions
+    
     addGoal: "Add Goal",
     delete: "Delete",
     preferences: "Preferences",
@@ -151,7 +151,7 @@ streak_days: "{{value}} days"
 
 
   fa: {
-    // general
+   
     goalTracker: "گول-ترکر",
     title: "عنوان",
 category: "دسته‌بندی",
@@ -240,19 +240,19 @@ noActiveGoals: "هنوز هدف فعالی ندارید. یکی بسازید!",
     theme: "تم",
     profile: "پروفایل",
 
-    // profile fields
+  
     fullName: "نام کامل",
     email: "ایمیل",
     mainFocus: "تمرکز اصلی",
     saveProfile: "ذخیره پروفایل",
 
-    // categories / goals
+    
     study: "مطالعه",
     work: "کار",
     fitness: "ورزش",
     personal: "رشد فردی",
 
-    // buttons / actions
+   
     addGoal: "افزودن هدف",
     delete: "حذف",
     preferences: "ترجیحات",

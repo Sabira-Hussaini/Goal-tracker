@@ -9,21 +9,20 @@ export default function RequiredInput({ onAddGoal }) {
   const { lang } = useLanguage();
   const { categories: customCategories } = useContext(CategoryContext);
 
-  // ✅ FIXED: categories per language (correct structure)
+ 
   const defaultCategories = {
     fa: ["مطالعه", "کار", "ورزش", "سلامتی", "سرگرمی", "مالی"],
     en: ["Study", "Work", "Sport", "Health", "Hobby", "Finance"],
   };
 
-  // ✅ merge correctly
   const categories = [
     ...new Set([
-      ...defaultCategories[lang], // 👈 important fix
+      ...defaultCategories[lang], 
       ...customCategories.map((c) => c.name),
     ]),
   ];
 
-  // 🌍 OPTIONS
+  
   const options = {
     fa: {
       sessions: ["صفحات", "دقیقه", "ساعت"],
@@ -240,7 +239,7 @@ export default function RequiredInput({ onAddGoal }) {
             value={formData.description}
             onChange={handleChange}
             sx={fieldSx}
-            // sx={{  maxWidth : '760px' ,  width : '500px' }}
+         
           />
         </Grid>
       </Grid>

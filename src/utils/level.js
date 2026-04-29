@@ -17,12 +17,15 @@ export function getLevelProgress(xp = 0) {
     (l) => xp >= l.min && xp < l.max
   );
 
-  const level = levelIndex + 1;
   const current = levels[levelIndex];
+
   const progress =
     current.max === Infinity
       ? 100
       : ((xp - current.min) / (current.max - current.min)) * 100;
 
-  return { level, progress };
+  return {
+    level: levelIndex + 1,
+    progress,
+  };
 }

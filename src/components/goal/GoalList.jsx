@@ -8,14 +8,13 @@ const GoalList = ({ filter = "all", search = "" }) => {
 
   let filtered = [...goals];
 
-  // Filter by status
   if (filter !== "all") {
     filtered = filtered.filter(
       (g) => (g.status || "active").toLowerCase() === filter
     );
   }
 
-  // Search by title
+ 
   filtered = filtered.filter((g) =>
     g?.title?.toLowerCase().includes(search.toLowerCase())
   );

@@ -13,7 +13,7 @@ import FunctionsIcon from "@mui/icons-material/Functions";
 
 import ProgressInsight from "../goal/ProgressInsight";
 import { useLanguage } from "../../i18n/useLanguage";
-import { GoalContext } from "../../context/GoalContext"; // ✅ ADD
+import { GoalContext } from "../../context/GoalContext"; 
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",

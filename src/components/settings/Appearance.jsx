@@ -31,13 +31,13 @@ const Appearance = () => {
   const [now, setNow] = useState(new Date());
   const [is24Hour, setIs24Hour] = useState(true);
 
-  /* ⏱ CLOCK */
+
   useEffect(() => {
     const interval = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
-  /* 🔐 GET DATA FROM LOGIN */
+  
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
 
@@ -46,7 +46,7 @@ const Appearance = () => {
         ...prev,
         profile: {
           ...prev.profile,
-          name: storedUser.name || "", // ✅ اضافه شد
+          name: storedUser.name || "", 
           email: storedUser.email || "",
           phone: storedUser.phone || "",
         },
@@ -67,7 +67,7 @@ const Appearance = () => {
     );
   };
 
-  /* TIME */
+
   const formatTime = () => {
     return now.toLocaleTimeString(
       settings.language === "fa" ? "fa-IR" : "en-US",
@@ -88,7 +88,7 @@ const Appearance = () => {
     });
   };
 
-  /* LANGUAGE */
+
   const changeLanguage = (val) => {
     if (!val) return;
 
@@ -114,14 +114,14 @@ const Appearance = () => {
           flexDirection: { xs: "column", md: "row" },
         }}
       >
-        {/* LEFT CARD */}
+     
         <Card sx={{ flex: 1.4, boxShadow: 3, borderRadius: 3 }}>
           <CardContent>
             <Typography variant="h6" mb={3}>
               {t("appearance")}
             </Typography>
 
-            {/* LANGUAGE */}
+           
             <Box
               sx={{
                 display: "flex",
@@ -169,7 +169,6 @@ const Appearance = () => {
               {t("live_date_time")}
             </Typography>
 
-            {/* TOGGLE */}
             <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
               <Box
                 onClick={() => setIs24Hour((p) => !p)}

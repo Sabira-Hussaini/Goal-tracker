@@ -8,7 +8,7 @@ import { SettingsContext } from "./context/SettingsContext";
 
 import Dashboard from "./pages/Dashboard";
 import Goals from "./pages/Goals";
-import GoalDetails from "./pages/GoalDetails";
+
 import Categories from "./pages/Categories";
 import Settings from "./pages/Settings";
 import Form from "./components/goal/form/Form";
@@ -60,7 +60,7 @@ function App() {
             <Route path="form" element={<Form />} />
             <Route path="categories" element={<Categories />} />
             <Route path="setting" element={<Settings />} />
-            <Route path="goals/:id" element={<GoalDetails />} />
+         
             <Route path="logIn" element={<LogIn />} />
             <Route path="*" element={<NotFound />} />
           </Route>

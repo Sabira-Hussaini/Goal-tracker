@@ -105,7 +105,7 @@ export default function Login({ onLogin }) {
             {...register("name")}
           />
 
-          {/* EMAIL */}
+         
           <TextField
             fullWidth
             label="Email Address"

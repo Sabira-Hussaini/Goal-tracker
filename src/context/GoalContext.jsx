@@ -6,8 +6,8 @@ export const GoalContext = createContext();
 export const GoalProvider = ({ children }) => {
   const [goals, setGoals] = useState(() => getGoals() || []);
   const [events, setEvents] = useState(() => {
-    const storedEvents = localStorage.getItem("events");
-    return storedEvents ? JSON.parse(storedEvents) : [];
+    const stored = localStorage.getItem("events");
+    return stored ? JSON.parse(stored) : [];
   });
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const GoalProvider = ({ children }) => {
       id: Date.now(),
       type,
       goalId,
-      date: new Date().toISOString().split("T")[0],
+      date: new Date().toISOString(),
     };
 
     setEvents((prev) => [...prev, newEvent]);
@@ -33,32 +33,33 @@ export const GoalProvider = ({ children }) => {
     const newGoal = {
       ...goal,
       id: goal.id || Date.now(),
-      status: goal.status || "active",    };
+      status: goal.status || "active",
+    };
 
     setGoals((prev) => [...prev, newGoal]);
     addEvent("CREATE_GOAL", newGoal.id);
-  };
-
-  const updateGoal = (id, updatedGoal) => {
-    setGoals((prev) =>
-      prev.map((g) => (g.id === id ? updatedGoal : g))
-    );
   };
 
   const deleteGoal = (id) => {
     setGoals((prev) => prev.filter((g) => g.id !== id));
     addEvent("DELETE_GOAL", id);
   };
+
+  // ✅ FIXED: THIS is what was breaking XP
   const updateGoalStatus = (id, status) => {
+    const normalized = status.toLowerCase();
+
     setGoals((prev) =>
       prev.map((g) =>
-        g.id === id
-          ? { ...g, status: status.toLowerCase() }
-          : g
+        g.id === id ? { ...g, status: normalized } : g
       )
     );
 
-    addEvent("UPDATE_STATUS", id);
+    if (normalized === "completed") {
+      addEvent("COMPLETE_GOAL", id);
+    } else {
+      addEvent("UPDATE_STATUS", id);
+    }
   };
 
   return (
@@ -67,9 +68,7 @@ export const GoalProvider = ({ children }) => {
         goals,
         events,
         addGoal,
-        updateGoal,
         deleteGoal,
-        addEvent,
         updateGoalStatus,
       }}
     >
