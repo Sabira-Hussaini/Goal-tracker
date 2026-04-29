@@ -188,6 +188,37 @@ npm run dev
 ```
 
 ---
+👥 Team Contributions
+
+This project was collaboratively developed by:
+
+👩‍💻 Maryam Mirzada
+👩‍💻 Sabira Hussaini
+🤝 Collaboration Approach
+
+All features in this project were developed jointly. Both team members actively participated in:
+
+Designing the UI/UX
+Implementing React components
+Building the goal management system (CRUD)
+Developing progress tracking & XP system
+Implementing multi-language (RTL / LTR) support
+Testing, debugging, and improving performance
+🧾 Git Contribution Evidence
+
+Both team members contributed through multiple commits in the repository.
+The Git history reflects shared responsibility across all parts of the project.
+
+🧩 Feature Ownership
+Feature	Ownership
+Goal Management	Shared
+Progress Tracking	Shared
+Dashboard UI	Shared
+Categories	Shared
+Forms & Validation	Shared
+UI Components	Shared
+Testing & Fixes	Shared
+
 
 # 👨‍💻 Authors Notes
 
