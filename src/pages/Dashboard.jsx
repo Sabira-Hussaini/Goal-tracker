@@ -17,7 +17,6 @@ import ActiveGoalsList from "../components/ActiveGoalsList";
 const Dashboard = () => {
   const { goals = [], events = [] } = useContext(GoalContext);
 
-  // ✅ FIX: use status instead of completed
   const completedGoals = useMemo(
     () =>
       goals.filter(
@@ -85,6 +84,7 @@ const Dashboard = () => {
         width: "100%",
       }}
     >
+      {/* HERO */}
       <Box
         sx={{
           display: "grid",
@@ -96,8 +96,10 @@ const Dashboard = () => {
         <DashboardSuccess />
       </Box>
 
+      {/* STATS */}
       <DashboardCards stats={stats} />
 
+      {/* MAIN SECTION (FIXED LAYOUT) */}
       <Box
         sx={{
           display: "grid",
@@ -106,17 +108,20 @@ const Dashboard = () => {
           alignItems: "start",
         }}
       >
-        {/* LEFT */}
-        <ActiveGoalsList goals={activeGoals} />
+        {/* LEFT SIDE */}
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <ActiveGoalsList goals={activeGoals} />
 
-        {/* RIGHT */}
+          {/* 🔥 MOVED HERE */}
+          <RecentActivity activities={recentEvents} />
+        </Box>
+
+        {/* RIGHT SIDE */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <CompletionInsight
             total={stats.total}
             completed={stats.completed}
           />
-
-          <RecentActivity activities={recentEvents} />
 
           <CompletedPreview completedGoals={completedGoals} />
         </Box>

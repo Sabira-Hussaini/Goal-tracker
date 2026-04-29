@@ -16,30 +16,72 @@ import goal from "../../../assets/goal.jpg";
 
 export default function MediaControlCard() {
   const theme = useTheme();
-const { t } = useLanguage();
-  // 🎧 موزیک آنلاین (لینک خودت را اینجا بگذار)
-  const musicUrl =
-    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
+  const { t } = useLanguage();
 
+  // 🎵 MULTIPLE MOTIVATION SONGS
+  const playlist = [
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+  ];
+
+  const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef(null);
+
+  const playAudio = async () => {
+    try {
+      await audioRef.current.play();
+      setPlaying(true);
+    } catch (err) {
+      console.log("Play blocked:", err);
+    }
+  };
+
+  const pauseAudio = () => {
+    audioRef.current.pause();
+    setPlaying(false);
+  };
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
 
     if (playing) {
-      audioRef.current.pause();
+      pauseAudio();
     } else {
-      audioRef.current.play();
+      playAudio();
     }
+  };
 
-    setPlaying(!playing);
+  // ⏭ NEXT SONG
+  const nextSong = () => {
+    const newIndex = (index + 1) % playlist.length;
+    setIndex(newIndex);
+    setPlaying(false);
+
+    setTimeout(() => {
+      audioRef.current.load();
+      playAudio();
+    }, 100);
+  };
+
+  // ⏮ PREVIOUS SONG
+  const prevSong = () => {
+    const newIndex =
+      (index - 1 + playlist.length) % playlist.length;
+    setIndex(newIndex);
+    setPlaying(false);
+
+    setTimeout(() => {
+      audioRef.current.load();
+      playAudio();
+    }, 100);
   };
 
   return (
     <Card sx={{ display: "flex" }}>
-      {/* 🎧 Audio (پنهان ولی فعال) */}
-      <audio ref={audioRef} src={musicUrl} />
+      {/* 🎧 AUDIO */}
+      <audio ref={audioRef} src={playlist[index]} />
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
@@ -52,11 +94,12 @@ const { t } = useLanguage();
             component="div"
             sx={{ color: "text.secondary" }}
           >
-             {t("stayFocused")}
+            {t("stayFocused")}
           </Typography>
         </CardContent>
+
         <Box sx={{ display: "flex", alignItems: "center", pl: 1, pb: 1 }}>
-          <IconButton aria-label="previous">
+          <IconButton onClick={prevSong}>
             {theme.direction === "rtl" ? (
               <SkipNextIcon />
             ) : (
@@ -72,7 +115,7 @@ const { t } = useLanguage();
             )}
           </IconButton>
 
-          <IconButton aria-label="next">
+          <IconButton onClick={nextSong}>
             {theme.direction === "rtl" ? (
               <SkipPreviousIcon />
             ) : (

@@ -7,19 +7,23 @@ import { useLanguage } from "../../i18n/useLanguage";
 import { useContext } from "react";
 import { GoalContext } from "../../context/GoalContext";
 
-function LinearProgressWithLabel(props) {
+function LinearProgressWithLabel({ value, color }) {
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <Box sx={{ width: "100%", mr: 1 }}>
         <LinearProgress
           variant="determinate"
-          aria-label="progress"
-          {...props}
+          value={value}
+          sx={{
+            "& .MuiLinearProgress-bar": {
+              backgroundColor: color,
+            },
+          }}
         />
       </Box>
       <Box sx={{ minWidth: 35 }}>
         <Typography variant="body2" sx={{ color: "text.primary" }}>
-          {`${Math.round(props.value)}%`}
+          {`${Math.round(value)}%`}
         </Typography>
       </Box>
     </Box>
@@ -28,25 +32,47 @@ function LinearProgressWithLabel(props) {
 
 LinearProgressWithLabel.propTypes = {
   value: PropTypes.number.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default function ProgressInsight() {
   const { t } = useLanguage();
   const { goals } = useContext(GoalContext);
 
-  // ✅ SAFE DATA
   const safeGoals = goals || [];
 
-  // ✅ CALCULATE REAL AVERAGE
-  let progress = 0;
+  // 🧠 Get last active date (you can improve this later with backend/localStorage)
+  const lastActiveDate = safeGoals?.[0]?.lastActiveDate;
 
-  if (safeGoals.length > 0) {
-    const total = safeGoals.reduce(
-      (sum, g) => sum + (Number(g.progress) || 0),
-      0
-    );
+  // 📅 Calculate days difference
+  const getDaysDiff = (date) => {
+    if (!date) return 999;
 
-    progress = Math.round(total / safeGoals.length);
+    const last = new Date(date);
+    const now = new Date();
+
+    const diffTime = now - last;
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  const daysInactive = getDaysDiff(lastActiveDate);
+
+  // 🎯 Activity-based progress + color
+  let progress = 100;
+  let color = "green";
+
+  if (daysInactive <= 0) {
+    progress = 100;
+    color = "green";
+  } else if (daysInactive <= 2) {
+    progress = 70;
+    color = "orange";
+  } else if (daysInactive <= 5) {
+    progress = 40;
+    color = "orange";
+  } else {
+    progress = 10;
+    color = "red";
   }
 
   return (
@@ -55,7 +81,7 @@ export default function ProgressInsight() {
         {t("progress")} {progress}%
       </Typography>
 
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel value={progress} color={color} />
     </Box>
   );
 }
