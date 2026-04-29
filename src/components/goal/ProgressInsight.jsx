@@ -4,6 +4,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useContext } from "react";
+import { GoalContext } from "../../context/GoalContext";
 
 function LinearProgressWithLabel(props) {
   return (
@@ -29,18 +31,23 @@ LinearProgressWithLabel.propTypes = {
 };
 
 export default function ProgressInsight() {
-  const [progress, setProgress] = React.useState(0);
   const { t } = useLanguage();
+  const { goals } = useContext(GoalContext);
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) =>
-        prev >= 100 ? 0 : prev + 10
-      );
-    }, 800);
+  // ✅ SAFE DATA
+  const safeGoals = goals || [];
 
-    return () => clearInterval(timer);
-  }, []);
+  // ✅ CALCULATE REAL AVERAGE
+  let progress = 0;
+
+  if (safeGoals.length > 0) {
+    const total = safeGoals.reduce(
+      (sum, g) => sum + (Number(g.progress) || 0),
+      0
+    );
+
+    progress = Math.round(total / safeGoals.length);
+  }
 
   return (
     <Box sx={{ width: "100%" }}>

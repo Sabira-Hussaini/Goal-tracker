@@ -2,6 +2,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import { useContext } from "react";
 import { Card, Typography } from "@mui/material";
 import StatCard from "../dashboard/StatCard";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
@@ -11,7 +12,8 @@ import LibraryAddCheckIcon from "@mui/icons-material/LibraryAddCheck";
 import FunctionsIcon from "@mui/icons-material/Functions";
 
 import ProgressInsight from "../goal/ProgressInsight";
-import { useLanguage } from "../../i18n/useLanguage"; // ✅ added
+import { useLanguage } from "../../i18n/useLanguage";
+import { GoalContext } from "../../context/GoalContext"; // ✅ ADD
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: "#fff",
@@ -25,7 +27,28 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ShowProgress() {
-  const { t } = useLanguage(); // ✅ added
+  const { t } = useLanguage();
+
+  // ✅ GET GOALS FROM CONTEXT
+  const { goals } = useContext(GoalContext);
+
+  // ✅ SAFE NORMALIZATION
+  const safeGoals = goals || [];
+
+  // ✅ CALCULATIONS
+  const total = safeGoals.length;
+
+  const active = safeGoals.filter(
+    (g) => (g.status || "active").toLowerCase() === "active"
+  ).length;
+
+  const paused = safeGoals.filter(
+    (g) => (g.status || "").toLowerCase() === "paused"
+  ).length;
+
+  const completed = safeGoals.filter(
+    (g) => (g.status || "").toLowerCase() === "completed"
+  ).length;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -47,8 +70,8 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title={t("total_goals")} // ✅ fixed
-              value="0"
+              title={t("total_goals")}
+              value={total} // ✅ FIXED
               icon={<DonutSmallIcon />}
               color="#1b5e20"
             />
@@ -67,8 +90,8 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title={t("active_goals")} // ✅ fixed
-              value="0"
+              title={t("active_goals")}
+              value={active} // ✅ FIXED
               icon={<CallMissedOutgoingIcon />}
               color="#0f26ba"
             />
@@ -87,8 +110,8 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title={t("paused_goals")} // ✅ fixed
-              value="0"
+              title={t("paused_goals")}
+              value={paused} // ✅ FIXED
               icon={<PauseIcon />}
               color="#c8420d"
             />
@@ -107,8 +130,8 @@ export default function ShowProgress() {
             }}
           >
             <StatCard
-              title={t("completed_goals")} // ✅ fixed
-              value="0"
+              title={t("completed_goals")}
+              value={completed} // ✅ FIXED
               icon={<LibraryAddCheckIcon />}
               color="#b4c614"
             />
@@ -120,7 +143,7 @@ export default function ShowProgress() {
         <Grid size={{ xs: 6, md: 4 }}>
           <Grid size={{ xs: 12, sm: 12, md: 12, height: "100%" }}>
             <StatCard
-              title={t("average_goal")} // ✅ FIXED HERE
+              title={t("average_goal")}
               icon={<FunctionsIcon />}
               color="#b84b4b"
             >

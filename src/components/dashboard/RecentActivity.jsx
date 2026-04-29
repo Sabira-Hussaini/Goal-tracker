@@ -1,17 +1,27 @@
 import { Card, CardContent, Typography, Box } from "@mui/material";
 import GoalCard from "../goal/form/GoalCard";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useContext, useMemo } from "react";
+import { GoalContext } from "../../context/GoalContext";
 
 const MAX_ITEMS = 5;
 
 const RecentActivity = ({ activities = [] }) => {
   const { t } = useLanguage();
+  const { goals } = useContext(GoalContext);
 
-  const hasActivities = activities.length > 0;
+  const safeGoals = goals || [];
 
-  const recentActivities = hasActivities
-    ? activities.slice(0, MAX_ITEMS)
-    : [];
+  const recentGoals = useMemo(() => {
+    return activities
+      .map((event) =>
+        safeGoals.find((g) => g.id === event.goalId)
+      )
+      .filter(Boolean)
+      .slice(0, MAX_ITEMS);
+  }, [activities, safeGoals]);
+
+  const hasActivities = recentGoals.length > 0;
 
   return (
     <Card
@@ -31,9 +41,24 @@ const RecentActivity = ({ activities = [] }) => {
             {t("noActivity")}
           </Typography>
         ) : (
-          <Box className="grid grid-cols-2 gap-4 mt-3">
-            {recentActivities.map((goal, index) => (
-              <GoalCard key={index} goal={goal} />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gap: 1,
+              mt: 2,
+            }}
+          >
+            {recentGoals.map((goal) => (
+              <Box
+                key={goal.id}
+                sx={{
+                  transform: "scale(0.9)", // ✅ shrink cards
+                  transformOrigin: "top left",
+                }}
+              >
+                <GoalCard goal={goal} />
+              </Box>
             ))}
           </Box>
         )}

@@ -1,13 +1,24 @@
 import { Card, CardContent, Typography, LinearProgress } from "@mui/material";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useContext } from "react";
+import { GoalContext } from "../../context/GoalContext";
 
-const CompletionInsight = ({ total, completed }) => {
+const CompletionInsight = () => {
   const { t } = useLanguage();
+  const { goals } = useContext(GoalContext);
+
+  const safeGoals = goals || [];
+
+  const total = safeGoals.length;
+
+  const completed = safeGoals.filter(
+    (g) => (g.status || "").toLowerCase() === "completed"
+  ).length;
 
   const percent = total === 0 ? 0 : (completed / total) * 100;
 
   return (
-    <Card >
+    <Card>
       <CardContent>
         <Typography variant="h6">
           {t("completionInsight")}

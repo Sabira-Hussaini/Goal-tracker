@@ -17,10 +17,11 @@ export default function DashboardHero() {
       sx={(theme) => ({
         width: "100%",
         maxWidth: 900,
-        borderRadius: 3,
-        p: { xs: 1, sm: 2, md: 3 },
+        borderRadius: 2,
 
-        /* 🌙 Theme background */
+        // 🔥 reduced padding
+        p: { xs: 1, sm: 1.5, md: 2 },
+
         backgroundColor:
           theme.palette.mode === "dark"
             ? theme.palette.background.paper
@@ -29,11 +30,11 @@ export default function DashboardHero() {
         color: theme.palette.text.primary,
       })}
     >
-      <CardContent>
+      <CardContent sx={{ p: 1 }}>
         {/* Welcome */}
         <Typography
           sx={(theme) => ({
-            fontSize: { xs: "14px", md: "16px" },
+            fontSize: { xs: "13px", md: "14px" },
             color: theme.palette.text.secondary,
           })}
         >
@@ -44,9 +45,8 @@ export default function DashboardHero() {
         <Typography
           sx={(theme) => ({
             fontWeight: "bold",
-            fontSize: { xs: "24px", md: "36px" },
-            mt: 1,
-
+            fontSize: { xs: "20px", md: "30px" }, // 🔥 smaller
+            mt: 0.5,
             color: theme.palette.primary.main,
           })}
         >
@@ -56,8 +56,8 @@ export default function DashboardHero() {
         {/* Description */}
         <Typography
           sx={(theme) => ({
-            mt: 2,
-            fontSize: { xs: "13px", md: "15px" },
+            mt: 1,
+            fontSize: { xs: "12px", md: "14px" }, // 🔥 smaller
             color: theme.palette.text.secondary,
           })}
         >
@@ -70,8 +70,8 @@ export default function DashboardHero() {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", sm: "row" },
-          gap: 2,
-          p: 2,
+          gap: 1.5,
+          p: 1.5,
         }}
       >
         {/* NEW GOAL */}
@@ -79,12 +79,10 @@ export default function DashboardHero() {
           onClick={() => navigate("/form")}
           fullWidth
           sx={(theme) => ({
-            py: 1.2,
-            fontSize: "14px",
-
+            py: 1,
+            fontSize: "13px",
             backgroundColor: theme.palette.primary.main,
             color: "#fff",
-
             "&:hover": {
               backgroundColor: theme.palette.primary.dark,
             },
@@ -97,12 +95,10 @@ export default function DashboardHero() {
         <Button
           fullWidth
           sx={(theme) => ({
-            py: 1.2,
-            fontSize: "14px",
-
-            border: `2px solid ${theme.palette.primary.main}`,
+            py: 1,
+            fontSize: "13px",
+            border: `1.5px solid ${theme.palette.primary.main}`,
             color: theme.palette.primary.main,
-
             "&:hover": {
               backgroundColor:
                 theme.palette.mode === "dark"

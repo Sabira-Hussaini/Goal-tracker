@@ -1,10 +1,18 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import { useLanguage } from "../../i18n/useLanguage";
+import { useContext } from "react";
+import { GoalContext } from "../../context/GoalContext";
 
 const MAX_PREVIEW_ITEMS = 3;
 
-const CompletedPreview = ({ completedGoals = [] }) => {
+const CompletedPreview = () => {
   const { t } = useLanguage();
+  const { goals } = useContext(GoalContext);
+
+  // ✅ FILTER COMPLETED GOALS SAFELY
+  const completedGoals = (goals || []).filter(
+    (g) => (g.status || "").toLowerCase() === "completed"
+  );
 
   const hasCompletedGoals = completedGoals.length > 0;
 
@@ -19,7 +27,6 @@ const CompletedPreview = ({ completedGoals = [] }) => {
         color: "text.primary",
         backgroundImage: "none",
         boxShadow: 3,
-     
       }}
     >
       <CardContent>
@@ -42,6 +49,5 @@ const CompletedPreview = ({ completedGoals = [] }) => {
     </Card>
   );
 };
-
 
 export default CompletedPreview;

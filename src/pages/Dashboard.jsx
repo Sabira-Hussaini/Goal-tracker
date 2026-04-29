@@ -17,22 +17,26 @@ import ActiveGoalsList from "../components/ActiveGoalsList";
 const Dashboard = () => {
   const { goals = [], events = [] } = useContext(GoalContext);
 
+  // ✅ FIX: use status instead of completed
   const completedGoals = useMemo(
-    () => goals.filter((g) => g.completed),
+    () =>
+      goals.filter(
+        (g) => (g.status || "").toLowerCase() === "completed"
+      ),
     [goals]
   );
 
   const activeGoals = useMemo(
-    () => goals.filter((g) => !g.completed),
+    () =>
+      goals.filter(
+        (g) => (g.status || "active").toLowerCase() === "active"
+      ),
     [goals]
   );
 
   const xp = useMemo(() => calculateXP(events), [events]);
 
-  const streak = useMemo(
-    () => calculateStreak(events),
-    [events]
-  );
+  const streak = useMemo(() => calculateStreak(events), [events]);
 
   const level = useMemo(() => calculateLevel(xp), [xp]);
 
@@ -73,49 +77,51 @@ const Dashboard = () => {
   }, [events]);
 
   return (
-   <Box
-  sx={{
-    display: "grid",
-    gridTemplateRows: "auto auto 1fr",
-    gap: 3,
-    width: "100%",
-  }}
->
-  <Box
-    sx={{
-      display: "grid",
-      gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
-      gap: 3,
-    }}
-  >
-    <DashboardHero />
-    <DashboardSuccess />
-  </Box>
-  <DashboardCards stats={stats} />
-  <Box
-    sx={{
-      display: "grid",
-      gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
-      gap: 3,
-      alignItems: "start",
-    }}
-  >
-    {/* LEFT */}
-    <ActiveGoalsList goals={activeGoals} />
+    <Box
+      sx={{
+        display: "grid",
+        gridTemplateRows: "auto auto 1fr",
+        gap: 3,
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
+          gap: 3,
+        }}
+      >
+        <DashboardHero />
+        <DashboardSuccess />
+      </Box>
 
-    {/* RIGHT */}
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <CompletionInsight
-        total={stats.total}
-        completed={stats.completed}
-      />
+      <DashboardCards stats={stats} />
 
-      <RecentActivity activities={recentEvents} />
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: { xs: "1fr", md: "2fr 1fr" },
+          gap: 3,
+          alignItems: "start",
+        }}
+      >
+        {/* LEFT */}
+        <ActiveGoalsList goals={activeGoals} />
 
-      <CompletedPreview completedGoals={completedGoals} />
+        {/* RIGHT */}
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <CompletionInsight
+            total={stats.total}
+            completed={stats.completed}
+          />
+
+          <RecentActivity activities={recentEvents} />
+
+          <CompletedPreview completedGoals={completedGoals} />
+        </Box>
+      </Box>
     </Box>
-  </Box>
-</Box>
   );
 };
 
