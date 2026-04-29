@@ -10,7 +10,6 @@ const StatCard = ({
   return (
     <Card sx={{ height: "100%", width: "100%" }}>
       <CardContent>
-        {/* Header */}
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="subtitle2" color="text.secondary">
             {title}
@@ -23,12 +22,10 @@ const StatCard = ({
           )}
         </Box>
 
-        {/* Value */}
         <Typography variant="h4" fontWeight="bold" mt={1}>
           {value}
         </Typography>
 
-        {/* Subtitle */}
         {subtitle && (
           <Typography variant="body2" color="text.secondary">
             {subtitle}

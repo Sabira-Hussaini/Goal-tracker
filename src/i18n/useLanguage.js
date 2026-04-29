@@ -10,7 +10,6 @@ export const useLanguage = () => {
   const t = (key, variables = {}) => {
     const raw = translations?.[lang]?.[key];
 
-    // ✅ safety check (prevents crash)
     if (typeof raw !== "string") {
       return key;
     }

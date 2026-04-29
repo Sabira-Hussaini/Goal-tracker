@@ -54,76 +54,64 @@ export default function GoalCard({ goal }) {
     <Card
       sx={{
         borderRadius: 3,
-        bgcolor: "background.paper",
         border: `1px solid ${theme.palette.divider}`,
         boxShadow: theme.shadows[1],
         transition: "0.3s",
-        "&:hover": {
-          boxShadow: theme.shadows[4],
-        },
+        "&:hover": { boxShadow: theme.shadows[4] },
+        overflow: "hidden",
       }}
     >
-      <CardContent>
-        {/* TITLE */}
-        {isEditing ? (
-          <TextField
-            fullWidth
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            sx={{ mb: 1 }}
+      <CardContent sx={{ p: 2 }}>
+        <Box sx={{ mb: 2 }}>
+          {isEditing ? (
+            <TextField
+              fullWidth
+              name="title"
+              value={form.title}
+              onChange={handleChange}
+              size="small"
+            />
+          ) : (
+            <Typography variant="h6" fontWeight={700}>
+              {goal.title}
+            </Typography>
+          )}
+
+          <Chip
+            label={goal.priority}
+            size="small"
+            color={getPriorityStyle(goal.priority)}
+            sx={{ mt: 1 }}
           />
-        ) : (
-          <Typography variant="h6" fontWeight={700}>
-            {goal.title}
+        </Box>
+
+        <Divider />
+        <Box sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+          <Typography color="text.secondary">📂 {goal.category}</Typography>
+
+          <Typography color="text.secondary">
+            🎯 {goal.target} {goal.session}
           </Typography>
-        )}
 
-        {/* PRIORITY */}
-        <Chip
-          label={goal.priority}
-          size="small"
-          color={getPriorityStyle(goal.priority)}
-          sx={{ mt: 1 }}
-        />
+          <Typography
+            fontWeight={600}
+            color={
+              goal.status === "completed"
+                ? "success.main"
+                : goal.status === "paused"
+                ? "warning.main"
+                : "primary.main"
+            }
+          >
+            {goal.status}
+          </Typography>
+        </Box>
 
-        <Divider sx={{ my: 2 }} />
-
-        {/* CATEGORY */}
-        <Typography color="text.secondary">📂 {goal.category}</Typography>
-
-        {/* TARGET */}
-        <Typography color="text.secondary" mt={1}>
-          🎯 {goal.target} {goal.session}
-        </Typography>
-
-        {/* STATUS */}
-        <Typography
-          fontWeight={700}
-          mt={1}
-          color={
-            goal.status === "completed"
-              ? "success.main"
-              : goal.status === "paused"
-              ? "warning.main"
-              : "primary.main"
-          }
-        >
-          {goal.status}
-        </Typography>
-
-        {/* ACTIONS */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            mt: 3,
-            flexWrap: "wrap",
-            gap: 1,
-          }}
-        >
-          <Stack direction="row" spacing={1}>
+        {/* 🔷 ACTIONS */}
+        <Box sx={{ mt: 3 }}>
+          <Stack direction="row" spacing={1} flexWrap="wrap">
             <Button
+              size="small"
               variant="outlined"
               onClick={() => updateGoalStatus(goal.id, "active")}
             >
@@ -131,6 +119,7 @@ export default function GoalCard({ goal }) {
             </Button>
 
             <Button
+              size="small"
               variant="outlined"
               color="warning"
               onClick={() => updateGoalStatus(goal.id, "paused")}
@@ -139,6 +128,7 @@ export default function GoalCard({ goal }) {
             </Button>
 
             <Button
+              size="small"
               variant="contained"
               onClick={() => updateGoalStatus(goal.id, "completed")}
             >
@@ -146,9 +136,10 @@ export default function GoalCard({ goal }) {
             </Button>
           </Stack>
 
-          <Stack direction="row" spacing={1}>
+          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
             {!isEditing ? (
               <Button
+                size="small"
                 sx={{
                   bgcolor: "grey.900",
                   color: "white",
@@ -159,19 +150,31 @@ export default function GoalCard({ goal }) {
                 {lang === "fa" ? "ویرایش" : "Edit"}
               </Button>
             ) : (
-              <Button variant="contained" color="success" onClick={handleSave}>
+              <Button
+                size="small"
+                variant="contained"
+                color="success"
+                onClick={handleSave}
+              >
                 {lang === "fa" ? "ذخیره" : "Save"}
               </Button>
             )}
 
-            <Button color="error" onClick={() => deleteGoal(goal.id)}>
+            <Button
+              size="small"
+              color="error"
+              onClick={() => deleteGoal(goal.id)}
+            >
               {lang === "fa" ? "حذف" : "Delete"}
             </Button>
           </Stack>
         </Box>
 
-        {/* DETAILS BUTTON */}
-        <Button sx={{ mt: 2 }} onClick={() => setShowDetail(!showDetail)}>
+        <Button
+          size="small"
+          sx={{ mt: 2 }}
+          onClick={() => setShowDetail(!showDetail)}
+        >
           {showDetail
             ? lang === "fa"
               ? "بستن"
@@ -181,36 +184,36 @@ export default function GoalCard({ goal }) {
             : "Details"}
         </Button>
 
-        {/* DETAILS */}
         {showDetail && (
           <Box
             sx={{
               mt: 2,
               p: 2,
               borderRadius: 2,
-              bgcolor: "background.paper",
+              bgcolor: "background.default",
               border: `1px solid ${theme.palette.divider}`,
+              display: "flex",
+              flexDirection: "column",
+              gap: 1,
             }}
           >
-            <Typography color="text.secondary" sx={{ mb: 1 }}>
+            <Typography color="text.secondary">
               📝{" "}
               {goal.description ||
                 (lang === "fa" ? "بدون توضیحات" : "No description")}
             </Typography>
 
-            <Typography color="text.secondary" sx={{ mb: 1 }}>
-              📅 {lang === "fa" ? "شروع:" : "Start:"}{" "}
-              {goal.startDate || (lang === "fa" ? "تنظیم نشده" : "Not set")}
+            <Typography color="text.secondary">
+              📅 {lang === "fa" ? "شروع:" : "Start:"} {goal.startDate || "-"}
             </Typography>
 
-            <Typography color="text.secondary" sx={{ mb: 1 }}>
-              📅 {lang === "fa" ? "ختم:" : "End:"}{" "}
-              {goal.endDate || (lang === "fa" ? "تنظیم نشده" : "Not set")}
+            <Typography color="text.secondary">
+              📅 {lang === "fa" ? "ختم:" : "End:"} {goal.endDate || "-"}
             </Typography>
 
             <Typography color="text.secondary">
               ⏳ {lang === "fa" ? "ددلاین:" : "Deadline:"}{" "}
-              {goal.deadline || (lang === "fa" ? "تنظیم نشده" : "Not set")}
+              {goal.deadline || "-"}
             </Typography>
           </Box>
         )}

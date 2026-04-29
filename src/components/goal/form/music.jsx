@@ -53,7 +53,6 @@ export default function MediaControlCard() {
     }
   };
 
-  // ⏭ NEXT SONG
   const nextSong = () => {
     const newIndex = (index + 1) % playlist.length;
     setIndex(newIndex);
@@ -65,10 +64,8 @@ export default function MediaControlCard() {
     }, 100);
   };
 
-  // ⏮ PREVIOUS SONG
   const prevSong = () => {
-    const newIndex =
-      (index - 1 + playlist.length) % playlist.length;
+    const newIndex = (index - 1 + playlist.length) % playlist.length;
     setIndex(newIndex);
     setPlaying(false);
 
@@ -80,7 +77,7 @@ export default function MediaControlCard() {
 
   return (
     <Card sx={{ display: "flex" }}>
-      {/* 🎧 AUDIO */}
+      {/* 🎧 AUDIO PLAYER */}
       <audio ref={audioRef} src={playlist[index]} />
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>

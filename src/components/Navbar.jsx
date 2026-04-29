@@ -80,8 +80,8 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // حذف کاربر
-    window.location.href = "/"; // برگشت به لاگین
+    localStorage.removeItem("user");
+    window.location.href = "/"; 
   };
 
   return (
@@ -93,49 +93,67 @@ export default function PrimarySearchAppBar() {
         borderBottom: `1px solid ${theme.palette.divider}`,
       })}
     >
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <Toolbar
+        sx={{
+          minHeight: 70, // 🔥 بزرگ‌تر
+          px: 2,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         {/* LEFT */}
-        <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
           {isMobile && (
             <IconButton onClick={() => setOpenDrawer(true)}>
               <MenuIcon />
             </IconButton>
           )}
 
-          <img src={logo} width={60} alt="logo" />
+          <img src={logo} width={65} alt="logo" />
 
-          {/* ✅ فقط دسکتاپ */}
           {!isMobile && (
-            <Typography sx={{ ml: 1, fontWeight: "bold" }}>
+            <Typography fontWeight="bold" fontSize={20}>
               Goal Tracker
             </Typography>
           )}
         </Box>
 
-        {/* CENTER */}
+        {/* CENTER (ONLY MENU) */}
         {!isMobile && (
-          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Box sx={{ display: "flex", gap: 3 }}>
             {pages.map((p) => (
               <Button
                 key={p.id}
                 component={Link}
                 to={p.to}
-                sx={{ color: "text.primary" }}
+                sx={{
+                  color: "text.primary",
+                  fontSize: "15px", // 🔥 بزرگ‌تر
+                  textTransform: "none",
+                }}
               >
                 {t(p.key)}
               </Button>
             ))}
-
-            <Search>
-              <SearchIcon fontSize="small" />
-              <StyledInputBase placeholder={t("search")} />
-            </Search>
           </Box>
         )}
 
         {/* RIGHT */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <IconButton onClick={handleLanguageChange}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+          {/* 🔍 SEARCH (Moved Right) */}
+          {!isMobile && (
+            <Search
+              sx={{
+                height: 38,
+                px: 1.5,
+              }}
+            >
+              <SearchIcon />
+              <StyledInputBase placeholder={t("search")} sx={{ ml: 1 }} />
+            </Search>
+          )}
+
+          <IconButton>
             <TranslateIcon />
           </IconButton>
 

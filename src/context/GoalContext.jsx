@@ -33,8 +33,7 @@ export const GoalProvider = ({ children }) => {
     const newGoal = {
       ...goal,
       id: goal.id || Date.now(),
-      status: goal.status || "active", // ✅ FIX: default status
-    };
+      status: goal.status || "active",    };
 
     setGoals((prev) => [...prev, newGoal]);
     addEvent("CREATE_GOAL", newGoal.id);
@@ -50,8 +49,6 @@ export const GoalProvider = ({ children }) => {
     setGoals((prev) => prev.filter((g) => g.id !== id));
     addEvent("DELETE_GOAL", id);
   };
-
-  // ✅ FIXED: STATUS UPDATE FUNCTION (MAIN FIX)
   const updateGoalStatus = (id, status) => {
     setGoals((prev) =>
       prev.map((g) =>
@@ -73,7 +70,7 @@ export const GoalProvider = ({ children }) => {
         updateGoal,
         deleteGoal,
         addEvent,
-        updateGoalStatus, // ✅ IMPORTANT
+        updateGoalStatus,
       }}
     >
       {children}

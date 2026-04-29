@@ -3,14 +3,30 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../i18n/useLanguage";
 
 export default function DashboardHero() {
-  const [userName] = useState("Maryam Mirzada");
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
   const { t } = useLanguage();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) return;
+
+    try {
+      const user = JSON.parse(storedUser);
+
+      if (user?.name) {
+        setUserName(user.name);
+      }
+    } catch (error) {
+      console.log("User data is not valid JSON");
+    }
+  }, []);
 
   return (
     <Card
@@ -19,7 +35,6 @@ export default function DashboardHero() {
         maxWidth: 900,
         borderRadius: 2,
 
-        // 🔥 reduced padding
         p: { xs: 1, sm: 1.5, md: 2 },
 
         backgroundColor:
@@ -31,7 +46,6 @@ export default function DashboardHero() {
       })}
     >
       <CardContent sx={{ p: 1 }}>
-        {/* Welcome */}
         <Typography
           sx={(theme) => ({
             fontSize: { xs: "13px", md: "14px" },
@@ -40,32 +54,26 @@ export default function DashboardHero() {
         >
           {t("welcomeUser")}, {userName}
         </Typography>
-
-        {/* Title */}
         <Typography
           sx={(theme) => ({
             fontWeight: "bold",
-            fontSize: { xs: "20px", md: "30px" }, // 🔥 smaller
+            fontSize: { xs: "20px", md: "30px" },
             mt: 0.5,
             color: theme.palette.primary.main,
           })}
         >
           {t("dashboardTitle")}
         </Typography>
-
-        {/* Description */}
         <Typography
           sx={(theme) => ({
             mt: 1,
-            fontSize: { xs: "12px", md: "14px" }, // 🔥 smaller
+            fontSize: { xs: "12px", md: "14px" },
             color: theme.palette.text.secondary,
           })}
         >
           {t("dashboardDesc")}
         </Typography>
       </CardContent>
-
-      {/* Buttons */}
       <CardActions
         sx={{
           display: "flex",
@@ -74,7 +82,6 @@ export default function DashboardHero() {
           p: 1.5,
         }}
       >
-        {/* NEW GOAL */}
         <Button
           onClick={() => navigate("/form")}
           fullWidth
@@ -91,7 +98,6 @@ export default function DashboardHero() {
           {t("newGoal")}
         </Button>
 
-        {/* MANAGE */}
         <Button
           fullWidth
           sx={(theme) => ({
@@ -106,6 +112,7 @@ export default function DashboardHero() {
                   : "rgba(26,50,99,0.08)",
             },
           })}
+          onClick={() => navigate("/goals#goal-list")}
         >
           {t("manageGoal")}
         </Button>

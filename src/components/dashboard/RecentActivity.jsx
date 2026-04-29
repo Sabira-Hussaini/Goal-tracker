@@ -53,7 +53,7 @@ const RecentActivity = ({ activities = [] }) => {
               <Box
                 key={goal.id}
                 sx={{
-                  transform: "scale(0.9)", // ✅ shrink cards
+                  transform: "scale(0.9)", 
                   transformOrigin: "top left",
                 }}
               >

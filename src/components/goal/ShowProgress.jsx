@@ -29,13 +29,10 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ShowProgress() {
   const { t } = useLanguage();
 
-  // ✅ GET GOALS FROM CONTEXT
   const { goals } = useContext(GoalContext);
 
-  // ✅ SAFE NORMALIZATION
   const safeGoals = goals || [];
 
-  // ✅ CALCULATIONS
   const total = safeGoals.length;
 
   const active = safeGoals.filter(
@@ -54,7 +51,6 @@ export default function ShowProgress() {
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{ marginTop: "20px", px: "10px" }}>
         
-        {/* LEFT SIDE */}
         <Grid container spacing={4} size={{ xs: 6, md: 8 }}>
           
           <Grid
@@ -71,7 +67,7 @@ export default function ShowProgress() {
           >
             <StatCard
               title={t("total_goals")}
-              value={total} // ✅ FIXED
+              value={total}
               icon={<DonutSmallIcon />}
               color="#1b5e20"
             />
@@ -91,7 +87,7 @@ export default function ShowProgress() {
           >
             <StatCard
               title={t("active_goals")}
-              value={active} // ✅ FIXED
+              value={active} 
               icon={<CallMissedOutgoingIcon />}
               color="#0f26ba"
             />
@@ -111,7 +107,7 @@ export default function ShowProgress() {
           >
             <StatCard
               title={t("paused_goals")}
-              value={paused} // ✅ FIXED
+              value={paused} 
               icon={<PauseIcon />}
               color="#c8420d"
             />
@@ -131,15 +127,13 @@ export default function ShowProgress() {
           >
             <StatCard
               title={t("completed_goals")}
-              value={completed} // ✅ FIXED
+              value={completed}
               icon={<LibraryAddCheckIcon />}
               color="#b4c614"
             />
           </Grid>
 
         </Grid>
-
-        {/* RIGHT SIDE */}
         <Grid size={{ xs: 6, md: 4 }}>
           <Grid size={{ xs: 12, sm: 12, md: 12, height: "100%" }}>
             <StatCard

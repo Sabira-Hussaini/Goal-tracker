@@ -44,6 +44,8 @@ export default function ProgressInsight() {
   // 🧠 Get last active date (you can improve this later with backend/localStorage)
   const lastActiveDate = safeGoals?.[0]?.lastActiveDate;
 
+  let progress = 0;
+
   // 📅 Calculate days difference
   const getDaysDiff = (date) => {
     if (!date) return 999;
@@ -58,7 +60,7 @@ export default function ProgressInsight() {
   const daysInactive = getDaysDiff(lastActiveDate);
 
   // 🎯 Activity-based progress + color
-  let progress = 100;
+  progress = 100;
   let color = "green";
 
   if (daysInactive <= 0) {

@@ -20,7 +20,6 @@ export default function GoalHero() {
         borderRadius: 3,
         p: { xs: 1, sm: 2, md: 3 },
 
-        /* 🌙 Background fully theme-aware */
         backgroundColor:
           theme.palette.mode === "dark"
             ? theme.palette.background.paper
@@ -37,7 +36,6 @@ export default function GoalHero() {
         }}
       >
         <CardContent>
-          {/* TITLE */}
           <Typography
             sx={(theme) => ({
               fontWeight: "bold",
@@ -53,7 +51,6 @@ export default function GoalHero() {
             {t("allGoals")}
           </Typography>
 
-          {/* DESCRIPTION */}
           <Typography
             variant="body2"
             sx={(theme) => ({
@@ -70,22 +67,20 @@ export default function GoalHero() {
           </Typography>
         </CardContent>
 
-        {/* ACTIONS */}
         <CardActions
           sx={{
             display: "flex",
-            justifyContent: "flex-end", // ✅ می‌بره سمت راست
+            justifyContent: "flex-end", 
             gap: 2,
             p: 2,
             width: "100%",
             mt: -20,
           }}
         >
-          {/* NEW GOAL */}
           <Button
             sx={(theme) => ({
               height: 42,
-              minWidth: 200, // ✅ اندازه ثابت و تمیز
+              minWidth: 200,
               fontSize: "14px",
               borderRadius: "14px",
 
@@ -101,11 +96,10 @@ export default function GoalHero() {
             {t("newGoal")}
           </Button>
 
-          {/* MANAGE */}
-          <Button
+          {/* <Button
             sx={(theme) => ({
               height: 42,
-              minWidth: 200, // ✅ هم‌اندازه دکمه اول
+              minWidth: 200, 
               fontSize: "14px",
               borderRadius: "14px",
 
@@ -118,7 +112,7 @@ export default function GoalHero() {
             })}
           >
             {t("manageGoal")}
-          </Button>
+          </Button> */}
         </CardActions>
       </Box>
     </Card>

@@ -23,8 +23,6 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
-
-  /* ⏳ LOADING */
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -32,8 +30,6 @@ function App() {
 
     return () => clearTimeout(timer);
   }, []);
-
-  /* 🔐 CHECK LOGIN */
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
 
@@ -44,21 +40,14 @@ function App() {
       setIsAuth(false);
     }
   }, []);
-
-  /* 🌍 RTL / LTR */
   useEffect(() => {
     document.documentElement.dir = settings.language === "fa" ? "rtl" : "ltr";
   }, [settings.language]);
-
-  /* ⏳ LOADING SCREEN */
   if (loading) return <LoadingScreen />;
-
-  /* 🔐 LOGIN PAGE */
   if (!isAuth) {
     return <Login onLogin={() => setIsAuth(true)} />;
   }
 
-  /* ✅ MAIN APP */
   return (
     <ThemeProvider theme={getTheme(settings.themeMode)}>
       <CssBaseline />

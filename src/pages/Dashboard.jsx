@@ -16,7 +16,10 @@ import ActiveGoalsList from "../components/ActiveGoalsList";
 
 const Dashboard = () => {
   const { goals = [], events = [] } = useContext(GoalContext);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6ad47bbda7416a60b4a3fdae3db106dfe22713dc
   const completedGoals = useMemo(
     () =>
       goals.filter(

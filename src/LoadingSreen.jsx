@@ -1,7 +1,6 @@
 import { Box, CircularProgress, Typography, useTheme } from "@mui/material";
 import { keyframes } from "@mui/system";
 
-/* 🔥 Animations */
 const fadeIn = keyframes`
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -25,19 +24,14 @@ export default function LoadingScreen() {
         justifyContent: "center",
         alignItems: "center",
 
-        // ✅ THEME BACKGROUND
         backgroundColor: theme.palette.background.default,
       }}
-    >
-      {/* CARD */}
-      <Box
+    >      <Box
         sx={{
           width: 340,
           p: 5,
           borderRadius: 4,
           textAlign: "center",
-
-          // ✅ THEME PAPER
           backgroundColor: theme.palette.background.paper,
           border: `1px solid ${theme.palette.divider}`,
           boxShadow: theme.shadows[3],
@@ -45,7 +39,6 @@ export default function LoadingScreen() {
           animation: `${fadeIn} 0.6s ease`,
         }}
       >
-        {/* LOGO */}
         <Box
           sx={{
             width: 70,
@@ -53,8 +46,6 @@ export default function LoadingScreen() {
             mx: "auto",
             mb: 2,
             borderRadius: "50%",
-
-            // ✅ PRIMARY COLOR FROM THEME
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
 
@@ -70,8 +61,6 @@ export default function LoadingScreen() {
         >
           GT
         </Box>
-
-        {/* TITLE */}
         <Typography
           variant="h6"
           sx={{
@@ -82,8 +71,6 @@ export default function LoadingScreen() {
         >
           Goal Tracker
         </Typography>
-
-        {/* SUB TEXT */}
         <Typography
           sx={{
             fontSize: 14,
@@ -93,8 +80,6 @@ export default function LoadingScreen() {
         >
           Preparing your dashboard...
         </Typography>
-
-        {/* LOADER */}
         <CircularProgress
           size={40}
           thickness={4}

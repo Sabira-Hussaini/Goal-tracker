@@ -106,8 +106,6 @@ export default function RequiredInput({ onAddGoal }) {
             sx={fieldSx}
           />
         </Grid>
-
-        {/* CATEGORY */}
         <Grid item xs={12} md={6}>
           <TextField
             select
@@ -126,8 +124,6 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
-
-        {/* GOAL TYPE */}
         <Grid item xs={12} md={6}>
           <TextField
             select
@@ -146,8 +142,6 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
-
-        {/* TARGET */}
         <Grid item xs={12} md={6}>
           <TextField
             fullWidth
@@ -160,8 +154,6 @@ export default function RequiredInput({ onAddGoal }) {
             sx={{ width: "200px" }}
           />
         </Grid>
-
-        {/* SESSION */}
         <Grid item xs={12} md={4}>
           <TextField
             select
@@ -180,8 +172,6 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
-
-        {/* PRIORITY */}
         <Grid item xs={12} md={4}>
           <TextField
             select
@@ -200,8 +190,6 @@ export default function RequiredInput({ onAddGoal }) {
             ))}
           </TextField>
         </Grid>
-
-        {/* START */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
@@ -215,8 +203,6 @@ export default function RequiredInput({ onAddGoal }) {
             sx={{ width: "200px" }}
           />
         </Grid>
-
-        {/* END */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
@@ -230,8 +216,6 @@ export default function RequiredInput({ onAddGoal }) {
             sx={{ width: "200px" }}
           />
         </Grid>
-
-        {/* DEADLINE */}
         <Grid item xs={12} md={4}>
           <TextField
             fullWidth
@@ -245,24 +229,21 @@ export default function RequiredInput({ onAddGoal }) {
             sx={{ width: "200px" }}
           />
         </Grid>
-
-        {/* DESCRIPTION */}
         <Grid item xs={12}>
           <TextField
             fullWidth
             multiline
-            rows={3}
+            rows={4}
+            cols={12}
             name="description"
             label={lang === "fa" ? "توضیحات" : "Description"}
             value={formData.description}
             onChange={handleChange}
             sx={fieldSx}
-            sx={{ width: "760px" }}
+            // sx={{  maxWidth : '760px' ,  width : '500px' }}
           />
         </Grid>
       </Grid>
-
-      {/* ACTIONS */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 1, mt: 2 }}>
         <Button>{t.cancel}</Button>
         <Button variant="contained" onClick={handleSubmit}>

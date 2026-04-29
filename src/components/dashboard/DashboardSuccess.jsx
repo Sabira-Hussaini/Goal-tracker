@@ -52,7 +52,6 @@ export default function DashboardSuccess() {
       }}
     >
       <CardContent>
-        {/* TITLE */}
         <Typography
           sx={{
             fontSize: { xs: "14px", md: "18px" },
@@ -64,7 +63,6 @@ export default function DashboardSuccess() {
           {lang === "fa" ? "انگیزه روزانه" : "Daily Motivation"}
         </Typography>
 
-        {/* QUOTE */}
         {quote ? (
           <Box>
             <Typography
@@ -95,7 +93,6 @@ export default function DashboardSuccess() {
         )}
       </CardContent>
 
-      {/* CLOCK SECTION */}
       <CardActions sx={{ p: 2 }}>
         <Stack
           sx={{
