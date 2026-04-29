@@ -18,8 +18,6 @@ import PersonIcon from "@mui/icons-material/Person";
 
 export default function Login({ onLogin }) {
   const theme = useTheme();
-
-  // ✅ React Hook Form
   const {
     register,
     handleSubmit,
@@ -50,9 +48,7 @@ export default function Login({ onLogin }) {
           borderRadius: 4,
           overflow: "hidden",
         }}
-      >
-        {/* LEFT SIDE */}
-        <Box
+      >        <Box
           sx={{
             flex: 1,
             display: { xs: "none", md: "flex" },
@@ -74,8 +70,6 @@ export default function Login({ onLogin }) {
             Manage your daily focus, habits, and personal growth in one place.
           </Typography>
         </Box>
-
-        {/* RIGHT SIDE FORM */}
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
@@ -90,7 +84,7 @@ export default function Login({ onLogin }) {
           }}
         >
           <Typography variant="h5" fontWeight={700}>
-            Welcome Back 👋
+            Welcome
           </Typography>
 
           <Typography color="text.secondary" fontSize={14}>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Box } from "@mui/material";
 import { GoalContext } from "../context/GoalContext";
 
@@ -8,6 +8,14 @@ import GoalFilters from "../components/goal/GoalFilters";
 import GoalList from "../components/goal/GoalList";
 
 const Goals = () => {
+  useEffect(() => {
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  }, [location]);
   const { goals } = useContext(GoalContext);
 
   const [filter, setFilter] = useState("all");
@@ -18,7 +26,6 @@ const Goals = () => {
     <Box p={{ xs: 1, sm: 2, md: 3 }}>
       <GoalHero />
       <ShowProgress />
-
       <GoalFilters
         filter={filter}
         setFilter={setFilter}
@@ -33,6 +40,7 @@ const Goals = () => {
         filter={filter}
         search={search}
         sort={sort}
+        id="goal-list"
       />
     </Box>
   );

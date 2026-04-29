@@ -34,10 +34,8 @@ export default function ProgressInsight() {
   const { t } = useLanguage();
   const { goals } = useContext(GoalContext);
 
-  // ✅ SAFE DATA
   const safeGoals = goals || [];
 
-  // ✅ CALCULATE REAL AVERAGE
   let progress = 0;
 
   if (safeGoals.length > 0) {

@@ -17,7 +17,6 @@ import goal from "../../../assets/goal.jpg";
 export default function MediaControlCard() {
   const theme = useTheme();
 const { t } = useLanguage();
-  // 🎧 موزیک آنلاین (لینک خودت را اینجا بگذار)
   const musicUrl =
     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
 
@@ -38,7 +37,6 @@ const { t } = useLanguage();
 
   return (
     <Card sx={{ display: "flex" }}>
-      {/* 🎧 Audio (پنهان ولی فعال) */}
       <audio ref={audioRef} src={musicUrl} />
 
       <Box sx={{ display: "flex", flexDirection: "column" }}>

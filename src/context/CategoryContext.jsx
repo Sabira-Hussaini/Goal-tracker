@@ -10,8 +10,6 @@ export const CategoryProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("categories", JSON.stringify(categories));
   }, [categories]);
-
-  // ✅ CREATE CATEGORY (clean + normalized)
   const addCategory = (category) => {
     setCategories((prev) => [
       ...prev,
@@ -22,8 +20,6 @@ export const CategoryProvider = ({ children }) => {
       },
     ]);
   };
-
-  // ✅ ADD GOAL TO CATEGORY (SAFE FIXED VERSION)
   const addGoalToCategory = (categoryName, goal) => {
     setCategories((prev) =>
       prev.map((cat) => {

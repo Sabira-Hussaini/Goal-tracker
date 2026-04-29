@@ -21,7 +21,6 @@ const GoalFilters = ({
 }) => {
   const { t } = useLanguage();
 
-  // ✅ SAFE HANDLERS (prevents crashes)
   const handleSearchChange = (e) => {
     setSearch?.(e.target.value.trimStart());
   };

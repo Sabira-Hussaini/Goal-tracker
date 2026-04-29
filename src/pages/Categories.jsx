@@ -101,7 +101,6 @@ const Categories = () => {
 
   return (
     <Box p={{ xs: 1, sm: 2, md: 3 }}>
-      {/* HEADER */}
       <Box
         display="flex"
         justifyContent="space-between"

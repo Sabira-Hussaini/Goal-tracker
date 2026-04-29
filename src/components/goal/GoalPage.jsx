@@ -5,7 +5,6 @@ import GoalList from "./GoalList";
 export default function GoalPage() {
   const [goals, setGoals] = useState([]);
 
-  // بارگذاری اهداف از localStorage هر بار که صفحه باز می‌شود
   useEffect(() => {
     const savedGoals = JSON.parse(localStorage.getItem("goals") || "[]");
     console.log("📖 بارگذاری از localStorage:", savedGoals);

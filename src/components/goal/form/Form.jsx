@@ -24,19 +24,31 @@ export default function Form() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <FormHero />
+
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12, md: 8 }}>
+        {/* LEFT */}
+        <Grid size={{ xs: 12, sm: 12, md: 8 }}>
           <Item
             elevation={0}
-            sx={{ background: "transparent", boxShadow: "none" , mt : 1 }}
+            sx={{
+              background: "transparent",
+              boxShadow: "none",
+              mt: { xs: 2, md: 1 },
+            }}
           >
             <FormContent />
           </Item>
         </Grid>
-        <Grid size={{ xs: 6, md: 4 }}>
+
+        {/* RIGHT */}
+        <Grid size={{ xs: 12, sm: 12, md: 4 }}>
           <Item
             elevation={0}
-            sx={{ background: "transparent", boxShadow: "none" , mt :4}}
+            sx={{
+              background: "transparent",
+              boxShadow: "none",
+              mt: { xs: 2, md: 4 },
+            }}
           >
             <DashboardSuccess />
           </Item>
@@ -46,6 +58,7 @@ export default function Form() {
             sx={{
               background: "transparent",
               boxShadow: "none",
+              mt: 2,
             }}
           >
             <MediaControlCard />

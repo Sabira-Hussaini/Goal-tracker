@@ -8,12 +8,14 @@ const GoalList = ({ filter = "all", search = "" }) => {
 
   let filtered = [...goals];
 
+  // Filter by status
   if (filter !== "all") {
     filtered = filtered.filter(
       (g) => (g.status || "active").toLowerCase() === filter
     );
   }
 
+  // Search by title
   filtered = filtered.filter((g) =>
     g?.title?.toLowerCase().includes(search.toLowerCase())
   );
@@ -29,7 +31,14 @@ const GoalList = ({ filter = "all", search = "" }) => {
             No Goal
           </Typography>
         ) : (
-          <Box className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
+              gap: 2,
+              mt: 2,
+            }}
+          >
             {filtered.map((goal) => (
               <GoalCard key={goal.id} goal={goal} />
             ))}

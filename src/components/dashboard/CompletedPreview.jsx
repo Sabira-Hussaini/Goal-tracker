@@ -8,8 +8,6 @@ const MAX_PREVIEW_ITEMS = 3;
 const CompletedPreview = () => {
   const { t } = useLanguage();
   const { goals } = useContext(GoalContext);
-
-  // ✅ FILTER COMPLETED GOALS SAFELY
   const completedGoals = (goals || []).filter(
     (g) => (g.status || "").toLowerCase() === "completed"
   );

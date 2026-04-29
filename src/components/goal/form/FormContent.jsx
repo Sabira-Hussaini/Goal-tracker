@@ -15,10 +15,7 @@ export default function FormContent() {
   const theme = useTheme();
 
   const handleAddGoal = (newGoal) => {
-    // 1. global goals list
     addGoal(newGoal);
-
-    // 2. connect to category
     if (newGoal?.category) {
       addGoalToCategory(newGoal.category, newGoal);
     }
@@ -42,7 +39,6 @@ export default function FormContent() {
       }}
     >
       <CardContent>
-        {/* TITLE */}
         <Typography
           gutterBottom
           variant="h5"
@@ -54,8 +50,6 @@ export default function FormContent() {
         >
           {t("newGoal")}
         </Typography>
-
-        {/* DESCRIPTION */}
         <Typography
           variant="body2"
           sx={{
