@@ -223,3 +223,13 @@ Testing & Fixes	Shared
 # 👨‍💻 Authors Notes
 
 This project is designed for productivity, habit building, and real-world React practice with modern UI/UX principles.
+
+
+
+
+![Dashboard](./public/dashboard.jpeg)
+![Goals](./public/goals.jpeg)
+
+
+![Category](./public/Category.jpeg)
+![settings](./public/settings.jpeg)
