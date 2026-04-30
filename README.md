@@ -231,5 +231,5 @@ This project is designed for productivity, habit building, and real-world React 
 ![Goals](./public/goals.jpeg)
 
 
-![Category](./public/Category.jpeg)
+![Category](./public/category.jpeg)
 ![settings](./public/settings.jpeg)
