@@ -154,7 +154,7 @@ export default function PrimarySearchAppBar() {
           )}
 
           <IconButton>
-            <TranslateIcon />
+            <TranslateIcon onClick={handleLanguageChange} />
           </IconButton>
 
           <IconButton onClick={toggleTheme}>
